@@ -6,16 +6,14 @@ export class CommonsHelper {
             return "";
         }
 
-        let result = "";
         const expression = fn.toString();
-        console.log("expression: ", expression);
         const regexp = new RegExp(`^function.+return\\s+\\w+\.(\\w+)\\s*;\\s*}$`);
         const match = regexp.exec(expression);
         if (match && match.length === 2) {
-            result = match[1];
+            return match[1];
+        } else {
+            return "";
         }
-
-        return result;
     }
 
     private constructor() {
