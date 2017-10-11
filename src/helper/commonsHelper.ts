@@ -8,10 +8,13 @@ export class CommonsHelper {
 
         let result = "";
         const expression = fn.toString();
-        const splitted = expression.split(".");
-        if (splitted.length === 2) {
-            result = splitted[1].replace(";", "").replace("}", "").trim();
+        console.log("expression: ", expression);
+        const regexp = new RegExp(`^function.+return\\s+\\w+\.(\\w+)\\s*;\\s*}$`);
+        const match = regexp.exec(expression);
+        if (match && match.length === 2) {
+            result = match[1];
         }
+
         return result;
     }
 
