@@ -1,5 +1,5 @@
 import * as util from "util";
-import { ClassHelper } from "./../helper";
+import { EntityHelper } from "./../helper";
 import { FilterCondition, FilterOperator } from "./index";
 
 export class FilterDescriptor<T> {
@@ -27,14 +27,14 @@ export class FilterDescriptor<T> {
         if (typeof a1 === "number") {
             // conditon
             this.condition = a1;
-            this.propertyPath = ClassHelper.getPropertyName<T>(a2);
+            this.propertyPath = EntityHelper.getPropertyName<T>(a2);
             this.operator = a3;
             this.value = a4;
             return;
         }
 
         if (typeof a1 === "function") {
-            this.propertyPath = ClassHelper.getPropertyName<T>(a1);
+            this.propertyPath = EntityHelper.getPropertyName<T>(a1);
             this.operator = a2;
             this.value = a3;
             return;

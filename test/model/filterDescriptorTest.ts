@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { ClassHelper } from "../../src/helper";
 import { FilterCondition, FilterDescriptor, FilterOperator } from "../../src/model";
 import { Student } from "./stduent";
 

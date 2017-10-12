@@ -1,6 +1,5 @@
 import { EntityCache } from "./cache/entityCache";
 import { column } from "./decorator";
-import { ClassHelper } from "./helper";
 import { FilterCondition, FilterDescriptor, FilterOperator } from "./model";
 
 export class User {

@@ -1,4 +1,4 @@
-export class ClassHelper {
+export class EntityHelper {
     public static getPropertyName<T>(fn: (o: T) => any): string {
         if (!fn) {
             return "";

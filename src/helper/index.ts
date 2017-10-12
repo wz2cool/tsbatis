@@ -1,3 +1,3 @@
-import { ClassHelper } from "./classHelper";
+import { EntityHelper } from "./entityHelper";
 
-export { ClassHelper };
+export { EntityHelper };
