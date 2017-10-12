@@ -22,10 +22,30 @@ export class MappingProvider {
             const columnInfo = cache.getColumnInfo(entityName, prop);
             if (!util.isNullOrUndefined(columnInfo)
                 && dbObj.hasOwnProperty(columnInfo.columnName)) {
-                entityExample[prop] = dbObj[columnInfo.columnName];
+                const dbValue = dbObj[columnInfo.columnName];
+                const propertType = columnInfo.propertyType;
+                const propertValue = MappingProvider.toPropertyValue(dbValue, propertType);
+                entityExample[prop] = propertValue;
             }
         });
         return entityExample;
+    }
+
+    private static toPropertyValue(dbValue: any, propertyType: string): any {
+        const usePropType = propertyType.toLocaleLowerCase();
+        switch (usePropType) {
+            case "number":
+                return Number(dbValue);
+            case "string":
+                // fix “” issue
+                return String(dbValue).replace("“”", "");
+            case "boolean":
+                return Boolean(dbValue);
+            case "date":
+                return new Date(dbValue);
+            default:
+                return dbValue;
+        }
     }
 
     private constructor() {
