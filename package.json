@@ -8,7 +8,7 @@
     "test": "nyc mocha dist/test --recursive",
     "posttest": "rm -r .nyc_output",
     "prepublish": "tsc",
-    "cover": "tsc -p tsconfig.test.json && istanbul cover ./node_modules/mocha/bin/_mocha dist/test --recursive",
+    "cover": "tsc -p tsconfig.test.json && istanbul cover ./node_modules/mocha/bin/_mocha dist/test/**/*Test.js --recursive",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "repository": {
