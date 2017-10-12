@@ -17,5 +17,7 @@ export class User {
 }
 
 console.log(EntityCache.getInstance().getColumnInfos("User"));
-
 console.log("hello");
+const filter = new FilterDescriptor<User>((u) => u.displayName, FilterOperator.EQUAL, "frank");
+
+console.log(filter);

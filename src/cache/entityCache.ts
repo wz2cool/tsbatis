@@ -29,13 +29,18 @@ export class EntityCache {
             return null;
         }
 
-        return propColMap[property];
+        const columnInfo = propColMap[property];
+        if (util.isNullOrUndefined(columnInfo)) {
+            return null;
+        }
+
+        return columnInfo;
     }
 
     public getColumnInfos(entity: string): ColumnInfo[] {
         const propColMap = this.cache[entity];
         if (util.isNullOrUndefined(propColMap)) {
-            return null;
+            return [];
         }
         const result: ColumnInfo[] = [];
         for (const key in propColMap) {
