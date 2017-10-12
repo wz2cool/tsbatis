@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/wz2cool/node-sql-dynamic-query#readme",
   "dependencies": {
-    "util": "^0.10.3"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",

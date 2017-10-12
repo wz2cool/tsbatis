@@ -1,8 +1,6 @@
-import * as util from "util";
-
 export class ClassHelper {
     public static getPropertyName<T>(fn: (o: T) => any): string {
-        if (util.isNullOrUndefined(fn)) {
+        if (!fn) {
             return "";
         }
 
