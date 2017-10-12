@@ -7,24 +7,25 @@ export class EntityCache {
     }
 
     private static instance = new EntityCache();
-    private readonly cache: { [entity: string]: { [property: string]: ColumnInfo } } = {};
+    private readonly columnCache: { [entity: string]: { [property: string]: ColumnInfo } } = {};
+    private readonly propCache: { [entity: string]: string[] } = {};
     private constructor() {
         // hide constructor
     }
 
-    public addColumnInfo(columnInfo: ColumnInfo): void {
-        let propColMap = this.cache[columnInfo.entity];
+    public cacheColumnInfo(columnInfo: ColumnInfo): void {
+        let propColMap = this.columnCache[columnInfo.entity];
         if (util.isNullOrUndefined(propColMap)) {
             propColMap = {};
             propColMap[columnInfo.property] = columnInfo;
-            this.cache[columnInfo.entity] = propColMap;
+            this.columnCache[columnInfo.entity] = propColMap;
         } else {
             propColMap[columnInfo.property] = columnInfo;
         }
     }
 
     public getColumnInfo(entity: string, property: string): ColumnInfo {
-        const propColMap = this.cache[entity];
+        const propColMap = this.columnCache[entity];
         if (util.isNullOrUndefined(propColMap)) {
             return null;
         }
@@ -38,7 +39,7 @@ export class EntityCache {
     }
 
     public getColumnInfos(entity: string): ColumnInfo[] {
-        const propColMap = this.cache[entity];
+        const propColMap = this.columnCache[entity];
         if (util.isNullOrUndefined(propColMap)) {
             return [];
         }
@@ -49,5 +50,28 @@ export class EntityCache {
             }
         }
         return result;
+    }
+
+    public cacheProperty(entity: string, property: string) {
+        let propArray = this.propCache[entity];
+        if (util.isNullOrUndefined(propArray)) {
+            propArray = [];
+            propArray.push(property);
+            this.propCache[entity] = propArray;
+        } else {
+            const index = propArray.indexOf(property);
+            if (index < 0) {
+                propArray.push(property);
+            }
+        }
+    }
+
+    public getProperties(entity: string): string[] {
+        const propArray = this.propCache[entity];
+        if (util.isNullOrUndefined(propArray)) {
+            return [];
+        } else {
+            return propArray;
+        }
     }
 }

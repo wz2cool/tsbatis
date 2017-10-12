@@ -11,7 +11,7 @@ describe(".EntityCache", () => {
             colInfo.entity = "entity";
             colInfo.property = "prop";
             colInfo.table = "table";
-            cache.addColumnInfo(colInfo);
+            cache.cacheColumnInfo(colInfo);
 
             const result = cache.getColumnInfo("entity", "prop");
             expect(colInfo.columnName).to.be.eq(result.columnName);
@@ -26,14 +26,14 @@ describe(".EntityCache", () => {
             colInfo1.entity = "entity";
             colInfo1.property = "prop";
             colInfo1.table = "table";
-            cache.addColumnInfo(colInfo1);
+            cache.cacheColumnInfo(colInfo1);
 
             const colInfo2 = new ColumnInfo();
             colInfo2.columnName = "colName2";
             colInfo2.entity = "entity";
             colInfo2.property = "prop2";
             colInfo2.table = "table";
-            cache.addColumnInfo(colInfo2);
+            cache.cacheColumnInfo(colInfo2);
 
             const result = cache.getColumnInfos("entity");
             expect(2).to.be.eq(result.length);
@@ -47,7 +47,7 @@ describe(".EntityCache", () => {
         colInfo.entity = "entity";
         colInfo.property = "prop";
         colInfo.table = "table";
-        cache.addColumnInfo(colInfo);
+        cache.cacheColumnInfo(colInfo);
 
         it("should return null, if entity not found", () => {
             const result = cache.getColumnInfo("notfoundentity", "name");
@@ -67,7 +67,7 @@ describe(".EntityCache", () => {
         colInfo.entity = "entity";
         colInfo.property = "prop";
         colInfo.table = "table";
-        cache.addColumnInfo(colInfo);
+        cache.cacheColumnInfo(colInfo);
 
         it("should return empty array, if entity not found", () => {
             const result = cache.getColumnInfos("notfoundentity");

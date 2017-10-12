@@ -17,6 +17,7 @@ export function column(name: string, table: string) {
         columnInfo.columnName = name;
         columnInfo.table = table;
         columnInfo.property = propertyKey;
-        cache.addColumnInfo(columnInfo);
+        cache.cacheColumnInfo(columnInfo);
+        cache.cacheProperty(entity, propertyKey);
     };
 }
