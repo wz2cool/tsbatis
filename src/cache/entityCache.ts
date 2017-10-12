@@ -37,6 +37,12 @@ export class EntityCache {
         if (util.isNullOrUndefined(propertyMap)) {
             return null;
         }
-        this.cache.keys
+        const result: ColumnInfo[] = [];
+        for (const key in propertyMap) {
+            if (propertyMap.hasOwnProperty(key)) {
+                result.push(propertyMap[key]);
+            }
+        }
+        return result;
     }
 }
