@@ -4,24 +4,24 @@ import { FilterCondition, FilterDescriptor, FilterOperator } from "./model";
 import { MappingProvider } from "./provider";
 
 export class User {
-    @column("id", "user")
-    public id: number;
-    @column("user_name", "user")
-    public userName: string;
-    @column("email", "user")
-    public email: string;
-    @column("mobile", "user")
-    public mobile: string;
-    @column("password", "user")
-    public password: string;
-    @column("display_name", "user")
-    public displayName: string;
-    @column("create_time", "user")
-    public createTime: Date;
-    @column("update_time", "user")
-    public updateTime: Date;
-    @column("deleted", "user")
-    public deleted: number;
+  @column("id", "user")
+  public id: number = 1;
+  @column("user_name", "user")
+  public userName: string;
+  @column("email", "user")
+  public email: string;
+  @column("mobile", "user")
+  public mobile: string;
+  @column("password", "user")
+  public password: string;
+  @column("display_name", "user")
+  public displayName: string;
+  @column("create_time", "user")
+  public createTime: Date;
+  @column("update_time", "user")
+  public updateTime: Date;
+  @column("deleted", "user")
+  public deleted: number;
 }
 
 const json = `[
@@ -53,7 +53,7 @@ const dbJson = JSON.parse(json);
 
 const entities: User[] = [];
 dbJson.forEach((element) => {
-    entities.push(new User());
+  entities.push(new User());
 });
 
 const entities2 = MappingProvider.toEntities<User>(dbJson, new User());

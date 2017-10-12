@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import * as util from "util";
 import { EntityCache } from "../cache/entityCache";
 import { ColumnInfo } from "../model/columnInfo";
@@ -19,5 +20,8 @@ export function column(name: string, table: string) {
         columnInfo.property = propertyKey;
         cache.cacheColumnInfo(columnInfo);
         cache.cacheProperty(entity, propertyKey);
+
+        const types = Reflect.getMetadata("design:properties", target, propertyKey);
+        console.log(types);
     };
 }

@@ -21,12 +21,15 @@
     "url": "https://github.com/wz2cool/sql-dynamic-query/issues"
   },
   "homepage": "https://github.com/wz2cool/sql-dynamic-query#readme",
-  "dependencies": {},
+  "dependencies": {
+    "reflect-metadata": "^0.1.10"
+  },
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/lodash": "^4.14.77",
     "@types/mocha": "^2.2.43",
     "@types/node": "^6.0.89",
+    "@types/reflect-metadata": "^0.0.5",
     "@types/typescript": "^2.0.0",
     "chai": "^4.1.2",
     "coveralls": "^2.13.2",
