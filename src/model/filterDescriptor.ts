@@ -5,18 +5,18 @@ export class FilterDescriptor<T> {
     public condition: FilterCondition = FilterCondition.AND;
     public operator: FilterOperator = FilterOperator.EQUAL;
     public propertyPath: string = null;
-    public value: boolean | number | string = null;
+    public value: any = null;
 
     constructor();
     constructor(
         condition: FilterCondition,
         getPropFun: (t: T) => any,
         operator: FilterOperator,
-        value: boolean | number | string);
+        value: any);
     constructor(
         getPropFun: (t: T) => any,
         operator: FilterOperator,
-        value: boolean | number | string);
+        value: any);
     constructor(a1?, a2?, a3?, a4?) {
         if (!a1) {
             // empty contructor
