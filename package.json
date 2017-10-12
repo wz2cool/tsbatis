@@ -1,5 +1,5 @@
 {
-  "name": "node-sql-dynamic-query",
+  "name": "sql-dynamic-query",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wz2cool/node-sql-dynamic-query.git"
+    "url": "git+https://github.com/wz2cool/sql-dynamic-query.git"
   },
   "author": "wz2cool",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wz2cool/node-sql-dynamic-query/issues"
+    "url": "https://github.com/wz2cool/sql-dynamic-query/issues"
   },
-  "homepage": "https://github.com/wz2cool/node-sql-dynamic-query#readme",
+  "homepage": "https://github.com/wz2cool/sql-dynamic-query#readme",
   "dependencies": {
     "lodash": "^4.17.4"
   },
