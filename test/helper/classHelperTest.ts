@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { CommonsHelper } from "../../src/helper/commonsHelper";
+import { ClassHelper } from "../../src/helper";
 
 describe(".commonsHelper", () => {
     describe("#getPropertyName", () => {
@@ -9,13 +9,13 @@ describe(".commonsHelper", () => {
         }
 
         it("should return 'name'", () => {
-            const result = CommonsHelper.getPropertyName<Studnet>((s) => s.name);
+            const result = ClassHelper.getPropertyName<Studnet>((s) => s.name);
             console.log("result:  ", result);
             expect("name").to.be.eq(result);
         });
 
         it("should return empty if input is null or empty", () => {
-            const result = CommonsHelper.getPropertyName<Studnet>(null);
+            const result = ClassHelper.getPropertyName<Studnet>(null);
             expect("").to.be.eq(result);
         });
     });

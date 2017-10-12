@@ -1,4 +1,4 @@
-import { CommonsHelper } from "./../helper/commonsHelper";
+import { ClassHelper } from "./../helper";
 import { FilterCondition } from "./filterCondition";
 import { FilterOperator } from "./filterOperator";
 
@@ -17,7 +17,7 @@ export class FilterDescriptor<T> {
             this.condition = condition;
         }
         if (getPropFun) {
-            this.propertyPath = CommonsHelper.getPropertyName<T>(getPropFun);
+            this.propertyPath = ClassHelper.getPropertyName<T>(getPropFun);
         }
         if (operator) {
             this.operator = operator;

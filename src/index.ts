@@ -1,4 +1,4 @@
-import { CommonsHelper } from "./helper/commonsHelper";
+import { ClassHelper } from "./helper";
 
 export class User {
     public id: number;
@@ -12,5 +12,5 @@ export class User {
     public deleted: number;
 }
 
-const result = CommonsHelper.getPropertyName<User>((u) => u.userName);
+const result = ClassHelper.getPropertyName<User>((u) => u.userName);
 console.log(result);
