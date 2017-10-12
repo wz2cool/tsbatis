@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ClassHelper } from "../../src/helper";
 
-describe(".commonsHelper", () => {
+describe(".ClassHelper", () => {
     describe("#getPropertyName", () => {
         class Studnet {
             public name: string;
