@@ -3,6 +3,7 @@ import { column } from "./decorator";
 import { FilterCondition, FilterDescriptor, FilterOperator } from "./model";
 
 export class User {
+
     @column("id", "user")
     public id: number;
     public userName: string;
@@ -20,3 +21,5 @@ console.log("hello");
 const filter = new FilterDescriptor<User>((u) => u.displayName, FilterOperator.EQUAL, "frank");
 
 console.log(filter);
+
+const v = User.getEntityName<User>((o) => o.id);

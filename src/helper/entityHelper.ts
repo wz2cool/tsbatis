@@ -1,6 +1,8 @@
+import * as util from "util";
+
 export class EntityHelper {
     public static getPropertyName<T>(fn: (o: T) => any): string {
-        if (!fn) {
+        if (util.isNullOrUndefined(fn)) {
             return "";
         }
 
@@ -13,6 +15,18 @@ export class EntityHelper {
         } else {
             return "";
         }
+    }
+
+    public static getEntityName<T>(o: T): string {
+        if (util.isNullOrUndefined(o)) {
+            return "";
+        }
+
+        if (o.constructor && (o.constructor as any).name) {
+            return (o.constructor as any).name;
+        }
+
+        return "";
     }
 
     private constructor() {
