@@ -56,6 +56,6 @@ dbJson.forEach((element) => {
   entities.push(new User());
 });
 
-const entities2 = MappingProvider.toEntities<User>(dbJson, new User());
+const entities2 = MappingProvider.toEntities<User>(new User(), dbJson);
 const v = entities2[0].createTime.getDate();
 console.log(entities2);

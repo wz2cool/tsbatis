@@ -1,3 +1,4 @@
+import * as lodash from "lodash";
 import "reflect-metadata";
 import * as util from "util";
 import { EntityCache } from "../cache/entityCache";
@@ -20,6 +21,7 @@ export function column(name: string, table: string) {
         columnInfo.table = table;
         columnInfo.property = propertyKey;
         columnInfo.propertyType = propertyType.name;
+        columnInfo.underscoreProperty = lodash.snakeCase(propertyKey);
         cache.cacheColumnInfo(columnInfo);
         cache.cacheProperty(entity, propertyKey);
     };
