@@ -18,5 +18,10 @@ describe(".ClassHelper", () => {
             const result = ClassHelper.getPropertyName<Studnet>(null);
             expect("").to.be.eq(result);
         });
+
+        it("should return empty if expression is not valid", () => {
+            const result = ClassHelper.getPropertyName<Studnet>((s) => 1);
+            expect("").to.be.eq(result);
+        });
     });
 });

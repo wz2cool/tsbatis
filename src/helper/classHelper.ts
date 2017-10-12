@@ -10,7 +10,11 @@ export class ClassHelper {
         const regexp = new RegExp(`^function.+return\\s+\\w+\.(\\w+)\\s*;\\s*}$`);
         const match = regexp.exec(expression);
 
-        return (match && match.length === 2) ? match[1] : "";
+        if (match && match.length === 2) {
+            return match[1];
+        } else {
+            return "";
+        }
     }
 
     private constructor() {
