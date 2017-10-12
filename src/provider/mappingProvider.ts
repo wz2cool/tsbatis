@@ -7,7 +7,7 @@ export class MappingProvider {
         const result: T[] = [];
         dbObjs.forEach((dbObj) => {
             // tslint:disable-next-line:new-parens
-            const cloneObj: T = new (entityExample.constructor() as any);
+            const cloneObj: T = new (entityExample.constructor as any)();
             const entityObj = MappingProvider.toEntity(dbObj, cloneObj);
             result.push(entityObj);
         });
