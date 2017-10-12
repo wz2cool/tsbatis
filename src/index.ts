@@ -1,3 +1,4 @@
+import { EntityCache } from "./cache";
 import { column } from "./decorator";
 import { ClassHelper } from "./helper";
 import { FilterCondition, FilterDescriptor, FilterOperator } from "./model";
@@ -15,8 +16,6 @@ export class User {
     public deleted: number;
 }
 
-const result = ClassHelper.getPropertyName<User>((u) => u.userName);
-console.log(result);
+console.log(EntityCache.getInstance().getColumnInfos("User"));
 
-const filter = new FilterDescriptor<User>(
-    (u) => u.displayName, FilterOperator.EQUAL, 1);
+console.log("hello");

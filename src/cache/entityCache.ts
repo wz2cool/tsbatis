@@ -13,34 +13,34 @@ export class EntityCache {
     }
 
     public addColumnInfo(columnInfo: ColumnInfo): void {
-        let propertyMap = this.cache[columnInfo.entity];
-        if (util.isNullOrUndefined(propertyMap)) {
-            propertyMap = {};
-            propertyMap[columnInfo.property] = columnInfo;
-            this.cache[columnInfo.entity] = propertyMap;
+        let propColMap = this.cache[columnInfo.entity];
+        if (util.isNullOrUndefined(propColMap)) {
+            propColMap = {};
+            propColMap[columnInfo.property] = columnInfo;
+            this.cache[columnInfo.entity] = propColMap;
         } else {
-            propertyMap[columnInfo.property] = columnInfo;
+            propColMap[columnInfo.property] = columnInfo;
         }
     }
 
     public getColumnInfo(entity: string, property: string): ColumnInfo {
-        const propertyMap = this.cache[entity];
-        if (util.isNullOrUndefined(propertyMap)) {
+        const propColMap = this.cache[entity];
+        if (util.isNullOrUndefined(propColMap)) {
             return null;
         }
 
-        return propertyMap[property];
+        return propColMap[property];
     }
 
     public getColumnInfos(entity: string): ColumnInfo[] {
-        const propertyMap = this.cache[entity];
-        if (util.isNullOrUndefined(propertyMap)) {
+        const propColMap = this.cache[entity];
+        if (util.isNullOrUndefined(propColMap)) {
             return null;
         }
         const result: ColumnInfo[] = [];
-        for (const key in propertyMap) {
-            if (propertyMap.hasOwnProperty(key)) {
-                result.push(propertyMap[key]);
+        for (const key in propColMap) {
+            if (propColMap.hasOwnProperty(key)) {
+                result.push(propColMap[key]);
             }
         }
         return result;
