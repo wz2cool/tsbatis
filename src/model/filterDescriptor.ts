@@ -1,3 +1,4 @@
+import * as util from "util";
 import { ClassHelper } from "./../helper";
 import { FilterCondition, FilterOperator } from "./index";
 
