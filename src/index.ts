@@ -3,7 +3,7 @@ import { column } from "./decorator";
 import { FilterCondition, FilterDescriptor, FilterOperator } from "./model";
 import { MappingProvider } from "./provider";
 
-export class User {
+class User {
   @column("id", "user")
   public id: number = 1;
   @column("user_name", "user")

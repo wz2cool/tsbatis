@@ -21,7 +21,7 @@ export function column(name: string, table: string) {
         cache.cacheColumnInfo(columnInfo);
         cache.cacheProperty(entity, propertyKey);
 
-        const types = Reflect.getMetadata("design:properties", target, propertyKey);
+        const types = Reflect.getMetadata("design:type", target, propertyKey);
         console.log(types);
     };
 }
