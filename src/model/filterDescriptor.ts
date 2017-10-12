@@ -1,29 +1,42 @@
 import { ClassHelper } from "./../helper";
-import { FilterCondition } from "./filterCondition";
-import { FilterOperator } from "./filterOperator";
+import { FilterCondition, FilterOperator } from "./index";
 
 export class FilterDescriptor<T> {
     public condition: FilterCondition = FilterCondition.AND;
     public operator: FilterOperator = FilterOperator.EQUAL;
-    public propertyPath: string;
-    public value: boolean | number | string;
+    public propertyPath: string = null;
+    public value: boolean | number | string = null;
 
-    public constructor(
-        condition?: FilterCondition,
-        getPropFun?: (t: T) => any,
-        operator?: FilterOperator,
-        value?: boolean | number | string) {
-        if (condition) {
-            this.condition = condition;
+    constructor();
+    constructor(
+        condition: FilterCondition,
+        getPropFun: (t: T) => any,
+        operator: FilterOperator,
+        value: boolean | number | string);
+    constructor(
+        getPropFun: (t: T) => any,
+        operator: FilterOperator,
+        value: boolean | number | string);
+    constructor(a1?, a2?, a3?, a4?) {
+        if (!a1) {
+            // empty contructor
+            return;
         }
-        if (getPropFun) {
-            this.propertyPath = ClassHelper.getPropertyName<T>(getPropFun);
+
+        if (typeof a1 === "number") {
+            // conditon
+            this.condition = a1;
+            this.propertyPath = ClassHelper.getPropertyName<T>(a2);
+            this.operator = a3;
+            this.value = a4;
+            return;
         }
-        if (operator) {
-            this.operator = operator;
-        }
-        if (value) {
-            this.value = value;
+
+        if (typeof a1 === "function") {
+            this.propertyPath = ClassHelper.getPropertyName<T>(a1);
+            this.operator = a2;
+            this.value = a3;
+            return;
         }
     }
 }

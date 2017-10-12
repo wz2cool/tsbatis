@@ -1,4 +1,5 @@
 import { ClassHelper } from "./helper";
+import { FilterCondition, FilterDescriptor, FilterOperator } from "./model";
 
 export class User {
     public id: number;
@@ -14,3 +15,6 @@ export class User {
 
 const result = ClassHelper.getPropertyName<User>((u) => u.userName);
 console.log(result);
+
+const filter = new FilterDescriptor<User>(
+    (u) => u.displayName, FilterOperator.EQUAL, 1);
