@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { EntityCache } from "../../src/cache";
+import { EntityCache } from "../../src/cache/entityCache";
 import { ColumnInfo } from "../../src/model/columnInfo";
 
 describe(".EntityCache", () => {

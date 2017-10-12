@@ -1,5 +1,5 @@
 import * as util from "util";
-import { EntityCache } from "../cache";
+import { EntityCache } from "../cache/entityCache";
 import { ColumnInfo } from "../model/columnInfo";
 
 export function column(name: string, table: string) {
