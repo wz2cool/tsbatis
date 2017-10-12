@@ -50,12 +50,12 @@ describe(".EntityCache", () => {
         cache.addColumnInfo(colInfo);
 
         it("should return null, if entity not found", () => {
-            const result = this.cache.getColumnInfo("notfoundentity", "name");
+            const result = cache.getColumnInfo("notfoundentity", "name");
             expect(null).to.be.eq(result);
         });
 
         it("should return null, if prop not found", () => {
-            const result = this.cache.getColumnInfo("entity", "notfoundProp");
+            const result = cache.getColumnInfo("entity", "notfoundProp");
             expect(null).to.be.eq(result);
         });
     });
@@ -70,12 +70,12 @@ describe(".EntityCache", () => {
         cache.addColumnInfo(colInfo);
 
         it("should return empty array, if entity not found", () => {
-            const result = this.cache.getColumnInfos("notfoundentity");
+            const result = cache.getColumnInfos("notfoundentity");
             expect(0).to.be.eq(result.length);
         });
 
         it("should return columns", () => {
-            const result = this.cache.getColumnInfos("entity");
+            const result = cache.getColumnInfos("entity");
             expect(true).to.be.eq(result.length > 0);
         });
     });
