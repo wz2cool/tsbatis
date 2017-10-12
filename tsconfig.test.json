@@ -4,7 +4,9 @@
         "target": "es5",
         "declaration": true,
         "noImplicitAny": false,
-        "outDir": "./dist"
+        "sourceMap": true,
+        "outDir": "./dist",
+        "experimentalDecorators": true
     },
     "include": [
         "src/**/*",

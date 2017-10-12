@@ -14,7 +14,7 @@ export class ClassHelper {
             return "";
         }
     }
-    
+
     private constructor() {
         // hide constructor.
     }

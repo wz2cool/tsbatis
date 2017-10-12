@@ -6,22 +6,17 @@ export function column(name: string, table: string) {
     const cache = EntityCache.getInstance();
 
     return (target: any, propertyKey: string) => {
-        const entityConstructor = target.constructor;
-
-        if (util.isNullOrUndefined(entityConstructor)) {
-            console.error("cannot find entity from target.constructor");
-            return;
+        if (util.isNullOrUndefined(target)
+            || util.isNullOrUndefined(target.constructor)
+            || util.isNullOrUndefined(target.constructor.name)) {
+            throw new Error("cannot find entity from target.constructor.name");
         }
-        const entity = entityConstructor.name;
-        if (util.isNullOrUndefined(entity)) {
-            console.error("cannot find entity from entityConstructor.name");
-            return;
-        }
-
+        const entity = target.constructor.name;
         const columnInfo = new ColumnInfo();
+        columnInfo.entity = entity;
         columnInfo.columnName = name;
         columnInfo.table = table;
         columnInfo.property = propertyKey;
-        cache.add(entity, columnInfo);
+        cache.addColumnInfo(columnInfo);
     };
 }

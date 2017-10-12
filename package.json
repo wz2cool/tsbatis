@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/wz2cool/sql-dynamic-query#readme",
   "dependencies": {
-    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
