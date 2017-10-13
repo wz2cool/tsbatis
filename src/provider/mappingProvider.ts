@@ -1,4 +1,3 @@
-import * as util from "util";
 import { EntityCache } from "../cache";
 import { EntityHelper } from "../helper";
 
@@ -18,7 +17,7 @@ export class MappingProvider {
         const properties = cache.getProperties(entityName);
         properties.forEach((prop) => {
             const columnInfo = cache.getColumnInfo(entityName, prop);
-            if (!util.isNullOrUndefined(columnInfo)
+            if (columnInfo
                 && dbObj.hasOwnProperty(columnInfo.underscoreProperty)) {
                 const dbValue = dbObj[columnInfo.underscoreProperty];
                 const propertType = columnInfo.propertyType;

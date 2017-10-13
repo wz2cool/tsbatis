@@ -1,4 +1,3 @@
-import * as util from "util";
 import { EntityHelper } from "./../helper";
 import { FilterCondition, FilterOperator } from "./index";
 

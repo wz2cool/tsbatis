@@ -1,6 +1,5 @@
 import * as lodash from "lodash";
 import "reflect-metadata";
-import * as util from "util";
 import { EntityCache } from "../cache/entityCache";
 import { ColumnInfo } from "../model/columnInfo";
 
@@ -8,9 +7,9 @@ export function column(name: string, table: string) {
     const cache = EntityCache.getInstance();
 
     return (target: any, propertyKey: string) => {
-        if (util.isNullOrUndefined(target)
-            || util.isNullOrUndefined(target.constructor)
-            || util.isNullOrUndefined(target.constructor.name)) {
+        if (!target
+            || !target.constructor
+            || !target.constructor.name) {
             throw new Error("cannot find entity from target.constructor.name");
         }
         const entity = target.constructor.name;
