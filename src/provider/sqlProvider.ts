@@ -1,7 +1,7 @@
 import * as lodash from "lodash";
 import { EntityCache } from "../cache";
 import { CommonHelper, EntityHelper } from "../helper";
-import { ColumnInfo, SqlParam } from "../model";
+import { ColumnInfo, FilterDescriptor, SqlParam } from "../model";
 
 export class SqlProvider {
     public static getInsert<T>(o: T, selective: boolean): SqlParam {
@@ -118,7 +118,9 @@ export class SqlProvider {
         return sqlParam;
     }
 
-    public static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
+    public static getSelectByDynamicQuery<T>()
+
+    private static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
         return lodash.map(columnInfos, (s) => s.columnName + " AS " + s.underscoreProperty).join(", ");
     }
 

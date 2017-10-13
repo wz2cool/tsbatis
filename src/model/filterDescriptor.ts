@@ -1,8 +1,7 @@
 import { EntityHelper } from "./../helper";
-import { FilterCondition, FilterOperator } from "./index";
+import { FilterCondition, FilterDescriptorBase, FilterOperator } from "./index";
 
-export class FilterDescriptor<T> {
-    public condition: FilterCondition = FilterCondition.AND;
+export class FilterDescriptor<T> extends FilterDescriptorBase {
     public operator: FilterOperator = FilterOperator.EQUAL;
     public propertyPath: string = null;
     public value: any = null;
@@ -18,6 +17,7 @@ export class FilterDescriptor<T> {
         operator: FilterOperator,
         value: any);
     constructor(a1?, a2?, a3?, a4?) {
+        super();
         if (!a1) {
             // empty contructor
             return;
