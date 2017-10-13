@@ -45,4 +45,13 @@ export abstract class BaseMapper<T> {
             if (cb) { cb(e); }
         }
     }
+
+    public selectByKey(o: T, cb: (err: any, result?: any) => void): void {
+        try {
+            const sqlParam = SqlProvider.getSelectByKey<T>(o);
+            this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
+        } catch (e) {
+            if (cb) { cb(e); }
+        }
+    }
 }
