@@ -89,11 +89,33 @@ export class SqlProvider {
         return sqlParam;
     }
 
-    public static getSelectByKey<T>(o: T, columnInfos: ColumnInfo[]): SqlParam {
+    public static getSelectByKey<T>(o: T): SqlParam {
+        const entityName = EntityHelper.getEntityName(o);
+        if (CommonHelper.isNullOrUndefined(entityName)) {
+            throw new Error("cannot find entity, please set @column to entity!");
+        }
+
+        const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
+        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
+            throw new Error("cannot find entity, please set @column to entity!");
+        }
+
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
         }
+
+        const tableName = columnInfos[0].table;
+        const columnAsStr = SqlProvider.getColumnsAsUnderscoreProps(columnInfos);
+        const whereStr = keyColumn.columnName + " = ?";
+        const sqlExpression = `SELECT ${columnAsStr} FROM ${tableName}  WHERE ${whereStr}`;
+        const params: any[] = [];
+        params.push(o[keyColumn.property]);
+
+        const sqlParam = new SqlParam();
+        sqlParam.sqlExpression = sqlExpression;
+        sqlParam.params = params;
+        return sqlParam;
     }
 
     public static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
