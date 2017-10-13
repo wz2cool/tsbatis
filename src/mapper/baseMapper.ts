@@ -42,7 +42,7 @@ export abstract class BaseMapper<T> {
             const sqlParam = SqlProvider.getUpdateByKey<T>(o, true);
             this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
         } catch (e) {
-            cb(e);
+            if (cb) { cb(e); }
         }
     }
 }
