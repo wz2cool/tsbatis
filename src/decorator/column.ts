@@ -4,7 +4,7 @@ import { EntityCache } from "../cache/entityCache";
 import { CommonHelper } from "../helper";
 import { ColumnInfo } from "../model/columnInfo";
 
-export function column(name: string, table: string) {
+export function column(name: string, table: string, isKey: boolean = false) {
     const cache = EntityCache.getInstance();
 
     return (target: any, propertyKey: string) => {
@@ -16,6 +16,7 @@ export function column(name: string, table: string) {
         const entity = target.constructor.name;
         const propertyType = Reflect.getMetadata("design:type", target, propertyKey);
         const columnInfo = new ColumnInfo();
+        columnInfo.isKey = isKey;
         columnInfo.entity = entity;
         columnInfo.columnName = name;
         columnInfo.table = table;
@@ -23,6 +24,5 @@ export function column(name: string, table: string) {
         columnInfo.propertyType = propertyType.name;
         columnInfo.underscoreProperty = lodash.snakeCase(propertyKey);
         cache.cacheColumnInfo(columnInfo);
-        cache.cacheProperty(entity, propertyKey);
     };
 }

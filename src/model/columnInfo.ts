@@ -1,4 +1,5 @@
 export class ColumnInfo {
+    public isKey: boolean;
     public property: string;
     public underscoreProperty: string;
     public propertyType: string;

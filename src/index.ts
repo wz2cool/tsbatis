@@ -4,7 +4,7 @@ import { FilterCondition, FilterDescriptor, FilterOperator } from "./model";
 import { MappingProvider } from "./provider";
 
 class User {
-  @column("id", "user")
+  @column("id", "user", true)
   public id: number = 1;
   @column("user_name", "user")
   public userName: string;
@@ -59,3 +59,7 @@ dbJson.forEach((element) => {
 const entities2 = MappingProvider.toEntities<User>(User, dbJson);
 const v = entities2[0].createTime.getDate();
 console.log(entities2);
+
+const value = EntityCache.getInstance().getColumnInfos("User");
+
+console.log(value);

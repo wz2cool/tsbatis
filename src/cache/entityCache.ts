@@ -1,3 +1,4 @@
+import * as lodash from "lodash";
 import { CommonHelper } from "../helper";
 import { ColumnInfo } from "../model/columnInfo";
 
@@ -8,7 +9,6 @@ export class EntityCache {
 
     private static instance = new EntityCache();
     private readonly columnCache: { [entity: string]: { [property: string]: ColumnInfo } } = {};
-    private readonly propCache: { [entity: string]: string[] } = {};
     private constructor() {
         // hide constructor
     }
@@ -43,35 +43,15 @@ export class EntityCache {
         if (CommonHelper.isNullOrUndefined(propColMap)) {
             return [];
         }
-        const result: ColumnInfo[] = [];
-        for (const key in propColMap) {
-            if (propColMap.hasOwnProperty(key)) {
-                result.push(propColMap[key]);
-            }
-        }
-        return result;
-    }
-
-    public cacheProperty(entity: string, property: string) {
-        let propArray = this.propCache[entity];
-        if (CommonHelper.isNullOrUndefined(propArray)) {
-            propArray = [];
-            propArray.push(property);
-            this.propCache[entity] = propArray;
-        } else {
-            const index = propArray.indexOf(property);
-            if (index < 0) {
-                propArray.push(property);
-            }
-        }
+        return lodash.values(propColMap);
     }
 
     public getProperties(entity: string): string[] {
-        const propArray = this.propCache[entity];
-        if (CommonHelper.isNullOrUndefined(propArray)) {
+        const columnInfos = this.getColumnInfos(entity);
+        if (CommonHelper.isNullOrUndefined(columnInfos)
+            || columnInfos.length === 0) {
             return [];
-        } else {
-            return propArray;
         }
+        return lodash.map(columnInfos, (c) => c.property);
     }
 }
