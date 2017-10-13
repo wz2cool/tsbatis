@@ -28,8 +28,7 @@ export class MappingProvider {
             case "number":
                 return Number(dbValue);
             case "string":
-                // fix “” issue
-                return String(dbValue).replace("“”", "");
+                return String(dbValue);
             case "boolean":
                 return Boolean(dbValue);
             case "date":
