@@ -1,31 +1,25 @@
+import * as lodash from "lodash";
 import { EntityCache } from "../cache";
 import { EntityHelper } from "../helper";
 
 export class MappingProvider {
-    public static toEntities<T>(entity: { new(): T }, dbObjs: any[]): T[] {
-        const result: T[] = [];
-        dbObjs.forEach((dbObj) => {
-            const entityObj = MappingProvider.toEntity(new entity(), dbObj);
-            result.push(entityObj);
-        });
-        return result;
-    }
-
-    private static toEntity<T>(entityExample: T, dbObj: any): T {
+    public static toEntities<T>(entityClass: { new(): T }, dbObjs: any[]): T[] {
         const cache = EntityCache.getInstance();
-        const entityName = EntityHelper.getEntityName(entityExample);
-        const properties = cache.getProperties(entityName);
-        properties.forEach((prop) => {
-            const columnInfo = cache.getColumnInfo(entityName, prop);
-            if (columnInfo
-                && dbObj.hasOwnProperty(columnInfo.underscoreProperty)) {
-                const dbValue = dbObj[columnInfo.underscoreProperty];
-                const propertType = columnInfo.propertyType;
-                const propertValue = MappingProvider.toPropertyValue(dbValue, propertType);
-                entityExample[prop] = propertValue;
-            }
+        const entityName = EntityHelper.getEntityName(entityClass);
+        const columnInfos = cache.getColumnInfos(entityName);
+
+        return lodash.map(dbObjs, (dbObj) => {
+            const entityObj = new entityClass();
+            columnInfos.forEach((colInfo) => {
+                if (dbObj.hasOwnProperty(colInfo.underscoreProperty)) {
+                    const dbValue = dbObj[colInfo.underscoreProperty];
+                    const propertyType = colInfo.propertyType;
+                    const propertyValue = MappingProvider.toPropertyValue(dbValue, propertyType);
+                    entityObj[colInfo.property] = propertyValue;
+                }
+            });
+            return entityObj;
         });
-        return entityExample;
     }
 
     private static toPropertyValue(dbValue: any, propertyType: string): any {

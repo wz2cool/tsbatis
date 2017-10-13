@@ -1,6 +1,8 @@
+import { CommonHelper } from "../helper";
+
 export class EntityHelper {
     public static getPropertyName<T>(fn: (o: T) => any): string {
-        if (!fn) {
+        if (CommonHelper.isNullOrUndefined(fn)) {
             return "";
         }
 
@@ -15,13 +17,14 @@ export class EntityHelper {
         }
     }
 
-    public static getEntityName<T>(o: T): string {
-        if (!o) {
+    public static getEntityName<T>(o: T | { new(): T }): string {
+        if (CommonHelper.isNullOrUndefined(o)) {
             return "";
         }
 
-        if (o.constructor && (o.constructor as any).name) {
-            return (o.constructor as any).name;
+        const testObj = typeof o === "function" ? new o() : o;
+        if (testObj.constructor && (testObj.constructor as any).name) {
+            return (testObj.constructor as any).name;
         }
 
         return "";
