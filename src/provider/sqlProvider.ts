@@ -7,6 +7,10 @@ export class SqlProvider {
         const placeHolders: string[] = [];
         const params: any[] = [];
         columnInfos.forEach((colInfo) => {
+            if (!colInfo.insertable) {
+                return;
+            }
+
             const propValue = o[colInfo.property];
             if (selective && CommonHelper.isNullOrUndefined(propValue)) {
                 return;
