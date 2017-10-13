@@ -21,6 +21,7 @@ export function column(
         const propertyType = Reflect.getMetadata("design:type", target, propertyKey);
         const columnInfo = new ColumnInfo();
         columnInfo.isKey = isKey;
+        columnInfo.insertable = insertable;
         columnInfo.entity = entity;
         columnInfo.columnName = name;
         columnInfo.table = table;

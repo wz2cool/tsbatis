@@ -22,7 +22,7 @@ export class SqlProvider {
         });
 
         const tableName = columnInfos[0].table;
-        const columnNamesStr = columnInfos.join(",");
+        const columnNamesStr = columnNames.join(",");
         const placeholderStr = placeHolders.join(",");
         const sqlExpression = `INSERT INTO ${tableName} (${columnNamesStr}) VALUES (${placeholderStr})`;
 
