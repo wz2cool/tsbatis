@@ -2,7 +2,7 @@ import * as lodash from "lodash";
 import { EntityCache } from "../cache";
 import { CommonHelper, EntityHelper } from "../helper";
 import { ISqlQuery } from "../model";
-import { MappingProvider } from "../provider";
+import { SqlProvider } from "../provider";
 
 export abstract class BaseMapper<T> {
     protected readonly cache: EntityCache = EntityCache.getInstance();
@@ -11,37 +11,37 @@ export abstract class BaseMapper<T> {
         this.sqlQuery = sqlQuery;
     }
 
-    public async insert(o: T): Promise<any> {
+    public insert(o: T, cb: (err: any, result?: any) => void): void {
         const entityName = EntityHelper.getEntityName(o);
         if (CommonHelper.isNullOrUndefined(entityName)) {
-            return new Promise<any>((reslove, reject) => {
-                reject(new Error("cannot find entity, please set @column to entity!"));
-            });
+            if (cb) { cb(new Error("cannot find entity, please set @column to entity!")); }
+            return;
         }
 
         const columnInfos = this.cache.getColumnInfos(entityName);
         if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
-            return new Promise<any>((reslove, reject) => {
-                reject(new Error("cannot find entity, please set @column to entity!"));
-            });
+            if (cb) { cb(new Error("cannot find entity, please set @column to entity!")); }
+            return;
         }
 
-        const columnNames = lodash.map(columnInfos, (c) => c.columnName);
-        const placeHolders = lodash.map(columnInfos, (c) => "?");
+        const sqlParam = SqlProvider.getInsert<T>(o, columnInfos, false);
+        this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
+    }
 
-        const tableName = columnInfos[0].table;
-        const columnNamesStr = columnInfos.join(",");
-        const placeholderStr = placeHolders.join(",");
-        const sqlExpression = `INSERT INTO ${tableName} (${columnNamesStr}) VALUES (${placeholderStr})`;
+    public insertSelective(o: T, cb: (err: any, result?: any) => void): void {
+        const entityName = EntityHelper.getEntityName(o);
+        if (CommonHelper.isNullOrUndefined(entityName)) {
+            if (cb) { cb(new Error("cannot find entity, please set @column to entity!")); }
+            return;
+        }
 
-        const params = lodash.map(columnInfos, (c) => {
-            const propValue = o[c.property];
-            return CommonHelper.isNullOrUndefined(propValue) ? null : propValue;
-        });
+        const columnInfos = this.cache.getColumnInfos(entityName);
+        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
+            if (cb) { cb(new Error("cannot find entity, please set @column to entity!")); }
+            return;
+        }
 
-        const result = await this.sqlQuery.query(sqlExpression, params);
-        return new Promise<any>((reslove) => {
-            reslove(result);
-        });
+        const sqlParam = SqlProvider.getInsert<T>(o, columnInfos, true);
+        this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
     }
 }

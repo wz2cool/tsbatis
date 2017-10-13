@@ -1,4 +1,5 @@
 import { MappingProvider } from "./mappingProvider";
 import { QueryProvider } from "./queryProvider";
+import { SqlProvider } from "./sqlProvider";
 
-export { MappingProvider, QueryProvider };
+export { MappingProvider, QueryProvider, SqlProvider };
