@@ -1,15 +1,16 @@
 import * as lodash from "lodash";
 import "reflect-metadata";
 import { EntityCache } from "../cache/entityCache";
+import { CommonHelper } from "../helper";
 import { ColumnInfo } from "../model/columnInfo";
 
 export function column(name: string, table: string) {
     const cache = EntityCache.getInstance();
 
     return (target: any, propertyKey: string) => {
-        if (!target
-            || !target.constructor
-            || !target.constructor.name) {
+        if (CommonHelper.isNullOrUndefined(target)
+            || CommonHelper.isNullOrUndefined(target.constructor)
+            || CommonHelper.isNullOrUndefined(target.constructor.name)) {
             throw new Error("cannot find entity from target.constructor.name");
         }
         const entity = target.constructor.name;

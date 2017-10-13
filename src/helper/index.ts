@@ -1,3 +1,4 @@
+import { CommonHelper } from "./commonHelper";
 import { EntityHelper } from "./entityHelper";
 
-export { EntityHelper };
+export { CommonHelper, EntityHelper };
