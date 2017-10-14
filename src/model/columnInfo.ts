@@ -8,4 +8,8 @@ export class ColumnInfo {
     // column name
     public columnName: string;
     public table: string;
+
+    public getQueryColumn() {
+        return this.table + "." + this.columnName;
+    }
 }
