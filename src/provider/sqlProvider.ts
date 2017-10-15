@@ -127,7 +127,7 @@ export class SqlProvider {
         return sqlParam;
     }
 
-    public static getSelectByDynamicQuery<T>(query: DynamicQuery): SqlParam {
+    public static getSelectByDynamicQuery<T>(query: DynamicQuery<T>): SqlParam {
 
     }
 

@@ -8,6 +8,8 @@ export class FilterHelper {
 
     }
 
+    private static verifyFilterValue()
+
     private static getEqualExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         const filterValue = filterValues[0];
