@@ -66,18 +66,15 @@ export class FilterHelper {
     }
 
     private static processSingleFilterValue(operator: FilterOperator, filterValue: any): any {
-        let result: any;
         if (operator === FilterOperator.START_WITH) {
-            result = (CommonHelper.isNullOrUndefined(filterValue) ? "" : filterValue) + "%";
+            return (CommonHelper.isNullOrUndefined(filterValue) ? "" : filterValue) + "%";
         } else if (operator === FilterOperator.END_WITH) {
-            result = "%" + (CommonHelper.isNullOrUndefined(filterValue) ? "" : filterValue);
-            // tslint:disable-next-line:prefer-conditional-expression
+            return "%" + (CommonHelper.isNullOrUndefined(filterValue) ? "" : filterValue);
         } else if (operator === FilterOperator.CONTAINS) {
-            result = "%" + (CommonHelper.isNullOrUndefined(filterValue) ? "" : filterValue) + "%";
+            return "%" + (CommonHelper.isNullOrUndefined(filterValue) ? "" : filterValue) + "%";
         } else {
-            result = CommonHelper.isNullOrUndefined(filterValue) ? null : filterValue;
+            return CommonHelper.isNullOrUndefined(filterValue) ? null : filterValue;
         }
-        return result;
     }
 
     private static getEqualExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
