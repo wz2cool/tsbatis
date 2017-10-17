@@ -18,16 +18,7 @@ import {
 
 export class SqlProvider {
     public static getInsert<T extends ITableEntity>(o: T, selective: boolean): SqlParam {
-        const entityName = EntityHelper.getEntityName(o);
-        if (CommonHelper.isNullOrUndefined(entityName)) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
-        const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
-        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
+        const columnInfos = SqlProvider.getColumnInfos(o);
         const columnNames: string[] = [];
         const placeholders: string[] = [];
         const params: any[] = [];
@@ -57,17 +48,43 @@ export class SqlProvider {
         return sqlParam;
     }
 
+    public static getDeleteByKey<T extends ITableEntity>(o: T): SqlParam {
+        const columnInfos = SqlProvider.getColumnInfos(o);
+        const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
+        if (CommonHelper.isNullOrUndefined(keyColumn)) {
+            throw new Error("cannot find key, please set iskey property in @column.");
+        }
+
+        const tableName = o.getTableName();
+        const keyColumnName = keyColumn.columnName;
+        const keyColumnValue = o[keyColumn.property];
+        const expression = `DELETE FROM ${tableName} WHERE ${keyColumnName} = ?`;
+        const sqlParam = new SqlParam();
+        sqlParam.sqlExpression = expression;
+        sqlParam.params.push(keyColumnValue);
+        return sqlParam;
+
+    }
+
+    public static getDeleteByDynamicQuery<T extends ITableEntity>(
+        entityClass: { new(): T }, query: DynamicQuery<T>): SqlParam {
+        const columnInfos = SqlProvider.getColumnInfos(new entityClass());
+        const table = (new entityClass()).getTableName();
+        const filters = query.filters;
+        const filterSqlParam = SqlProvider.getFilterExpression<T>(entityClass, filters);
+        let expression = `DELETE FROM ${table}`;
+        expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
+            ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
+        let params: any = [];
+        params = params.concat(filterSqlParam.params);
+        const result = new SqlParam();
+        result.sqlExpression = expression;
+        result.params = params;
+        return result;
+    }
+
     public static getUpdateByKey<T extends ITableEntity>(o: T, selective: boolean): SqlParam {
-        const entityName = EntityHelper.getEntityName(o);
-        if (CommonHelper.isNullOrUndefined(entityName)) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
-        const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
-        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
+        const columnInfos = SqlProvider.getColumnInfos(o);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
@@ -103,16 +120,7 @@ export class SqlProvider {
     }
 
     public static getSelectByKey<T extends ITableEntity>(o: T): SqlParam {
-        const entityName = EntityHelper.getEntityName(o);
-        if (CommonHelper.isNullOrUndefined(entityName)) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
-        const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
-        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
+        const columnInfos = SqlProvider.getColumnInfos(o);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
@@ -132,18 +140,9 @@ export class SqlProvider {
     }
 
     // only for table entity
-    public static selectByDynamicQuery<T extends ITableEntity>(
+    public static getSelectByDynamicQuery<T extends ITableEntity>(
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlParam {
-        const entityName = EntityHelper.getEntityName(entityClass);
-        if (CommonHelper.isNullOrUndefined(entityName)) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
-        const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
-        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
+        const columnInfos = SqlProvider.getColumnInfos(new entityClass());
         const table = (new entityClass()).getTableName();
         const filters = query.filters;
         const sorts = query.sorts;
@@ -152,9 +151,9 @@ export class SqlProvider {
         const columnStr = SqlProvider.getColumnsAsUnderscoreProps(columnInfos);
         let expression = `SELECT ${columnStr} FROM ${table}`;
         expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
-            ? expression : `${expression} ${filterSqlParam.sqlExpression}`;
+            ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
         expression = CommonHelper.isBlank(sortSqlParam.sqlExpression)
-            ? expression : `${expression} ${sortSqlParam.sqlExpression}`;
+            ? expression : `${expression} ORDER BY ${sortSqlParam.sqlExpression}`;
         let params: any = [];
         params = params.concat(filterSqlParam.params);
         params = params.concat(sortSqlParam.params);
@@ -226,6 +225,20 @@ export class SqlProvider {
         }
 
         return SqlProvider.getColumnsAsUnderscoreProps(columnInfos);
+    }
+
+    private static getColumnInfos<T>(o: T): ColumnInfo[] {
+        const entityName = EntityHelper.getEntityName(o);
+        if (CommonHelper.isNullOrUndefined(entityName)) {
+            throw new Error("cannot find entity, please set @column to entity!");
+        }
+
+        const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
+        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
+            throw new Error("cannot find entity, please set @column to entity!");
+        }
+
+        return columnInfos;
     }
 
     //#region filter
