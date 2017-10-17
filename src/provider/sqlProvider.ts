@@ -147,8 +147,8 @@ export class SqlProvider {
         const table = (new entityClass()).getTableName();
         const filters = query.filters;
         const sorts = query.sorts;
-        const filterSqlParam = SqlProvider.toFilterExpression<T>(entityClass, filters);
-        const sortSqlParam = SqlProvider.toSortExpression<T>(entityClass, sorts);
+        const filterSqlParam = SqlProvider.getFilterExpression<T>(entityClass, filters);
+        const sortSqlParam = SqlProvider.getSortExpression<T>(entityClass, sorts);
         const columnStr = SqlProvider.getColumnsAsUnderscoreProps(columnInfos);
         let expression = `SELECT ${columnStr} FROM ${table}`;
         expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
@@ -165,8 +165,7 @@ export class SqlProvider {
         return result;
     }
 
-    //#region filter
-    private static toFilterExpression<T>(
+    public static getFilterExpression<T>(
         entityClass: { new(): T }, filters: FilterDescriptorBase[]): SqlParam {
         if (CommonHelper.isNullOrUndefined(filters) || filters.length === 0) {
             return new SqlParam();
@@ -175,7 +174,7 @@ export class SqlProvider {
         let expression: string;
         let params: any[] = [];
         filters.forEach((filter) => {
-            const sqlParam = SqlProvider.toFilterExpressionByFilterBase(entityClass, filter);
+            const sqlParam = SqlProvider.getFilterExpressionByFilterBase(entityClass, filter);
             if (sqlParam != null && CommonHelper.isNotBlank(sqlParam.sqlExpression)) {
                 params = params.concat(sqlParam.params);
 
@@ -188,22 +187,62 @@ export class SqlProvider {
         const result = new SqlParam();
         result.sqlExpression = expression;
         result.params = result.params.concat(params);
+        return result;
     }
 
-    private static toFilterExpressionByFilterBase<T>(
+    public static getSortExpression<T>(entityClass: { new(): T }, sorts: SortDescriptorBase[]): SqlParam {
+        if (CommonHelper.isNullOrUndefined(sorts) || sorts.length === 0) {
+            return new SqlParam();
+        }
+
+        let expression: string;
+        let params: any[] = [];
+        sorts.forEach((sort) => {
+            const sqlParam = SqlProvider.getSortExpressionBySortBase(entityClass, sort);
+            if (sqlParam != null && CommonHelper.isNotBlank(sqlParam.sqlExpression)) {
+                params = params.concat(sqlParam.params);
+
+                expression = CommonHelper.isBlank(expression)
+                    ? sqlParam.sqlExpression
+                    : `${expression} ${sqlParam.sqlExpression}`;
+            }
+        });
+
+        const result = new SqlParam();
+        result.sqlExpression = expression;
+        result.params = result.params.concat(params);
+        return result;
+    }
+
+    public static getColumnsExpression<T>(entityClass: { new(): T }): string {
+        const entityName = EntityHelper.getEntityName(entityClass);
+        if (CommonHelper.isNullOrUndefined(entityName)) {
+            throw new Error("cannot find entity, please set @column to entity!");
+        }
+
+        const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
+        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
+            throw new Error("cannot find entity, please set @column to entity!");
+        }
+
+        return SqlProvider.getColumnsAsUnderscoreProps(columnInfos);
+    }
+
+    //#region filter
+    private static getFilterExpressionByFilterBase<T>(
         entityClass: { new(): T }, filter: FilterDescriptorBase): SqlParam {
         if (filter instanceof FilterDescriptor) {
-            return SqlProvider.toFilterExpressionByFilterDescriptor(entityClass, filter);
+            return SqlProvider.getFilterExpressionByFilterDescriptor(entityClass, filter);
         } else if (filter instanceof FilterGroupDescriptor) {
-            return SqlProvider.toFilterExpression(entityClass, filter.filters);
+            return SqlProvider.getFilterExpression(entityClass, filter.filters);
         } else if (filter instanceof CustomFilterDescriptor) {
-            return SqlProvider.toFilterExpressionByCustomFilterDescriptor(entityClass, filter);
+            return SqlProvider.getFilterExpressionByCustomFilterDescriptor(entityClass, filter);
         } else {
             return new SqlParam();
         }
     }
 
-    private static toFilterExpressionByFilterDescriptor<T>(
+    private static getFilterExpressionByFilterDescriptor<T>(
         entityClass: { new(): T }, filter: FilterDescriptor<T>): SqlParam {
         const value = filter.value;
         const operator = filter.operator;
@@ -213,7 +252,7 @@ export class SqlProvider {
         return FilterHelper.getFilterExpression(operator, columnInfo, value);
     }
 
-    private static toFilterExpressionByCustomFilterDescriptor<T>(
+    private static getFilterExpressionByCustomFilterDescriptor<T>(
         entityClass: { new(): T }, filter: CustomFilterDescriptor): SqlParam {
         const sqlParam = new SqlParam();
         let expression = CommonHelper.isBlank(filter.expression) ? "" : filter.expression;
@@ -227,26 +266,18 @@ export class SqlProvider {
     //#endregion
 
     //#region sort
-    private static toSortExpression<T>(entityClass: { new(): T }, sorts: SortDescriptorBase[]): SqlParam {
-        if (CommonHelper.isNullOrUndefined(sorts) || sorts.length === 0) {
-            return new SqlParam();
-        }
-
-        return null;
-    }
-
-    private static toSortExpressionBySortBase<T>(
+    private static getSortExpressionBySortBase<T>(
         entityClass: { new(): T }, sort: SortDescriptorBase): SqlParam {
         if (sort instanceof SortDescriptor) {
-            return SqlProvider.toSortExpressionBySortDescriptor(entityClass, sort);
+            return SqlProvider.getSortExpressionBySortDescriptor(entityClass, sort);
         } else if (sort instanceof CustomSortDescriptor) {
-            return SqlProvider.toSortExpressionByCustomSortDescriptor(entityClass, sort);
+            return SqlProvider.getSortExpressionByCustomSortDescriptor(entityClass, sort);
         } else {
             return new SqlParam();
         }
     }
 
-    private static toSortExpressionBySortDescriptor<T>(
+    private static getSortExpressionBySortDescriptor<T>(
         entityClass: { new(): T }, sort: SortDescriptor<T>): SqlParam {
         const entity = EntityHelper.getEntityName(entityClass);
         const columnInfo = EntityCache.getInstance().getColumnInfo(entity, sort.propertyPath);
@@ -258,7 +289,7 @@ export class SqlProvider {
         return sqlParam;
     }
 
-    private static toSortExpressionByCustomSortDescriptor<T>(
+    private static getSortExpressionByCustomSortDescriptor<T>(
         entityClass: { new(): T }, sort: CustomSortDescriptor): SqlParam {
         const sqlParam = new SqlParam();
         let expression = CommonHelper.isBlank(sort.expression) ? "" : sort.expression;
