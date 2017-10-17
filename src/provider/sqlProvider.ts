@@ -132,7 +132,7 @@ export class SqlProvider {
     }
 
     // only for table entity
-    public static getSelectByDynamicQuery<T extends ITableEntity>(
+    public static selectByDynamicQuery<T extends ITableEntity>(
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlParam {
         const entityName = EntityHelper.getEntityName(entityClass);
         if (CommonHelper.isNullOrUndefined(entityName)) {
