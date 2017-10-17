@@ -1,22 +1,27 @@
 import { column } from "../decorator";
+import { ITableEntity } from "../model";
 
-export class User {
-    @column("id", "user", false)
+export class User implements ITableEntity {
+    @column("id", true, false)
     public id: number;
-    @column("user_name", "user")
+    @column("user_name")
     public userName: string;
-    @column("email", "user")
+    @column("email")
     public email: string;
-    @column("mobile", "user")
+    @column("mobile")
     public mobile: string;
-    @column("password", "user")
+    @column("password")
     public password: string;
-    @column("display_name", "user")
+    @column("display_name")
     public displayName: string;
-    @column("create_time", "user")
+    @column("create_time")
     public createTime: Date;
-    @column("update_time", "user")
+    @column("update_time")
     public updateTime: Date;
-    @column("deleted", "user")
+    @column("deleted")
     public deleted: number;
+
+    public getTableName(): string {
+        return "user";
+    }
 }
