@@ -1,4 +1,4 @@
-import { CommonHelper } from "../helper";
+import { CommonHelper } from "./commonHelper";
 
 export class EntityHelper {
     public static getPropertyName<T>(fn: (o: T) => any): string {

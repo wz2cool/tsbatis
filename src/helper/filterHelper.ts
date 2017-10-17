@@ -1,6 +1,6 @@
 import * as lodash from "lodash";
 import { ColumnInfo, FilterDescriptor, FilterOperator, SqlParam } from "../model";
-import { CommonHelper } from "./index";
+import { CommonHelper } from "./commonHelper";
 
 export class FilterHelper {
     public static getFilterExpression(operator: FilterOperator, columnInfo: ColumnInfo, filterValue: any): SqlParam {

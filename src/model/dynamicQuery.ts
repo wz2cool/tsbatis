@@ -1,4 +1,5 @@
-import { FilterDescriptorBase, SortDescriptorBase } from "./index";
+import { FilterDescriptorBase } from "./filterDescriptorBase";
+import { SortDescriptorBase } from "./sortDescritporBase";
 
 export class DynamicQuery<T> {
     public static createIntance<T>(): DynamicQuery<T> {
