@@ -23,11 +23,7 @@ export class EntityHelper {
         }
 
         const testObj = typeof o === "function" ? new o() : o;
-        if (testObj.constructor && (testObj.constructor as any).name) {
-            return (testObj.constructor as any).name;
-        }
-
-        return "";
+        return (testObj.constructor as any).name;
     }
 
     private constructor() {
