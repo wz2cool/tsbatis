@@ -1,11 +1,13 @@
 import * as lodash from "lodash";
 import { EntityCache } from "../cache";
-import { CommonHelper, EntityHelper } from "../helper";
+import { CommonHelper, EntityHelper, FilterHelper } from "../helper";
 import {
     ColumnInfo,
+    CustomFilterDescriptor,
     DynamicQuery,
     FilterDescriptor,
     FilterDescriptorBase,
+    FilterGroupDescriptor,
     SortDescriptor,
     SortDescriptorBase,
     SortDirection,
@@ -127,8 +129,66 @@ export class SqlProvider {
         return sqlParam;
     }
 
-    public static getSelectByDynamicQuery<T>(query: DynamicQuery<T>): SqlParam {
+    // public static getSelectByDynamicQuery<T>(query: DynamicQuery<T>): SqlParam {
 
+    // }
+
+    private static toFilterExpression<T>(
+        entityClass: { new(): T }, filters: FilterDescriptorBase[]): SqlParam {
+        if (CommonHelper.isNullOrUndefined(filters) || filters.length === 0) {
+            return new SqlParam();
+        }
+
+        let expression: string;
+        let params: any[] = [];
+        filters.forEach((filter) => {
+            const sqlParam = SqlProvider.toFilterExpressionByFilterDescriptorBase(entityClass, filter);
+            if (sqlParam != null && CommonHelper.isNotBlank(sqlParam.sqlExpression)) {
+                params = params.concat(sqlParam.params);
+
+                expression = CommonHelper.isBlank(expression)
+                    ? sqlParam.sqlExpression
+                    : `${expression} ${filter.condition} ${sqlParam.sqlExpression}`;
+            }
+        });
+
+        const result = new SqlParam();
+        result.sqlExpression = expression;
+        result.params = result.params.concat(params);
+    }
+
+    private static toFilterExpressionByFilterDescriptorBase<T>(
+        entityClass: { new(): T }, filter: FilterDescriptorBase): SqlParam {
+        if (filter instanceof FilterDescriptor) {
+            return SqlProvider.toFilterExpressionByFilterDescriptor(entityClass, filter);
+        } else if (filter instanceof FilterGroupDescriptor) {
+            return SqlProvider.toFilterExpression(entityClass, filter.filters);
+        } else if (filter instanceof CustomFilterDescriptor) {
+            return SqlProvider.toFilterExpressionByCustomFilterDescriptor(entityClass, filter);
+        } else {
+            return new SqlParam();
+        }
+    }
+
+    private static toFilterExpressionByFilterDescriptor<T>(
+        entityClass: { new(): T }, filter: FilterDescriptor<T>): SqlParam {
+        const value = filter.value;
+        const operator = filter.operator;
+        const propertyPath = filter.propertyPath;
+        const entity = EntityHelper.getEntityName(entityClass);
+        const columnInfo = EntityCache.getInstance().getColumnInfo(entity, propertyPath);
+        return FilterHelper.getFilterExpression(operator, columnInfo, value);
+    }
+
+    private static toFilterExpressionByCustomFilterDescriptor<T>(
+        entityClass: { new(): T }, filter: CustomFilterDescriptor): SqlParam {
+        const sqlParam = new SqlParam();
+        let expression = CommonHelper.isBlank(filter.expression) ? "" : filter.expression;
+        for (let i = 0; i < filter.params.length; i++) {
+            expression = expression.replace(`{${i}}`, "?");
+        }
+        sqlParam.params = sqlParam.params.concat(filter.params);
+        return sqlParam;
     }
 
     private static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {

@@ -13,6 +13,11 @@ export class CommonHelper {
         return !CommonHelper.isBlank(value);
     }
 
+    public static isArray(value: any): boolean {
+        const result = value instanceof Array;
+        return result;
+    }
+
     private constructor() {
         // hide constructor
     }
