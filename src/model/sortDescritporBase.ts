@@ -1,8 +1,5 @@
-import { SortDirection } from "./index";
+import { SortDirection } from "./sortDirection";
 
 export abstract class SortDescriptorBase {
     public direction: SortDirection = SortDirection.ASC;
-    constructor(direction: SortDirection) {
-        this.direction = direction;
-    }
 }

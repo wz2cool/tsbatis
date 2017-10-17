@@ -1,11 +1,13 @@
 import { EntityHelper } from "../helper";
-import { SortDescriptorBase, SortDirection } from "./index";
+import { SortDescriptorBase } from "./sortDescritporBase";
+import { SortDirection } from "./sortDirection";
 
 export class SortDescriptor<T> extends SortDescriptorBase {
     public propertyPath: string;
 
     constructor(getPropFun: (t: T) => any, direction: SortDirection = SortDirection.ASC) {
-        super(direction);
+        super();
+        this.direction = direction;
         this.propertyPath = EntityHelper.getPropertyName<T>(getPropFun);
     }
 }

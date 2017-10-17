@@ -1,5 +1,7 @@
 import { EntityHelper } from "./../helper";
-import { FilterCondition, FilterDescriptorBase, FilterOperator } from "./index";
+import { FilterCondition } from "./filterCondition";
+import { FilterDescriptorBase } from "./filterDescriptorBase";
+import { FilterOperator } from "./filterOperator";
 
 export class FilterDescriptor<T> extends FilterDescriptorBase {
     public operator: FilterOperator = FilterOperator.EQUAL;
