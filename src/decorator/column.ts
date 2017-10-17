@@ -6,7 +6,7 @@ import { ColumnInfo } from "../model/columnInfo";
 
 export function column(
     name: string,
-    table: string,
+    table: string = "",
     isKey: boolean = false,
     insertable: boolean = true) {
     const cache = EntityCache.getInstance();

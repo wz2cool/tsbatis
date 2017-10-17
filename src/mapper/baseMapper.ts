@@ -1,10 +1,10 @@
 import * as lodash from "lodash";
 
 import { CommonHelper, EntityHelper } from "../helper";
-import { ISqlQuery } from "../model";
+import { DynamicQuery, ISqlQuery, ITableEntity } from "../model";
 import { SqlProvider } from "../provider";
 
-export abstract class BaseMapper<T> {
+export abstract class BaseMapper<T extends ITableEntity> {
     protected readonly sqlQuery: ISqlQuery;
     constructor(sqlQuery: ISqlQuery) {
         this.sqlQuery = sqlQuery;
@@ -49,6 +49,16 @@ export abstract class BaseMapper<T> {
     public selectByKey(o: T, cb: (err: any, result?: any) => void): void {
         try {
             const sqlParam = SqlProvider.getSelectByKey<T>(o);
+            this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
+        } catch (e) {
+            if (cb) { cb(e); }
+        }
+    }
+
+    public getSelectByDynamicQuery(
+        entityClass: { new(): T }, query: DynamicQuery<T>, cb: (err: any, result?: any) => void): void {
+        try {
+            const sqlParam = SqlProvider.getSelectByDynamicQuery<T>(entityClass, query);
             this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
         } catch (e) {
             if (cb) { cb(e); }

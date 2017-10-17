@@ -1,3 +1,5 @@
+import { CommonHelper } from "../helper";
+
 export class ColumnInfo {
     public isKey: boolean;
     public insertable: boolean;
@@ -10,6 +12,7 @@ export class ColumnInfo {
     public table: string;
 
     public getQueryColumn() {
-        return this.table + "." + this.columnName;
+        return CommonHelper.isBlank(this.table)
+            ? this.columnName : this.table + "." + this.columnName;
     }
 }
