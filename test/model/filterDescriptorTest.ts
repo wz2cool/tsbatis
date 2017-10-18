@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { FilterCondition, FilterDescriptor, FilterOperator } from "../../src/model";
-import { Student } from "./stduent";
+import { Student } from "./student";
 
 describe(".FilterDescriptor", () => {
     describe("#constructor", () => {
