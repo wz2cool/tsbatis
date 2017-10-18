@@ -117,9 +117,34 @@ describe(".FilterHelper", () => {
         columnInfo.entity = "Student";
         columnInfo.property = "name";
         columnInfo.table = "student";
-        it("expression should return expression is 'is null' if value is null", () => {
+        it("expression should return 'is null' if value is null", () => {
             const result = FilterHelper.getFilterExpression(opeartor, columnInfo, null);
             expect("student.name IS NULL").to.be.eq(result.sqlExpression);
+        });
+
+        it("expression should return '[column] = ?' if value is null", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, "frank");
+            expect("student.name = ?").to.be.eq(result.sqlExpression);
+            expect("frank").to.be.eq(result.params[0]);
+        });
+    });
+
+    describe("#getNotEqualExpression", () => {
+        const opeartor = FilterOperator.NOT_EQUAL;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "name";
+        columnInfo.entity = "Student";
+        columnInfo.property = "name";
+        columnInfo.table = "student";
+        it("expression should return 'IS NOT NULL' if value is null", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, null);
+            expect("student.name IS NOT NULL").to.be.eq(result.sqlExpression);
+        });
+
+        it("expression should return '[column] <> ?' if value is null", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, "frank");
+            expect("student.name <> ?").to.be.eq(result.sqlExpression);
+            expect("frank").to.be.eq(result.params[0]);
         });
     });
 });
