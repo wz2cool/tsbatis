@@ -9,7 +9,7 @@ import {
     FilterDescriptor,
     FilterDescriptorBase,
     FilterGroupDescriptor,
-    ITableEntity,
+    TableEntity,
     SortDescriptor,
     SortDescriptorBase,
     SortDirection,
@@ -17,7 +17,7 @@ import {
 } from "../model";
 
 export class SqlProvider {
-    public static getInsert<T extends ITableEntity>(o: T, selective: boolean): SqlParam {
+    public static getInsert<T extends TableEntity>(o: T, selective: boolean): SqlParam {
         const columnInfos = SqlProvider.getColumnInfos(o);
         const columnNames: string[] = [];
         const placeholders: string[] = [];
@@ -48,7 +48,7 @@ export class SqlProvider {
         return sqlParam;
     }
 
-    public static getDeleteByKey<T extends ITableEntity>(o: T): SqlParam {
+    public static getDeleteByKey<T extends TableEntity>(o: T): SqlParam {
         const columnInfos = SqlProvider.getColumnInfos(o);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
@@ -66,7 +66,7 @@ export class SqlProvider {
 
     }
 
-    public static getDeleteByDynamicQuery<T extends ITableEntity>(
+    public static getDeleteByDynamicQuery<T extends TableEntity>(
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlParam {
         const columnInfos = SqlProvider.getColumnInfos(new entityClass());
         const table = (new entityClass()).getTableName();
@@ -83,7 +83,7 @@ export class SqlProvider {
         return result;
     }
 
-    public static getUpdateByKey<T extends ITableEntity>(o: T, selective: boolean): SqlParam {
+    public static getUpdateByKey<T extends TableEntity>(o: T, selective: boolean): SqlParam {
         const columnInfos = SqlProvider.getColumnInfos(o);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
@@ -119,7 +119,7 @@ export class SqlProvider {
         return sqlParam;
     }
 
-    public static getSelectByKey<T extends ITableEntity>(o: T): SqlParam {
+    public static getSelectByKey<T extends TableEntity>(o: T): SqlParam {
         const columnInfos = SqlProvider.getColumnInfos(o);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
@@ -140,7 +140,7 @@ export class SqlProvider {
     }
 
     // only for table entity
-    public static getSelectByDynamicQuery<T extends ITableEntity>(
+    public static getSelectByDynamicQuery<T extends TableEntity>(
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlParam {
         const columnInfos = SqlProvider.getColumnInfos(new entityClass());
         const table = (new entityClass()).getTableName();

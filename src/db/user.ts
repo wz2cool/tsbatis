@@ -1,7 +1,7 @@
 import { column } from "../decorator";
-import { ITableEntity } from "../model";
+import { TableEntity } from "../model";
 
-export class User implements ITableEntity {
+export class User implements TableEntity {
     @column("id", true, false)
     public id: number;
     @column("user_name")

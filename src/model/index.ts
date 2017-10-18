@@ -8,11 +8,11 @@ import { FilterDescriptorBase } from "./filterDescriptorBase";
 import { FilterGroupDescriptor } from "./filterGroupDescriptor";
 import { FilterOperator } from "./filterOperator";
 import { ISqlQuery } from "./iSqlQuery";
-import { ITableEntity } from "./itableEntity";
 import { SortDescriptor } from "./sortDescriptor";
 import { SortDescriptorBase } from "./sortDescritporBase";
 import { SortDirection } from "./sortDirection";
 import { SqlParam } from "./sqlParam";
+import { TableEntity } from "./tableEntity";
 
 export {
     ColumnInfo,
@@ -28,6 +28,6 @@ export {
     SortDescriptorBase,
     SortDirection,
     ISqlQuery,
-    ITableEntity,
+    TableEntity,
     SqlParam,
 };

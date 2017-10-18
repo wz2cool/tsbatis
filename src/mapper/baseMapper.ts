@@ -1,10 +1,10 @@
 import * as lodash from "lodash";
 
 import { CommonHelper, EntityHelper } from "../helper";
-import { DynamicQuery, ISqlQuery, ITableEntity } from "../model";
+import { DynamicQuery, ISqlQuery, TableEntity } from "../model";
 import { SqlProvider } from "../provider";
 
-export abstract class BaseMapper<T extends ITableEntity> {
+export abstract class BaseMapper<T extends TableEntity> {
     protected readonly sqlQuery: ISqlQuery;
     constructor(sqlQuery: ISqlQuery) {
         this.sqlQuery = sqlQuery;
