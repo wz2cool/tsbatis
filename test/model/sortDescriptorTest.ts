@@ -7,7 +7,7 @@ describe(".SortDescriptor", () => {
         it("constructor", () => {
             const sort = new SortDescriptor<Student>((o) => o.age);
             expect(SortDirection.ASC).to.be.eq(sort.direction);
-            expect("name", sort.propertyPath);
+            expect("age").to.be.eq(sort.propertyPath);
         });
     });
 });

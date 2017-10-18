@@ -6,8 +6,12 @@ export class DynamicQuery<T> {
         return new DynamicQuery<T>();
     }
 
-    public filters: FilterDescriptorBase[] = [];
-    public sorts: SortDescriptorBase[] = [];
+    public filters: FilterDescriptorBase[];
+    public sorts: SortDescriptorBase[];
+    constructor() {
+        this.filters = [];
+        this.sorts = [];
+    }
 
     public addFilters(...filters: FilterDescriptorBase[]): DynamicQuery<T> {
         this.filters = this.filters.concat(filters);
