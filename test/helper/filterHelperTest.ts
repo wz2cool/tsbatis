@@ -147,4 +147,97 @@ describe(".FilterHelper", () => {
             expect("frank").to.be.eq(result.params[0]);
         });
     });
+
+    describe("#getLessThanExpression", () => {
+        const opeartor = FilterOperator.LESS_THAN;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "age";
+        columnInfo.entity = "Student";
+        columnInfo.property = "age";
+        columnInfo.table = "student";
+        it("expression should return '[column] < ?'", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, 30);
+            expect("student.age < ?").to.be.eq(result.sqlExpression);
+            expect(30).to.be.eq(result.params[0]);
+        });
+    });
+
+    describe("#getLessThanOrEqualExpression", () => {
+        const opeartor = FilterOperator.LESS_THAN_OR_EQUAL;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "age";
+        columnInfo.entity = "Student";
+        columnInfo.property = "age";
+        columnInfo.table = "student";
+        it("expression should return '[column] <= ?'", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, 30);
+            expect("student.age <= ?").to.be.eq(result.sqlExpression);
+            expect(30).to.be.eq(result.params[0]);
+        });
+    });
+
+    describe("#getGreaterThanOrEqualExpression", () => {
+        const opeartor = FilterOperator.GREATER_THAN_OR_EQUAL;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "age";
+        columnInfo.entity = "Student";
+        columnInfo.property = "age";
+        columnInfo.table = "student";
+        it("expression should return '[column] >= ?'", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, 30);
+            expect("student.age >= ?").to.be.eq(result.sqlExpression);
+            expect(30).to.be.eq(result.params[0]);
+        });
+    });
+
+    describe("#getGreaterThanExpression", () => {
+        const opeartor = FilterOperator.GREATER_THAN;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "age";
+        columnInfo.entity = "Student";
+        columnInfo.property = "age";
+        columnInfo.table = "student";
+        it("expression should return '[column] > ?'", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, 30);
+            expect("student.age > ?").to.be.eq(result.sqlExpression);
+            expect(30).to.be.eq(result.params[0]);
+        });
+    });
+
+    describe("#getLikeExpression", () => {
+        const opeartor = FilterOperator.START_WITH;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "name";
+        columnInfo.entity = "Student";
+        columnInfo.property = "name";
+        columnInfo.table = "student";
+        it("expression should return '[column] > ?'", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, "fra");
+            expect("student.name LIKE ?").to.be.eq(result.sqlExpression);
+            expect("fra%").to.be.eq(result.params[0]);
+        });
+    });
+
+    describe("#getInExpression", () => {
+        const opeartor = FilterOperator.IN;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "age";
+        columnInfo.entity = "Student";
+        columnInfo.property = "age";
+        columnInfo.table = "student";
+        it("expression should return '[column] IN (?, ?, ?)' if array is not empty.", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, [10, 20, 30]);
+            expect("student.age IN (?, ?, ?)").to.be.eq(result.sqlExpression);
+            expect(10).to.be.eq(result.params[0]);
+            expect(20).to.be.eq(result.params[1]);
+            expect(30).to.be.eq(result.params[2]);
+        });
+
+        it("expression should return empty if array is empty.", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, []);
+            console.log("result ", result.sqlExpression);
+            expect("").to.be.eq(result.sqlExpression);
+            expect(0).to.be.eq(result.params.length);
+        });
+    });
 });
