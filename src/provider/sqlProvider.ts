@@ -9,11 +9,11 @@ import {
     FilterDescriptor,
     FilterDescriptorBase,
     FilterGroupDescriptor,
-    TableEntity,
     SortDescriptor,
     SortDescriptorBase,
     SortDirection,
     SqlParam,
+    TableEntity,
 } from "../model";
 
 export class SqlProvider {
