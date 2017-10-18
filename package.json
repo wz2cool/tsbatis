@@ -5,12 +5,13 @@
   "main": "test.js",
   "scripts": {
     "pretest": "tsc -p tsconfig.test.json",
-    "test": "nyc mocha dist/test --recursive",
-    "posttest": "rm -r .nyc_output && copydb",
+    "test": "npm run copydb && nyc mocha dist/test --recursive",
+    "posttest": "npm run removenyc",
     "prepublish": "tsc",
     "cover": "tsc -p tsconfig.test.json && istanbul cover ./node_modules/mocha/bin/_mocha dist/test/**/*Test.js --recursive",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "copydb": "cp ./test/db/sqlite.db ./dist/test/db/"
+    "copydb": "copyfiles -f ./test/db/sqlite.db ./dist/test/db/",
+    "removenyc": "rm -r .nyc_output"
   },
   "repository": {
     "type": "git",
