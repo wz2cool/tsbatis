@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "tsc -p tsconfig.test.json",
     "test": "nyc mocha dist/test --recursive",
-    "posttest": "rm -r .nyc_output",
+    "posttest": "rm -r .nyc_output && cp ./test/db/test.db ./dist/test/db",
     "prepublish": "tsc",
     "cover": "tsc -p tsconfig.test.json && istanbul cover ./node_modules/mocha/bin/_mocha dist/test/**/*Test.js --recursive",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
@@ -23,13 +23,15 @@
   "homepage": "https://github.com/wz2cool/sql-dynamic-query#readme",
   "dependencies": {
     "lodash": "^4.17.4",
-    "reflect-metadata": "^0.1.10"
+    "reflect-metadata": "^0.1.10",
+    "sqlite3": "^3.1.13"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/lodash": "^4.14.77",
     "@types/mocha": "^2.2.43",
     "@types/mysql": "^0.0.34",
+    "@types/node": "^8.0.44",
     "@types/reflect-metadata": "^0.0.5",
     "@types/sqlite3": "^3.1.1",
     "@types/typescript": "^2.0.0",
