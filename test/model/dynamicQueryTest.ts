@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import {
+    CustomSortDescriptor,
     DynamicQuery,
     FilterCondition,
     FilterDescriptor,
@@ -28,7 +29,8 @@ describe(".dynanmicQuery", () => {
     describe("#addSorts", () => {
         it("add sort", () => {
             const sort =
-                new SortDescriptor<Student>((s) => s.name);
+                new CustomSortDescriptor();
+            sort.expression = "test";
 
             const query = DynamicQuery
                 .createIntance<Student>()
