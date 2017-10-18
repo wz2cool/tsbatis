@@ -79,4 +79,23 @@ describe(".EntityCache", () => {
             expect(true).to.be.eq(result.length > 0);
         });
     });
+
+    describe("#getProperties", () => {
+        const cache = EntityCache.getInstance();
+        const colInfo = new ColumnInfo();
+        colInfo.columnName = "colName";
+        colInfo.entity = "entity";
+        colInfo.property = "prop";
+        colInfo.table = "table";
+        cache.cacheColumnInfo(colInfo);
+
+        it("should return ['prop'], if entity exists", () => {
+            const result = cache.getProperties("entity");
+            expect("prop").to.be.eq(result[0]);
+        });
+        it("should return [], if entity does not exist", () => {
+            const result = cache.getProperties("notFoundEntity");
+            expect(0).to.be.eq(result.length);
+        });
+    });
 });
