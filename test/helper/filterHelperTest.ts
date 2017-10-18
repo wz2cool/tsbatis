@@ -278,20 +278,4 @@ describe(".FilterHelper", () => {
             expect(20).to.be.eq(result.params[1]);
         });
     });
-
-    describe("#getFilterExpression", () => {
-        const opeartor = null;
-        const columnInfo = new ColumnInfo();
-        columnInfo.columnName = "age";
-        columnInfo.entity = "Student";
-        columnInfo.property = "age";
-        columnInfo.table = "student";
-        it("should throw error if operator is null", () => {
-            function test() {
-                const result = FilterHelper.getFilterExpression(opeartor, columnInfo, [10, 20]);
-            }
-
-            expect(test).to.be.throw(TypeError);
-        });
-    });
 });

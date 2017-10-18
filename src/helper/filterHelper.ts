@@ -6,8 +6,6 @@ export class FilterHelper {
     public static getFilterExpression(operator: FilterOperator, columnInfo: ColumnInfo, filterValue: any): SqlParam {
         const filterValues = FilterHelper.getFilterValues(operator, filterValue);
         switch (operator) {
-            case FilterOperator.EQUAL:
-                return FilterHelper.getEqualExpression(columnInfo, filterValues);
             case FilterOperator.NOT_EQUAL:
                 return FilterHelper.getNotEqualExpression(columnInfo, filterValues);
             case FilterOperator.LESS_THAN:
@@ -29,7 +27,7 @@ export class FilterHelper {
             case FilterOperator.BETWEEN:
                 return FilterHelper.getBetweenExpression(columnInfo, filterValues);
             default:
-                throw new TypeError(`"not support operator: ${operator}`);
+                return FilterHelper.getEqualExpression(columnInfo, filterValues);
         }
     }
 
