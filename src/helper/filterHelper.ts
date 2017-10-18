@@ -25,7 +25,7 @@ export class FilterHelper {
             case FilterOperator.IN:
                 return FilterHelper.getInExpression(columnInfo, filterValues);
             case FilterOperator.NOT_IN:
-                return FilterHelper.getNotEqualExpression(columnInfo, filterValues);
+                return FilterHelper.getNotInExpression(columnInfo, filterValues);
             case FilterOperator.BETWEEN:
                 return FilterHelper.getBetweenExpression(columnInfo, filterValues);
             default:

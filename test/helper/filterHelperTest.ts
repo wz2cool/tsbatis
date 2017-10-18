@@ -240,4 +240,28 @@ describe(".FilterHelper", () => {
             expect(0).to.be.eq(result.params.length);
         });
     });
+
+    describe("#getInExpression", () => {
+        const opeartor = FilterOperator.NOT_IN;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "age";
+        columnInfo.entity = "Student";
+        columnInfo.property = "age";
+        columnInfo.table = "student";
+        it("expression should return '[column] NOT IN (?, ?, ?)' if array is not empty.", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, [10, 20, 30]);
+            expect("student.age NOT IN (?, ?, ?)").to.be.eq(result.sqlExpression);
+            expect(10).to.be.eq(result.params[0]);
+            expect(20).to.be.eq(result.params[1]);
+            expect(30).to.be.eq(result.params[2]);
+        });
+
+        it("expression should return empty if array is empty.", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, []);
+            console.log("result ", result.sqlExpression);
+            expect("").to.be.eq(result.sqlExpression);
+            expect(0).to.be.eq(result.params.length);
+        });
+    });
+
 });
