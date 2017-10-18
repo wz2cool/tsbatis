@@ -40,13 +40,26 @@ describe(".dbBaseTest", () => {
                 }
             });
 
-            db.all("select seq from sqlite_sequence where name=?", "users", (err, row) => {
+            db.each("select seq from sqlite_sequence where name=?", "users", (err, row) => {
                 if (err) {
                     done(err);
                     return;
                 } else {
-                    console.log(row);
-                    done();
+                    db.each("select * from users where id =? ", row.seq, (err1, row1) => {
+                        if (err) {
+                            done(err);
+                            return;
+                        } else {
+                            console.log(row1);
+                            if (row1.username === newUser.username && row1.password === newUser.password) {
+                                done();
+                                return;
+                            } else {
+                                done(row1);
+                                return;
+                            }
+                        }
+                    });
                 }
             });
         });
