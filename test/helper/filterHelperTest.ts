@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { FilterHelper } from "../../src/helper";
-import { FilterOperator } from "../../src/model";
+import { ColumnInfo, FilterOperator } from "../../src/model";
 
 describe(".FilterHelper", () => {
     describe("#processSingleFilterValue", () => {
@@ -34,12 +34,12 @@ describe(".FilterHelper", () => {
             expect("%%").to.be.eq(result);
         });
 
-        it("shoud return null if opeartor is equal and value is null", () => {
+        it("should return null if opeartor is equal and value is null", () => {
             const result = (FilterHelper as any).processSingleFilterValue(FilterOperator.EQUAL, null);
             expect(null).to.be.eq(result);
         });
 
-        it("shoud return value if opeartor is equal and value is not null", () => {
+        it("should return value if opeartor is equal and value is not null", () => {
             const result = (FilterHelper as any).processSingleFilterValue(FilterOperator.EQUAL, 1);
             expect(1).to.be.eq(result);
         });
@@ -107,6 +107,19 @@ describe(".FilterHelper", () => {
         it("should return [1] if operator is 'EQUAL' and value is 1 ", () => {
             const result = (FilterHelper as any).getFilterValues(FilterOperator.EQUAL, 1);
             expect(1).to.be.eq(result[0]);
+        });
+    });
+
+    describe("#getEqualExpression", () => {
+        const opeartor = FilterOperator.EQUAL;
+        const columnInfo = new ColumnInfo();
+        columnInfo.columnName = "name";
+        columnInfo.entity = "Student";
+        columnInfo.property = "name";
+        columnInfo.table = "student";
+        it("expression should return expression is 'is null' if value is null", () => {
+            const result = FilterHelper.getFilterExpression(opeartor, columnInfo, null);
+            expect("student.name IS NULL").to.be.eq(result.sqlExpression);
         });
     });
 });

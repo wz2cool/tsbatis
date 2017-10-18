@@ -77,7 +77,7 @@ export class FilterHelper {
         }
     }
 
-    private static getEqualExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         const filterValue = filterValues[0];
         if (CommonHelper.isNullOrUndefined(filterValue)) {
@@ -89,7 +89,7 @@ export class FilterHelper {
         return sqlParam;
     }
 
-    private static getNotEqualExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getNotEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         const filterValue = filterValues[0];
         if (CommonHelper.isNullOrUndefined(filterValue)) {
@@ -101,42 +101,42 @@ export class FilterHelper {
         return sqlParam;
     }
 
-    private static getLessThanExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getLessThanExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " < ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getLessThanOrEqualExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getLessThanOrEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " <= ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getGreaterThanOrEqualExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getGreaterThanOrEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " >= ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getGreaterThanExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getGreaterThanExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " > ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getLikeExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getLikeExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " LIKE ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getInExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getInExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         if (filterValues.length > 0) {
             const placeholderStr = lodash.map(filterValues, (f) => "?").join(", ");
@@ -146,7 +146,7 @@ export class FilterHelper {
         return sqlParam;
     }
 
-    private static getNotInExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getNotInExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         if (filterValues.length > 0) {
             const placeholderStr = lodash.map(filterValues, (f) => "?").join(", ");
@@ -156,7 +156,7 @@ export class FilterHelper {
         return sqlParam;
     }
 
-    private static getBetweenExpression(columnInfo: ColumnInfo, ...filterValues: any[]): SqlParam {
+    private static getBetweenExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
         const sqlParam = new SqlParam();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + ` BETWEEN ? AND ?`;
         sqlParam.params = sqlParam.params.concat(filterValues);
