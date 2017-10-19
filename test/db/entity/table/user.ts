@@ -1,5 +1,5 @@
-import { column } from "../../../src/decorator";
-import { TableEntity } from "../../../src/model";
+import { column } from "../../../../src/decorator";
+import { TableEntity } from "../../../../src/model";
 
 export class User extends TableEntity {
     @column("id", true, false)

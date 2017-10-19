@@ -2,7 +2,6 @@ import * as sqlite3 from "sqlite3";
 import { CommonHelper } from "../../../src/helper";
 import { DynamicQuery, TableEntity } from "../../../src/model";
 import { MappingProvider, SqlProvider } from "../../../src/provider";
-import { User } from "../entity/user";
 import { BaseDao } from "./baseDao";
 
 export abstract class BaseTableDao<T extends TableEntity> extends BaseDao<T> {
