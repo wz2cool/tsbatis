@@ -3,11 +3,11 @@ import { CommonHelper } from "../../../src/helper";
 import { DynamicQuery, TableEntity } from "../../../src/model";
 import { MappingProvider, SqlProvider } from "../../../src/provider";
 import { User } from "../entity/user";
+import { BaseDao } from "./baseDao";
 
-export class BaseTableDao<T extends TableEntity> {
-    protected readonly db: sqlite3.Database;
+export abstract class BaseTableDao<T extends TableEntity> extends BaseDao<T> {
     constructor(db: sqlite3.Database) {
-        this.db = db;
+        super(db);
     }
     public insert(o: T): Promise<number> {
         return this.insertAndReturnId(o, false);
@@ -18,40 +18,23 @@ export class BaseTableDao<T extends TableEntity> {
     }
 
     public deleteByKey(o: T): Promise<void> {
-        const deleteTemplate = SqlProvider.getDeleteByKey<T>(o);
-        return this.dbRun(deleteTemplate.sqlExpression, deleteTemplate.params);
+        return this.dbRun(SqlProvider.getDeleteByKey<T>(o));
     }
 
     public deleteByDynamicQuery(entityClass: { new(): T }, dynamicQuery: DynamicQuery<T>): Promise<void> {
-        const deleteTemplate = SqlProvider.getDeleteByDynamicQuery(entityClass, dynamicQuery);
-        return this.dbRun(deleteTemplate.sqlExpression, deleteTemplate.params);
+        return this.dbRun(SqlProvider.getDeleteByDynamicQuery(entityClass, dynamicQuery));
     }
 
     public updateByKey(o: T): Promise<void> {
-        const updateTemplate = SqlProvider.getUpdateByKey<T>(o, false);
-        return this.dbRun(updateTemplate.sqlExpression, updateTemplate.params);
+        return this.dbRun(SqlProvider.getUpdateByKey<T>(o, false));
     }
 
     public updateSeletiveByKey(o: T): Promise<void> {
-        const updateTemplate = SqlProvider.getUpdateByKey<T>(o, true);
-        return this.dbRun(updateTemplate.sqlExpression, updateTemplate.params);
+        return this.dbRun(SqlProvider.getUpdateByKey<T>(o, true));
     }
 
     public selectByKey(o: T): Promise<T[]> {
-        return new Promise<T[]>((resolve, reject) => {
-            const updateTemplate = SqlProvider.getSelectByKey<T>(o);
-            this.db.all(updateTemplate.sqlExpression, updateTemplate.params, (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    if (CommonHelper.isArray(result)) {
-                        resolve(MappingProvider.toEntities<T>(o, result));
-                    } else {
-                        reject(new Error(`cannot resolve result: ${result}`));
-                    }
-                }
-            });
-        });
+        return this.dbAll(o, SqlProvider.getSelectByKey<T>(o));
     }
 
     // for sqlite
@@ -81,23 +64,6 @@ export class BaseTableDao<T extends TableEntity> {
 
     // insert and return id;
     private insertInternal(o: T, selective: boolean): Promise<void> {
-        const insertTemplate = SqlProvider.getInsert<T>(o, selective);
-        return this.dbRun(insertTemplate.sqlExpression, insertTemplate.params);
-    }
-
-    private dbRun(sql: string, params: any[]): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            this.db.run(sql, params, (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
-        });
-    }
-
-    private dbAll(sql: string, params: any[]): Promise<T[]> {
-
+        return this.dbRun(SqlProvider.getInsert<T>(o, selective));
     }
 }
