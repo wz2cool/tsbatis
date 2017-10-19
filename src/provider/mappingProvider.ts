@@ -1,9 +1,10 @@
 import * as lodash from "lodash";
 import { EntityCache } from "../cache";
 import { EntityHelper } from "../helper";
+import { Entity } from "../model";
 
 export class MappingProvider {
-    public static toEntities<T>(entity: T | { new(): T }, dbObjs: any[]): T[] {
+    public static toEntities<T extends Entity>(entity: T | { new(): T }, dbObjs: any[]): T[] {
         const cache = EntityCache.getInstance();
         const entityName = EntityHelper.getEntityName(entity);
         const columnInfos = cache.getColumnInfos(entityName);
@@ -11,28 +12,37 @@ export class MappingProvider {
         return lodash.map(dbObjs, (dbObj) => {
             const entityObj = EntityHelper.createObject<T>(entity);
             columnInfos.forEach((colInfo) => {
-                if (dbObj.hasOwnProperty(colInfo.underscoreProperty)) {
-                    const dbValue = dbObj[colInfo.underscoreProperty];
-                    const propertyType = colInfo.propertyType;
-                    const propertyValue = MappingProvider.toPropertyValue(dbValue, propertyType);
-                    entityObj[colInfo.property] = propertyValue;
-                }
+                const dbValue = dbObj[colInfo.underscoreProperty];
+                const propertyType = colInfo.propertyType;
+                const propertyValue = MappingProvider.toPropertyValue(dbValue, propertyType);
+                entityObj[colInfo.property] = propertyValue;
             });
             return entityObj;
         });
     }
 
     private static toPropertyValue(dbValue: any, propertyType: string): any {
-        const usePropType = propertyType.toLocaleLowerCase();
+        const usePropType = propertyType.toLowerCase();
         switch (usePropType) {
             case "number":
                 return Number(dbValue);
             case "string":
                 return String(dbValue);
             case "boolean":
-                return Boolean(dbValue);
+                const numValue = Number(dbValue);
+                if (isNaN(numValue)) {
+                    return (dbValue + "").toLowerCase() === "true";
+                } else {
+                    return Boolean(numValue);
+                }
             case "date":
-                return new Date(dbValue);
+                const value = new Date(dbValue);
+                if ("Invalid Date" === value.toString()) {
+                    throw new TypeError(`"${dbValue}" cannot be coverted to Date`);
+                } else {
+                    console.log(value.toString());
+                    return value;
+                }
             default:
                 return dbValue;
         }
