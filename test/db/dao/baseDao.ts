@@ -1,7 +1,7 @@
 import * as sqlite3 from "sqlite3";
 import { CommonHelper } from "../../../src/helper";
-import { DynamicQuery, SqlParam, TableEntity } from "../../../src/model";
-import { MappingProvider, SqlProvider } from "../../../src/provider";
+import { DynamicQuery, SqlTemplate, TableEntity } from "../../../src/model";
+import { MappingProvider, SqlTemplateProvider } from "../../../src/provider";
 
 export abstract class BaseDao<T> {
     protected readonly db: sqlite3.Database;
@@ -9,7 +9,7 @@ export abstract class BaseDao<T> {
         this.db = db;
     }
 
-    protected dbRun(sqlTemplate: SqlParam): Promise<void> {
+    protected dbRun(sqlTemplate: SqlTemplate): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.db.run(sqlTemplate.sqlExpression, sqlTemplate.params, (err, result) => {
                 if (err) {
@@ -21,7 +21,7 @@ export abstract class BaseDao<T> {
         });
     }
 
-    protected dbAll(entity: T | { new(): T }, sqlTemplate: SqlParam): Promise<T[]> {
+    protected dbAll(entity: T | { new(): T }, sqlTemplate: SqlTemplate): Promise<T[]> {
         return new Promise<T[]>((resolve, reject) => {
             this.db.all(sqlTemplate.sqlExpression, sqlTemplate.params, (err, result) => {
                 if (err) {

@@ -1,7 +1,7 @@
 import * as sqlite3 from "sqlite3";
 import { CommonHelper } from "../../../src/helper";
 import { DynamicQuery, TableEntity } from "../../../src/model";
-import { MappingProvider, SqlProvider } from "../../../src/provider";
+import { MappingProvider, SqlTemplateProvider } from "../../../src/provider";
 import { BaseDao } from "./baseDao";
 
 export abstract class BaseTableDao<T extends TableEntity> extends BaseDao<T> {
@@ -17,27 +17,27 @@ export abstract class BaseTableDao<T extends TableEntity> extends BaseDao<T> {
     }
 
     public deleteByKey(o: T): Promise<void> {
-        return this.dbRun(SqlProvider.getDeleteByKey<T>(o));
+        return this.dbRun(SqlTemplateProvider.getDeleteByKey<T>(o));
     }
 
     public deleteByDynamicQuery(entityClass: { new(): T }, dynamicQuery: DynamicQuery<T>): Promise<void> {
-        return this.dbRun(SqlProvider.getDeleteByDynamicQuery(entityClass, dynamicQuery));
+        return this.dbRun(SqlTemplateProvider.getDeleteByDynamicQuery(entityClass, dynamicQuery));
     }
 
     public updateByKey(o: T): Promise<void> {
-        return this.dbRun(SqlProvider.getUpdateByKey<T>(o, false));
+        return this.dbRun(SqlTemplateProvider.getUpdateByKey<T>(o, false));
     }
 
     public updateSeletiveByKey(o: T): Promise<void> {
-        return this.dbRun(SqlProvider.getUpdateByKey<T>(o, true));
+        return this.dbRun(SqlTemplateProvider.getUpdateByKey<T>(o, true));
     }
 
     public selectByKey(o: T): Promise<T[]> {
-        return this.dbAll(o, SqlProvider.getSelectByKey<T>(o));
+        return this.dbAll(o, SqlTemplateProvider.getSelectByKey<T>(o));
     }
 
     public selectByDynamicQuery(entityClass: { new(): T }, dynamicQuery: DynamicQuery<T>): Promise<T[]> {
-        return this.dbAll(entityClass, SqlProvider.getSelectByDynamicQuery(entityClass, dynamicQuery));
+        return this.dbAll(entityClass, SqlTemplateProvider.getSelectByDynamicQuery(entityClass, dynamicQuery));
     }
 
     // for sqlite
@@ -67,6 +67,6 @@ export abstract class BaseTableDao<T extends TableEntity> extends BaseDao<T> {
 
     // insert and return id;
     private insertInternal(o: T, selective: boolean): Promise<void> {
-        return this.dbRun(SqlProvider.getInsert<T>(o, selective));
+        return this.dbRun(SqlTemplateProvider.getInsert<T>(o, selective));
     }
 }

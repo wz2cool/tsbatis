@@ -1,5 +1,4 @@
 import { MappingProvider } from "./mappingProvider";
-import { QueryProvider } from "./queryProvider";
-import { SqlProvider } from "./sqlProvider";
+import { SqlTemplateProvider } from "./sqlTemplateProvider";
 
-export { MappingProvider, QueryProvider, SqlProvider };
+export { MappingProvider, SqlTemplateProvider };

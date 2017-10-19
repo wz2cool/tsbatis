@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as sqlite3 from "sqlite3";
-import { SqlProvider } from "../../src/provider";
+import { SqlTemplateProvider } from "../../src/provider";
 import { UserDao } from "./dao/userDao";
 
 describe(".dbBaseTest", () => {

@@ -10,7 +10,7 @@ import {
 
 import { column } from "./decorator";
 import { BaseMapper } from "./mapper";
-import { MappingProvider, QueryProvider } from "./provider";
+import { MappingProvider, SqlTemplateProvider } from "./provider";
 
 export {
   BaseMapper,
@@ -22,6 +22,6 @@ export {
   SortDescriptor,
   SortDescriptorBase,
   SortDirection,
-  QueryProvider,
+  SqlTemplateProvider,
   MappingProvider,
 };

@@ -1,6 +1,6 @@
 import * as sqlite3 from "sqlite3";
 import { CommonHelper } from "../../../src/helper";
-import { SqlProvider } from "../../../src/provider";
+import { SqlTemplateProvider } from "../../../src/provider";
 import { User } from "../entity/table/user";
 import { BaseTableDao } from "./baseTableDao";
 

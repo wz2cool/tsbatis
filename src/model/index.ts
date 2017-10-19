@@ -11,7 +11,7 @@ import { ISqlQuery } from "./iSqlQuery";
 import { SortDescriptor } from "./sortDescriptor";
 import { SortDescriptorBase } from "./sortDescritporBase";
 import { SortDirection } from "./sortDirection";
-import { SqlParam } from "./sqlParam";
+import { SqlTemplate } from "./sqlTemplate";
 import { TableEntity } from "./tableEntity";
 
 export {
@@ -29,5 +29,5 @@ export {
     SortDirection,
     ISqlQuery,
     TableEntity,
-    SqlParam,
+    SqlTemplate,
 };

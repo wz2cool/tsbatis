@@ -1,9 +1,9 @@
 import * as lodash from "lodash";
-import { ColumnInfo, FilterDescriptor, FilterOperator, SqlParam } from "../model";
+import { ColumnInfo, FilterDescriptor, FilterOperator, SqlTemplate } from "../model";
 import { CommonHelper } from "./commonHelper";
 
 export class FilterHelper {
-    public static getFilterExpression(operator: FilterOperator, columnInfo: ColumnInfo, filterValue: any): SqlParam {
+    public static getFilterExpression(operator: FilterOperator, columnInfo: ColumnInfo, filterValue: any): SqlTemplate {
         const filterValues = FilterHelper.getFilterValues(operator, filterValue);
         switch (operator) {
             case FilterOperator.NOT_EQUAL:
@@ -75,8 +75,8 @@ export class FilterHelper {
         }
     }
 
-    private static getEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         const filterValue = filterValues[0];
         if (CommonHelper.isNullOrUndefined(filterValue)) {
             sqlParam.sqlExpression = columnInfo.getQueryColumn() + " IS NULL";
@@ -87,8 +87,8 @@ export class FilterHelper {
         return sqlParam;
     }
 
-    private static getNotEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getNotEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         const filterValue = filterValues[0];
         if (CommonHelper.isNullOrUndefined(filterValue)) {
             sqlParam.sqlExpression = columnInfo.getQueryColumn() + " IS NOT NULL";
@@ -99,43 +99,43 @@ export class FilterHelper {
         return sqlParam;
     }
 
-    private static getLessThanExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getLessThanExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " < ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getLessThanOrEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getLessThanOrEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " <= ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getGreaterThanOrEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getGreaterThanOrEqualExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " >= ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getGreaterThanExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getGreaterThanExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " > ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getLikeExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getLikeExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + " LIKE ?";
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;
     }
 
-    private static getInExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getInExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         if (filterValues.length > 0) {
             const placeholderStr = lodash.map(filterValues, (f) => "?").join(", ");
             sqlParam.sqlExpression = columnInfo.getQueryColumn() + ` IN (${placeholderStr})`;
@@ -144,8 +144,8 @@ export class FilterHelper {
         return sqlParam;
     }
 
-    private static getNotInExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getNotInExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         if (filterValues.length > 0) {
             const placeholderStr = lodash.map(filterValues, (f) => "?").join(", ");
             sqlParam.sqlExpression = columnInfo.getQueryColumn() + ` NOT IN (${placeholderStr})`;
@@ -154,8 +154,8 @@ export class FilterHelper {
         return sqlParam;
     }
 
-    private static getBetweenExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlParam {
-        const sqlParam = new SqlParam();
+    private static getBetweenExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+        const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = columnInfo.getQueryColumn() + ` BETWEEN ? AND ?`;
         sqlParam.params = sqlParam.params.concat(filterValues);
         return sqlParam;

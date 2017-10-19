@@ -2,7 +2,7 @@ import * as lodash from "lodash";
 
 import { CommonHelper, EntityHelper } from "../helper";
 import { DynamicQuery, ISqlQuery, TableEntity } from "../model";
-import { SqlProvider } from "../provider";
+import { SqlTemplateProvider } from "../provider";
 
 export abstract class BaseMapper<T extends TableEntity> {
     protected readonly sqlQuery: ISqlQuery;
@@ -12,7 +12,7 @@ export abstract class BaseMapper<T extends TableEntity> {
 
     public insert(o: T, cb: (err: any, result?: any) => void): void {
         try {
-            const sqlParam = SqlProvider.getInsert<T>(o, false);
+            const sqlParam = SqlTemplateProvider.getInsert<T>(o, false);
             this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
         } catch (e) {
             if (cb) { cb(e); }
@@ -21,7 +21,7 @@ export abstract class BaseMapper<T extends TableEntity> {
 
     public insertSelective(o: T, cb: (err: any, result?: any) => void): void {
         try {
-            const sqlParam = SqlProvider.getInsert<T>(o, true);
+            const sqlParam = SqlTemplateProvider.getInsert<T>(o, true);
             this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
         } catch (e) {
             if (cb) { cb(e); }
@@ -30,7 +30,7 @@ export abstract class BaseMapper<T extends TableEntity> {
 
     public updateByKey(o: T, cb: (err: any, result?: any) => void): void {
         try {
-            const sqlParam = SqlProvider.getUpdateByKey<T>(o, false);
+            const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, false);
             this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
         } catch (e) {
             if (cb) { cb(e); }
@@ -39,7 +39,7 @@ export abstract class BaseMapper<T extends TableEntity> {
 
     public updateSelectiveByKey(o: T, cb: (err: any, result?: any) => void): void {
         try {
-            const sqlParam = SqlProvider.getUpdateByKey<T>(o, true);
+            const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, true);
             this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
         } catch (e) {
             if (cb) { cb(e); }
@@ -48,7 +48,7 @@ export abstract class BaseMapper<T extends TableEntity> {
 
     public selectByKey(o: T, cb: (err: any, result?: any) => void): void {
         try {
-            const sqlParam = SqlProvider.getSelectByKey<T>(o);
+            const sqlParam = SqlTemplateProvider.getSelectByKey<T>(o);
             this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
         } catch (e) {
             if (cb) { cb(e); }
@@ -58,7 +58,7 @@ export abstract class BaseMapper<T extends TableEntity> {
     public selectByDynamicQuery(
         entityClass: { new(): T }, query: DynamicQuery<T>, cb: (err: any, result?: any) => void): void {
         try {
-            const sqlParam = SqlProvider.getSelectByDynamicQuery<T>(entityClass, query);
+            const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
             this.sqlQuery.query(sqlParam.sqlExpression, sqlParam.params, cb);
         } catch (e) {
             if (cb) { cb(e); }
