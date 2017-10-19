@@ -1,10 +1,10 @@
 import * as sqlite3 from "sqlite3";
 import { CommonHelper } from "../../../src/helper";
-import { TableEntity } from "../../../src/model";
+import { DynamicQuery, TableEntity } from "../../../src/model";
 import { MappingProvider, SqlProvider } from "../../../src/provider";
 import { User } from "../entity/user";
 
-export class BaseDao<T extends TableEntity> {
+export class BaseTableDao<T extends TableEntity> {
     protected readonly db: sqlite3.Database;
     constructor(db: sqlite3.Database) {
         this.db = db;
@@ -19,6 +19,11 @@ export class BaseDao<T extends TableEntity> {
 
     public deleteByKey(o: T): Promise<void> {
         const deleteTemplate = SqlProvider.getDeleteByKey<T>(o);
+        return this.dbRun(deleteTemplate.sqlExpression, deleteTemplate.params);
+    }
+
+    public deleteByDynamicQuery(entityClass: { new(): T }, dynamicQuery: DynamicQuery<T>): Promise<void> {
+        const deleteTemplate = SqlProvider.getDeleteByDynamicQuery(entityClass, dynamicQuery);
         return this.dbRun(deleteTemplate.sqlExpression, deleteTemplate.params);
     }
 
@@ -90,5 +95,9 @@ export class BaseDao<T extends TableEntity> {
                 }
             });
         });
+    }
+
+    private dbAll(sql: string, params: any[]): Promise<T[]> {
+
     }
 }

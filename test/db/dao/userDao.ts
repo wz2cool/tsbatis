@@ -2,9 +2,9 @@ import * as sqlite3 from "sqlite3";
 import { CommonHelper } from "../../../src/helper";
 import { SqlProvider } from "../../../src/provider";
 import { User } from "../entity/user";
-import { BaseDao } from "./baseDao";
+import { BaseTableDao } from "./baseTableDao";
 
-export class UserDao extends BaseDao<User> {
+export class UserDao extends BaseTableDao<User> {
     constructor(db: sqlite3.Database) {
         super(db);
     }
