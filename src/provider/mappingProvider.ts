@@ -3,13 +3,13 @@ import { EntityCache } from "../cache";
 import { EntityHelper } from "../helper";
 
 export class MappingProvider {
-    public static toEntities<T>(entityClass: { new(): T }, dbObjs: any[]): T[] {
+    public static toEntities<T>(entity: T | { new(): T }, dbObjs: any[]): T[] {
         const cache = EntityCache.getInstance();
-        const entityName = EntityHelper.getEntityName(entityClass);
+        const entityName = EntityHelper.getEntityName(entity);
         const columnInfos = cache.getColumnInfos(entityName);
 
         return lodash.map(dbObjs, (dbObj) => {
-            const entityObj = new entityClass();
+            const entityObj: T = typeof entity === "function" ? new entity() : entity.constructor();
             columnInfos.forEach((colInfo) => {
                 if (dbObj.hasOwnProperty(colInfo.underscoreProperty)) {
                     const dbValue = dbObj[colInfo.underscoreProperty];
