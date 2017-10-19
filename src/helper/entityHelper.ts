@@ -26,6 +26,15 @@ export class EntityHelper {
         return (testObj.constructor as any).name;
     }
 
+    public static createObject<T>(o: T | { new(): T }): T {
+        if (typeof o === "function") {
+            return new o();
+        } else {
+            const type = o.constructor as { new(): T };
+            return new type();
+        }
+    }
+
     private constructor() {
         // hide constructor.
     }

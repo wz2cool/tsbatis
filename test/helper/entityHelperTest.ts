@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { EntityHelper } from "../../src/helper";
+import { CommonHelper, EntityHelper } from "../../src/helper";
 
 class Student {
     public name: string;
@@ -38,6 +38,22 @@ describe(".EntityHelper", () => {
         it("should return entity name by entity", () => {
             const result = EntityHelper.getEntityName<Student>(new Student());
             expect("Student").to.be.eq(result);
+        });
+    });
+
+    describe("#createObject", () => {
+        it("should return object if o is type", () => {
+            const result = EntityHelper.createObject<Student>(Student);
+            expect(true).to.be.eq(result instanceof Student);
+        });
+
+        it("should return objefct if o is example object", () => {
+            const example = new Student();
+            example.name = "frank";
+            example.age = 20;
+            const result = EntityHelper.createObject(example);
+            expect(true).to.be.eq(CommonHelper.isBlank(result.name));
+            expect(true).to.be.eq(CommonHelper.isNullOrUndefined(result.age));
         });
     });
 });

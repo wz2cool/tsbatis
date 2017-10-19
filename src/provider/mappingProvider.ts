@@ -9,7 +9,7 @@ export class MappingProvider {
         const columnInfos = cache.getColumnInfos(entityName);
 
         return lodash.map(dbObjs, (dbObj) => {
-            const entityObj: T = typeof entity === "function" ? new entity() : entity.constructor();
+            const entityObj = EntityHelper.createObject<T>(entity);
             columnInfos.forEach((colInfo) => {
                 if (dbObj.hasOwnProperty(colInfo.underscoreProperty)) {
                     const dbValue = dbObj[colInfo.underscoreProperty];
