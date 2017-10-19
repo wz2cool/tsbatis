@@ -1,7 +1,8 @@
+import { Entity } from "../model";
 import { CommonHelper } from "./commonHelper";
 
 export class EntityHelper {
-    public static getPropertyName<T>(fn: (o: T) => any): string {
+    public static getPropertyName<T extends Entity>(fn: (o: T) => any): string {
         if (CommonHelper.isNullOrUndefined(fn)) {
             return "";
         }
@@ -17,7 +18,7 @@ export class EntityHelper {
         }
     }
 
-    public static getEntityName<T>(o: T | { new(): T }): string {
+    public static getEntityName<T extends Entity>(o: T | { new(): T }): string {
         if (CommonHelper.isNullOrUndefined(o)) {
             return "";
         }
@@ -26,7 +27,7 @@ export class EntityHelper {
         return (testObj.constructor as any).name;
     }
 
-    public static createObject<T>(o: T | { new(): T }): T {
+    public static createObject<T extends Entity>(o: T | { new(): T }): T {
         if (typeof o === "function") {
             return new o();
         } else {

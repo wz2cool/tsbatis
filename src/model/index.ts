@@ -2,6 +2,7 @@ import { ColumnInfo } from "./columnInfo";
 import { CustomFilterDescriptor } from "./customFilterDescriptor";
 import { CustomSortDescriptor } from "./customSortDescriptor";
 import { DynamicQuery } from "./dynamicQuery";
+import { Entity } from "./entity";
 import { FilterCondition } from "./filterCondition";
 import { FilterDescriptor } from "./filterDescriptor";
 import { FilterDescriptorBase } from "./filterDescriptorBase";
@@ -19,6 +20,7 @@ export {
     CustomFilterDescriptor,
     CustomSortDescriptor,
     DynamicQuery,
+    Entity,
     FilterCondition,
     FilterDescriptor,
     FilterDescriptorBase,

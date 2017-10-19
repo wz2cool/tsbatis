@@ -6,6 +6,7 @@ import {
     CustomFilterDescriptor,
     CustomSortDescriptor,
     DynamicQuery,
+    Entity,
     FilterDescriptor,
     FilterDescriptorBase,
     FilterGroupDescriptor,
@@ -164,7 +165,7 @@ export class SqlTemplateProvider {
         return result;
     }
 
-    public static getFilterExpression<T>(
+    public static getFilterExpression<T extends Entity>(
         entityClass: { new(): T }, filters: FilterDescriptorBase[]): SqlTemplate {
         if (CommonHelper.isNullOrUndefined(filters) || filters.length === 0) {
             return new SqlTemplate();
@@ -189,7 +190,8 @@ export class SqlTemplateProvider {
         return result;
     }
 
-    public static getSortExpression<T>(entityClass: { new(): T }, sorts: SortDescriptorBase[]): SqlTemplate {
+    public static getSortExpression<T extends Entity>(
+        entityClass: { new(): T }, sorts: SortDescriptorBase[]): SqlTemplate {
         if (CommonHelper.isNullOrUndefined(sorts) || sorts.length === 0) {
             return new SqlTemplate();
         }
@@ -213,7 +215,7 @@ export class SqlTemplateProvider {
         return result;
     }
 
-    public static getColumnsExpression<T>(entityClass: { new(): T }): string {
+    public static getColumnsExpression<T extends Entity>(entityClass: { new(): T }): string {
         const entityName = EntityHelper.getEntityName(entityClass);
         if (CommonHelper.isNullOrUndefined(entityName)) {
             throw new Error("cannot find entity, please set @column to entity!");
@@ -227,7 +229,7 @@ export class SqlTemplateProvider {
         return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
     }
 
-    private static getColumnInfos<T>(o: T): ColumnInfo[] {
+    private static getColumnInfos<T extends Entity>(o: T): ColumnInfo[] {
         const entityName = EntityHelper.getEntityName(o);
         if (CommonHelper.isNullOrUndefined(entityName)) {
             throw new Error("cannot find entity, please set @column to entity!");
@@ -242,7 +244,7 @@ export class SqlTemplateProvider {
     }
 
     //#region filter
-    private static getFilterExpressionByFilterBase<T>(
+    private static getFilterExpressionByFilterBase<T extends Entity>(
         entityClass: { new(): T }, filter: FilterDescriptorBase): SqlTemplate {
         if (filter instanceof FilterDescriptor) {
             return SqlTemplateProvider.getFilterExpressionByFilterDescriptor(entityClass, filter);
@@ -255,7 +257,7 @@ export class SqlTemplateProvider {
         }
     }
 
-    private static getFilterExpressionByFilterDescriptor<T>(
+    private static getFilterExpressionByFilterDescriptor<T extends Entity>(
         entityClass: { new(): T }, filter: FilterDescriptor<T>): SqlTemplate {
         const value = filter.value;
         const operator = filter.operator;
@@ -265,7 +267,7 @@ export class SqlTemplateProvider {
         return FilterHelper.getFilterExpression(operator, columnInfo, value);
     }
 
-    private static getFilterExpressionByCustomFilterDescriptor<T>(
+    private static getFilterExpressionByCustomFilterDescriptor<T extends Entity>(
         entityClass: { new(): T }, filter: CustomFilterDescriptor): SqlTemplate {
         const sqlParam = new SqlTemplate();
         let expression = CommonHelper.isBlank(filter.expression) ? "" : filter.expression;
@@ -279,7 +281,7 @@ export class SqlTemplateProvider {
     //#endregion
 
     //#region sort
-    private static getSortExpressionBySortBase<T>(
+    private static getSortExpressionBySortBase<T extends Entity>(
         entityClass: { new(): T }, sort: SortDescriptorBase): SqlTemplate {
         if (sort instanceof SortDescriptor) {
             return SqlTemplateProvider.getSortExpressionBySortDescriptor(entityClass, sort);
@@ -290,7 +292,7 @@ export class SqlTemplateProvider {
         }
     }
 
-    private static getSortExpressionBySortDescriptor<T>(
+    private static getSortExpressionBySortDescriptor<T extends Entity>(
         entityClass: { new(): T }, sort: SortDescriptor<T>): SqlTemplate {
         const entity = EntityHelper.getEntityName(entityClass);
         const columnInfo = EntityCache.getInstance().getColumnInfo(entity, sort.propertyPath);
@@ -302,7 +304,7 @@ export class SqlTemplateProvider {
         return sqlParam;
     }
 
-    private static getSortExpressionByCustomSortDescriptor<T>(
+    private static getSortExpressionByCustomSortDescriptor<T extends Entity>(
         entityClass: { new(): T }, sort: CustomSortDescriptor): SqlTemplate {
         const sqlParam = new SqlTemplate();
         let expression = CommonHelper.isBlank(sort.expression) ? "" : sort.expression;

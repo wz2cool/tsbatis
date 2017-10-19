@@ -1,4 +1,5 @@
 import {
+  Entity,
   FilterCondition,
   FilterDescriptor,
   FilterDescriptorBase,
@@ -6,6 +7,7 @@ import {
   SortDescriptor,
   SortDescriptorBase,
   SortDirection,
+  TableEntity,
 } from "./model";
 
 import { column } from "./decorator";

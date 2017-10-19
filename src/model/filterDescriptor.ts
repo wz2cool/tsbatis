@@ -1,9 +1,10 @@
 import { EntityHelper } from "./../helper";
+import { Entity } from "./entity";
 import { FilterCondition } from "./filterCondition";
 import { FilterDescriptorBase } from "./filterDescriptorBase";
 import { FilterOperator } from "./filterOperator";
 
-export class FilterDescriptor<T> extends FilterDescriptorBase {
+export class FilterDescriptor<T extends Entity> extends FilterDescriptorBase {
     public operator: FilterOperator = FilterOperator.EQUAL;
     public propertyPath: string = null;
     public value: any = null;
