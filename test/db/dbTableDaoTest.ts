@@ -1,8 +1,10 @@
 import * as path from "path";
 import * as sqlite3 from "sqlite3";
+import { DynamicQuery, FilterDescriptor, FilterOperator } from "../../src/model";
 import { SqlProvider } from "../../src/provider";
 import { UserDao } from "./dao/userDao";
 import { User } from "./entity/table/user";
+
 
 describe(".dbDaoTest", () => {
     const dbPath = path.join(__dirname, "sqlite.db");
@@ -27,6 +29,62 @@ describe(".dbDaoTest", () => {
                     done();
                 } else {
                     done("result user is valid");
+                }
+            })
+            .catch((err) => {
+                done(err);
+            });
+    });
+
+    it("test delete by key", (done) => {
+        const newUser = new User();
+        newUser.username = "create user time: " + new Date();
+        newUser.password = "test";
+        userDao.insert(newUser)
+            .then((id) => {
+                newUser.id = id;
+                console.log("insert user success. id: ", id);
+                const searchUser = new User();
+                // 'id' is key
+                searchUser.id = id;
+                return userDao.deleteByKey(searchUser);
+            }).then(() => {
+                const searchUser = new User();
+                searchUser.id = newUser.id;
+                return userDao.selectByKey(searchUser);
+            }).then((users) => {
+                if (users.length === 0) {
+                    done();
+                } else {
+                    done("user should be deleted");
+                }
+            })
+            .catch((err) => {
+                done(err);
+            });
+    });
+
+    it("test delete by dynamic query", (done) => {
+        const newUser = new User();
+        newUser.username = "create user time: " + new Date();
+        newUser.password = "test";
+        userDao.insert(newUser)
+            .then((id) => {
+                newUser.id = id;
+                console.log("insert user success. id: ", id);
+                const nameFilter = new FilterDescriptor<User>((u) => u.username, FilterOperator.CONTAINS, "user");
+                const dynamicQuery = DynamicQuery.createIntance<User>()
+                    .addFilters(nameFilter);
+                return userDao.deleteByDynamicQuery(User, dynamicQuery);
+            }).then(() => {
+                const searchUser = new User();
+                searchUser.id = newUser.id;
+                return userDao.selectByKey(searchUser);
+            }).then((users) => {
+                if (users.length === 0) {
+                    done();
+                } else {
+                    done("user should be deleted");
                 }
             })
             .catch((err) => {
