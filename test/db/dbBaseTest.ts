@@ -28,47 +28,9 @@ describe(".dbBaseTest", () => {
         });
     });
 
-    // it("test insert data to db", (done) => {
-    //     const newUser = new User();
-    //     newUser.username = "frank";
-    //     newUser.password = "test";
-    //     const sqlParam = SqlProvider.getInsert<User>(newUser, true);
-    //     db.serialize(() => {
-    //         db.run(sqlParam.sqlExpression, sqlParam.params, (err, row) => {
-    //             if (err) {
-    //                 done(err);
-    //                 return;
-    //             }
-    //         });
-
-    //         db.each("select seq from sqlite_sequence where name=?", "users", (err, row) => {
-    //             if (err) {
-    //                 done(err);
-    //                 return;
-    //             } else {
-    //                 db.each("select * from users where id =? ", row.seq, (err1, row1) => {
-    //                     if (err) {
-    //                         done(err);
-    //                         return;
-    //                     } else {
-    //                         console.log(row1);
-    //                         if (row1.username === newUser.username && row1.password === newUser.password) {
-    //                             done();
-    //                             return;
-    //                         } else {
-    //                             done(row1);
-    //                             return;
-    //                         }
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     });
-    // });
-
     it("test insert to db", (done) => {
         const newUser = new User();
-        newUser.username = "frank";
+        newUser.username = "create user time: " + new Date();
         newUser.password = "test";
         userDao.insert(newUser)
             .then((id) => {
@@ -76,17 +38,12 @@ describe(".dbBaseTest", () => {
                 searchUser.id = id;
                 return userDao.selectByKey(searchUser);
             }).then((users) => {
-                console.log("get Users: ", users);
-                if (users.length === 1) {
-                    const result = users[0];
-                    if (result.username === newUser.username
-                        && result.password === newUser.password) {
-                        done();
-                    } else {
-                        done("result user is valid");
-                    }
+                const result = users[0];
+                if (result.username === newUser.username
+                    && result.password === newUser.password) {
+                    done();
                 } else {
-                    done("only one user need return");
+                    done("result user is valid");
                 }
             })
             .catch((err) => {
