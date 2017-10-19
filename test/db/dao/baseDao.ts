@@ -9,60 +9,43 @@ export class BaseDao<T extends TableEntity> {
     constructor(db: sqlite3.Database) {
         this.db = db;
     }
+    public insert(o: T): Promise<number> {
+        return this.insertAndReturnId(o, false);
+    }
 
-    public async insert(o: T): Promise<number> {
-        try {
-            await this.insertInternal(o);
-            const id = await this.getSeqId(o);
-            return new Promise<number>((resolve) => resolve(id));
-        } catch (e) {
-            return new Promise<number>((resolve, reject) => reject(e));
-        }
+    public insertSelective(o: T): Promise<number> {
+        return this.insertAndReturnId(o, true);
     }
 
     public deleteByKey(o: T): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            const deleteTemplate = SqlProvider.getDeleteByKey<T>(o);
-            this.db.run(deleteTemplate.sqlExpression, deleteTemplate.params,
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-        });
+        const deleteTemplate = SqlProvider.getDeleteByKey<T>(o);
+        return this.dbRun(deleteTemplate.sqlExpression, deleteTemplate.params);
     }
 
     public updateByKey(o: T): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            const updateTemplate = SqlProvider.getUpdateByKey<T>(o, true);
-            this.db.run(updateTemplate.sqlExpression, updateTemplate.params,
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-        });
+        const updateTemplate = SqlProvider.getUpdateByKey<T>(o, false);
+        return this.dbRun(updateTemplate.sqlExpression, updateTemplate.params);
+    }
+
+    public updateSeletiveByKey(o: T): Promise<void> {
+        const updateTemplate = SqlProvider.getUpdateByKey<T>(o, true);
+        return this.dbRun(updateTemplate.sqlExpression, updateTemplate.params);
     }
 
     public selectByKey(o: T): Promise<T[]> {
         return new Promise<T[]>((resolve, reject) => {
             const updateTemplate = SqlProvider.getSelectByKey<T>(o);
-            this.db.all(updateTemplate.sqlExpression, updateTemplate.params,
-                (err, result) => {
-                    if (err) {
-                        reject(err);
+            this.db.all(updateTemplate.sqlExpression, updateTemplate.params, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    if (CommonHelper.isArray(result)) {
+                        resolve(MappingProvider.toEntities<T>(o, result));
                     } else {
-                        if (CommonHelper.isArray(result)) {
-                            resolve(MappingProvider.toEntities<T>(o, result));
-                        } else {
-                            reject(new Error(`cannot resolve result: ${result}`));
-                        }
+                        reject(new Error(`cannot resolve result: ${result}`));
                     }
-                });
+                }
+            });
         });
     }
 
@@ -81,19 +64,31 @@ export class BaseDao<T extends TableEntity> {
         });
     }
 
-    // insert and return id;
-    private insertInternal(o: T): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            const insertTemplate = SqlProvider.getInsert<T>(o, true);
-            this.db.run(insertTemplate.sqlExpression, insertTemplate.params,
-                (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-        });
+    private async insertAndReturnId(o: T, selective: boolean): Promise<number> {
+        try {
+            await this.insertInternal(o, false);
+            const id = await this.getSeqId(o);
+            return new Promise<number>((resolve) => resolve(id));
+        } catch (e) {
+            return new Promise<number>((resolve, reject) => reject(e));
+        }
     }
 
+    // insert and return id;
+    private insertInternal(o: T, selective: boolean): Promise<void> {
+        const insertTemplate = SqlProvider.getInsert<T>(o, selective);
+        return this.dbRun(insertTemplate.sqlExpression, insertTemplate.params);
+    }
+
+    private dbRun(sql: string, params: any[]): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.db.run(sql, params, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
 }

@@ -34,6 +34,7 @@ describe(".dbBaseTest", () => {
         newUser.password = "test";
         userDao.insert(newUser)
             .then((id) => {
+                console.log("insert user success");
                 const searchUser = new User();
                 searchUser.id = id;
                 return userDao.selectByKey(searchUser);
