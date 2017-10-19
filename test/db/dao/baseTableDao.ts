@@ -37,6 +37,10 @@ export abstract class BaseTableDao<T extends TableEntity> extends BaseDao<T> {
         return this.dbAll(o, SqlProvider.getSelectByKey<T>(o));
     }
 
+    public selectByDynamicQuery(entityClass: { new(): T }, dynamicQuery: DynamicQuery<T>): Promise<T[]> {
+        return this.dbAll(entityClass, SqlProvider.getSelectByDynamicQuery(entityClass, dynamicQuery));
+    }
+
     // for sqlite
     private getSeqId(o: T): Promise<number> {
         return new Promise((reslove, reject) => {
