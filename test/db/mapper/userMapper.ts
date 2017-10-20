@@ -1,3 +1,4 @@
+import { Container, inject, injectable } from "inversify";
 import * as path from "path";
 import * as sqlite3 from "sqlite3";
 import { ISqlConnection, SqliteConnection } from "../../../src/connection";
