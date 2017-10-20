@@ -34,7 +34,7 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    protected select(sql: string, params: any[]): Promise<any[]> {
+    protected selectAnys(sql: string, params: any[]): Promise<any[]> {
         return new Promise<any[]>((resolve, reject) => {
             this.sqlConnection.select(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {

@@ -14,9 +14,13 @@ export class SqliteConnection implements ISqlConnection {
     }
 
     public run(sql: string, params: any[], callback: (err: any, result?: any) => void) {
+        console.log("sql: ", sql);
+        console.log("params: ", params);
         this.db.run(sql, params, callback);
     }
     public select(sql: string, params: any[], callback: (err: any, result: any[]) => void) {
+        console.log("sql: ", sql);
+        console.log("params: ", params);
         this.db.all(sql, params, callback);
     }
     public selectEntities<T>(
@@ -24,6 +28,8 @@ export class SqliteConnection implements ISqlConnection {
         sql: string,
         params: any[],
         callback: (err: any, result: T[]) => void) {
+        console.log("sql: ", sql);
+        console.log("params: ", params);
         this.db.all(sql, params, (err: any, result: any) => {
             if (CommonHelper.isNullOrUndefined(callback)) {
                 return;
@@ -31,6 +37,7 @@ export class SqliteConnection implements ISqlConnection {
 
             if (CommonHelper.isNullOrUndefined(err)) {
                 const entities = MappingProvider.toEntities<T>(entityClass, result);
+                console.log(entities);
                 callback(null, entities);
             } else {
                 callback(err, []);

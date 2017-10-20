@@ -1,7 +1,7 @@
 import * as lodash from "lodash";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
-import { DatabaseType, DynamicQuery, TableEntity } from "../model";
+import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, TableEntity } from "../model";
 import { SqlTemplateProvider } from "../provider";
 import { BaseMapper } from "./baseMapper";
 
@@ -19,55 +19,42 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         return this.insertInternal(o, true, returnAutoIncreaseId);
     }
 
-    // public insertSelective(o: T, cb: (err: any, result?: number) => void): void {
-    //     try {
-    //         const sqlParam = SqlTemplateProvider.getInsert<T>(o, true);
-    //         this.sqlConnection.run(sqlParam.sqlExpression, sqlParam.params, cb);
-    //     } catch (e) {
-    //         if (cb) { cb(e); }
-    //     }
-    // }
+    public updateByKey(o: T): Promise<void> {
+        return this.updateByKeyInternal(o, false);
+    }
 
-    // public updateByKey(o: T, cb: (err: any, result?: any) => void): void {
-    //     try {
-    //         const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, false);
-    //         this.sqlConnection.query(sqlParam.sqlExpression, sqlParam.params, cb);
-    //     } catch (e) {
-    //         if (cb) { cb(e); }
-    //     }
-    // }
+    public updateSelectiveByKey(o: T): Promise<void> {
+        return this.updateByKeyInternal(o, true);
+    }
 
-    // public updateSelectiveByKey(o: T, cb: (err: any, result?: any) => void): void {
-    //     try {
-    //         const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, true);
-    //         this.sqlConnection.query(sqlParam.sqlExpression, sqlParam.params, cb);
-    //     } catch (e) {
-    //         if (cb) { cb(e); }
-    //     }
-    // }
+    public select(o: T): Promise<T[]> {
+        const dynamicQuery = DynamicQuery.createIntance<T>();
+        for (const prop in o) {
+            if (o.hasOwnProperty(prop)
+                && !CommonHelper.isNullOrUndefined(o[prop])) {
+                const filter = new FilterDescriptor();
+                filter.propertyPath = prop;
+                filter.value = o[prop];
+                dynamicQuery.addFilters(filter);
+            }
+        }
+        const entityClass = EntityHelper.getEntityClass<T>(o);
+        return this.selectByDynamicQuery(entityClass, dynamicQuery);
+    }
 
-    // public selectByKey(o: T, cb: (err: any, result?: any) => void): void {
-    //     try {
-    //         const sqlParam = SqlTemplateProvider.getSelectByKey<T>(o);
-    //         this.sqlConnection.query(sqlParam.sqlExpression, sqlParam.params, cb);
-    //     } catch (e) {
-    //         if (cb) { cb(e); }
-    //     }
-    // }
-
-    // public selectByDynamicQuery(
-    //     entityClass: { new(): T }, query: DynamicQuery<T>, cb: (err: any, result?: any) => void): void {
-    //     try {
-    //         const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
-    //         this.sqlConnection.query(sqlParam.sqlExpression, sqlParam.params, cb);
-    //     } catch (e) {
-    //         if (cb) { cb(e); }
-    //     }
-    // }
+    public selectByDynamicQuery(
+        entityClass: { new(): T }, query: DynamicQuery<T>): Promise<T[]> {
+        try {
+            const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
+            return this.selectEntities(entityClass, sqlParam.sqlExpression, sqlParam.params);
+        } catch (e) {
+            return new Promise<T[]>((resolve, reject) => reject(e));
+        }
+    }
 
     private async insertInternal(o: T, selective: boolean, returnAutoIncreaseId: boolean): Promise<number> {
         try {
-            const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, selective);
+            const sqlParam = SqlTemplateProvider.getInsert<T>(o, selective);
             const result = await this.run(sqlParam.sqlExpression, sqlParam.params);
             if (!returnAutoIncreaseId) {
                 return new Promise<number>((resolve, reject) => resolve());
@@ -84,10 +71,19 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         }
     }
 
+    private updateByKeyInternal(o: T, selective: boolean): Promise<void> {
+        try {
+            const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, false);
+            return this.run(sqlParam.sqlExpression, sqlParam.params);
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
     private async getSeqIdForSqlite(o: T): Promise<number> {
         const sql = "SELECT seq FROM sqlite_sequence WHERE name = ?";
         const tableName = o.getTableName();
-        const result = await this.select(sql, [tableName]);
+        const result = await this.selectAnys(sql, [tableName]);
         return new Promise<number>((resolve, reject) => {
             if (result.length > 0) {
                 const seqId = Number(result[0].seq);

@@ -36,6 +36,10 @@ export class EntityHelper {
         }
     }
 
+    public static getEntityClass<T extends Entity>(o: T): { new(): T } {
+        return o.constructor as { new(): T };
+    }
+
     private constructor() {
         // hide constructor.
     }
