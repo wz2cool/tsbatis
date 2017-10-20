@@ -4,6 +4,7 @@ import { MappingProvider } from "../provider";
 import { ISqlConnection } from "./iSqlConnection";
 
 export class SqliteConnection implements ISqlConnection {
+
     private readonly db: any;
     constructor(db: any) {
         this.db = db;
@@ -43,5 +44,8 @@ export class SqliteConnection implements ISqlConnection {
                 callback(err, []);
             }
         });
+    }
+    public selectCount(sql: string, params: any[], callback: (err: any, result: number) => void) {
+        throw new Error("Method not implemented.");
     }
 }

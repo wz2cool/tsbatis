@@ -64,7 +64,12 @@ export class SqlTemplateProvider {
         sqlParam.sqlExpression = expression;
         sqlParam.params.push(keyColumnValue);
         return sqlParam;
+    }
 
+    public static getDelete<T extends TableEntity>(example: T): SqlTemplate {
+        const query = this.generateDynamicQueryByExample<T>(example);
+        const entityClass = EntityHelper.getEntityClass<T>(example);
+        return this.getDeleteByDynamicQuery<T>(entityClass, query);
     }
 
     public static getDeleteByDynamicQuery<T extends TableEntity>(
@@ -140,6 +145,12 @@ export class SqlTemplateProvider {
         return sqlParam;
     }
 
+    public static getSelect<T extends TableEntity>(example: T): SqlTemplate {
+        const query = this.generateDynamicQueryByExample<T>(example);
+        const entityClass = EntityHelper.getEntityClass<T>(example);
+        return this.getSelectByDynamicQuery<T>(entityClass, query);
+    }
+
     public static getSelectCountByKey<T extends TableEntity>(o: T): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(o);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
@@ -157,6 +168,12 @@ export class SqlTemplateProvider {
         sqlParam.sqlExpression = sqlExpression;
         sqlParam.params = params;
         return sqlParam;
+    }
+
+    public static getSelectCount<T extends TableEntity>(example: T): SqlTemplate {
+        const query = this.generateDynamicQueryByExample<T>(example);
+        const entityClass = EntityHelper.getEntityClass<T>(example);
+        return this.getSelectCountByDynamicQuery<T>(entityClass, query);
     }
 
     public static getSelectByDynamicQuery<T extends TableEntity>(
@@ -359,6 +376,20 @@ export class SqlTemplateProvider {
 
     private static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
         return lodash.map(columnInfos, (s) => s.columnName + " AS " + s.underscoreProperty).join(", ");
+    }
+
+    private static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {
+        const dynamicQuery = DynamicQuery.createIntance<T>();
+        for (const prop in example) {
+            if (example.hasOwnProperty(prop)
+                && !CommonHelper.isNullOrUndefined(example[prop])) {
+                const filter = new FilterDescriptor();
+                filter.propertyPath = prop;
+                filter.value = example[prop];
+                dynamicQuery.addFilters(filter);
+            }
+        }
+        return dynamicQuery;
     }
 
     private constructor() {

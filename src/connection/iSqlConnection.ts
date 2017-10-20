@@ -5,6 +5,7 @@ export abstract class ISqlConnection {
 
     public abstract run(sql: string, params: any[], callback: (err: any, result?: any) => void);
     public abstract select(sql: string, params: any[], callback: (err: any, result: any[]) => void);
+    public abstract selectCount(sql: string, params: any[], callback: (err: any, result: number) => void);
     public abstract selectEntities<T extends Entity>(
         entityClass: { new(): T },
         sql: string,

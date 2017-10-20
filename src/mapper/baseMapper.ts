@@ -10,7 +10,7 @@ export abstract class BaseMapper<T extends Entity> {
         this.sqlConnection = sqlQuery;
     }
 
-    protected run(sql: string, params: any[]): Promise<any> {
+    protected runInternal(sql: string, params: any[]): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             this.sqlConnection.run(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -22,7 +22,7 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    protected selectEntities(entityClass: { new(): T }, sql: string, params: any[]): Promise<T[]> {
+    protected selectEntitiesInternal(entityClass: { new(): T }, sql: string, params: any[]): Promise<T[]> {
         return new Promise<T[]>((resolve, reject) => {
             this.sqlConnection.selectEntities<T>(entityClass, sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -34,9 +34,21 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    protected selectAnys(sql: string, params: any[]): Promise<any[]> {
+    protected selectInternal(sql: string, params: any[]): Promise<any[]> {
         return new Promise<any[]>((resolve, reject) => {
             this.sqlConnection.select(sql, params, (err, result) => {
+                if (CommonHelper.isNullOrUndefined(err)) {
+                    resolve(result);
+                } else {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    protected selectCountInternal(sql: string, params: any[]): Promise<number> {
+        return new Promise<number>((resolve, reject) => {
+            this.sqlConnection.selectCount(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
                     resolve(result);
                 } else {

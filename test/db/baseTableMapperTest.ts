@@ -9,12 +9,12 @@ describe(".SqliteConnection", () => {
     const dbPath = path.join(__dirname, "sqlite.db");
     const db = new sqlite3.Database(dbPath);
     const connection = new SqliteConnection(db);
-    const newUser = new User();
-    newUser.username = "frankTest";
-    newUser.password = "pwd";
     const userMapper = new UserMapper(connection);
     describe("#insert", () => {
         it("should return seq after inserting a new row", (done) => {
+            const newUser = new User();
+            newUser.username = "frankTest";
+            newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
                     console.log("insert id: ", id);
@@ -70,6 +70,14 @@ describe(".SqliteConnection", () => {
                 .catch((err) => {
                     done(err);
                 });
+        });
+    });
+
+    describe("#delete", () => {
+        it("delete by key", () => {
+            const newUser = new User();
+            newUser.username = "the user need delete";
+            newUser.password = "pwd";
         });
     });
 });
