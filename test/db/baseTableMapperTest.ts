@@ -41,4 +41,35 @@ describe(".SqliteConnection", () => {
                 });
         });
     });
+
+    describe("#update", () => {
+        it("change id = 2, name to 'hello world'", (done) => {
+            const updateUser = new User();
+            updateUser.id = 2;
+            updateUser.username = "hello world";
+            userMapper.updateByKeySelective(updateUser)
+                .then(() => {
+                    const searchUser = new User();
+                    searchUser.id = 2;
+                    return userMapper.select(searchUser);
+                })
+                .then((users) => {
+                    if (users.length === 0) {
+                        done("cannot find user");
+                        return;
+                    }
+
+                    const user = users[0];
+                    console.log(user);
+                    if (updateUser.username === user.username) {
+                        done();
+                    } else {
+                        done("user is invalid");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
 });

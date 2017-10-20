@@ -101,7 +101,7 @@ export class SqlTemplateProvider {
             }
 
             let propValue = o[colInfo.property];
-            if (selective && propValue) {
+            if (selective && CommonHelper.isNullOrUndefined(propValue)) {
                 return;
             }
 

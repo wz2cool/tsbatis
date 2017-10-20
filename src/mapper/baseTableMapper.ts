@@ -23,7 +23,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         return this.updateByKeyInternal(o, false);
     }
 
-    public updateSelectiveByKey(o: T): Promise<void> {
+    public updateByKeySelective(o: T): Promise<void> {
         return this.updateByKeyInternal(o, true);
     }
 
@@ -73,7 +73,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
 
     private updateByKeyInternal(o: T, selective: boolean): Promise<void> {
         try {
-            const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, false);
+            const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, selective);
             return this.run(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
