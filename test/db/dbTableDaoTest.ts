@@ -5,7 +5,6 @@ import { SqlTemplateProvider } from "../../src/provider";
 import { UserDao } from "./dao/userDao";
 import { User } from "./entity/table/user";
 
-
 describe(".dbDaoTest", () => {
     const dbPath = path.join(__dirname, "sqlite.db");
     console.log(dbPath);
