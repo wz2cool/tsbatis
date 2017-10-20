@@ -6,13 +6,13 @@
   "scripts": {
     "pretest": "npm run deletedist && npm run copydb && tsc -p tsconfig.test.json",
     "test": "nyc mocha dist/test --recursive",
-    "posttest": "npm run removenyc",
+    "posttest": "npm run removenyc && del-cli coverage",
     "prepublish": "tsc",
     "cover": "tsc -p tsconfig.test.json && istanbul cover ./node_modules/mocha/bin/_mocha dist/test/**/*Test.js --recursive",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && del-cli ./coverage",
     "copydb": "copyfiles -f ./test/db/sqlite.db ./dist/test/db/",
-    "removenyc": "rm -r .nyc_output",
-    "deletedist": "rm -r dist"
+    "removenyc": "del-cli .nyc_output",
+    "deletedist": "del-cli dist"
   },
   "repository": {
     "type": "git",
@@ -41,6 +41,7 @@
     "chai": "^4.1.2",
     "copyfiles": "^1.2.0",
     "coveralls": "^2.13.2",
+    "del-cli": "^1.1.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.3",
     "mocha-lcov-reporter": "^1.3.0",
