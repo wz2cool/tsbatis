@@ -140,7 +140,25 @@ export class SqlTemplateProvider {
         return sqlParam;
     }
 
-    // only for table entity
+    public static getSelectCountByKey<T extends TableEntity>(o: T): SqlTemplate {
+        const columnInfos = SqlTemplateProvider.getColumnInfos(o);
+        const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
+        if (CommonHelper.isNullOrUndefined(keyColumn)) {
+            throw new Error("cannot find key, please set iskey property in @column.");
+        }
+
+        const tableName = o.getTableName();
+        const whereStr = keyColumn.columnName + " = ?";
+        const sqlExpression = `SELECT COUNT(0) FROM ${tableName} WHERE ${whereStr}`;
+        const params: any[] = [];
+        params.push(o[keyColumn.property]);
+
+        const sqlParam = new SqlTemplate();
+        sqlParam.sqlExpression = sqlExpression;
+        sqlParam.params = params;
+        return sqlParam;
+    }
+
     public static getSelectByDynamicQuery<T extends TableEntity>(
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(new entityClass());
@@ -151,6 +169,28 @@ export class SqlTemplateProvider {
         const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, sorts);
         const columnStr = SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
         let expression = `SELECT ${columnStr} FROM ${table}`;
+        expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
+            ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
+        expression = CommonHelper.isBlank(sortSqlParam.sqlExpression)
+            ? expression : `${expression} ORDER BY ${sortSqlParam.sqlExpression}`;
+        let params: any = [];
+        params = params.concat(filterSqlParam.params);
+        params = params.concat(sortSqlParam.params);
+
+        const result = new SqlTemplate();
+        result.sqlExpression = expression;
+        result.params = params;
+        return result;
+    }
+
+    public static getSelectCountByDynamicQuery<T extends TableEntity>(
+        entityClass: { new(): T }, query: DynamicQuery<T>): SqlTemplate {
+        const table = (new entityClass()).getTableName();
+        const filters = query.filters;
+        const sorts = query.sorts;
+        const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, filters);
+        const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, sorts);
+        let expression = `SELECT COUNT(0) FROM ${table}`;
         expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
             ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
         expression = CommonHelper.isBlank(sortSqlParam.sqlExpression)
