@@ -1,6 +1,7 @@
 import { ColumnInfo } from "./columnInfo";
 import { CustomFilterDescriptor } from "./customFilterDescriptor";
 import { CustomSortDescriptor } from "./customSortDescriptor";
+import { DatabaseType } from "./databaseType";
 import { DynamicQuery } from "./dynamicQuery";
 import { Entity } from "./entity";
 import { FilterCondition } from "./filterCondition";
@@ -8,7 +9,6 @@ import { FilterDescriptor } from "./filterDescriptor";
 import { FilterDescriptorBase } from "./filterDescriptorBase";
 import { FilterGroupDescriptor } from "./filterGroupDescriptor";
 import { FilterOperator } from "./filterOperator";
-import { ISqlQuery } from "./iSqlQuery";
 import { SortDescriptor } from "./sortDescriptor";
 import { SortDescriptorBase } from "./sortDescritporBase";
 import { SortDirection } from "./sortDirection";
@@ -19,6 +19,7 @@ export {
     ColumnInfo,
     CustomFilterDescriptor,
     CustomSortDescriptor,
+    DatabaseType,
     DynamicQuery,
     Entity,
     FilterCondition,
@@ -29,7 +30,6 @@ export {
     SortDescriptor,
     SortDescriptorBase,
     SortDirection,
-    ISqlQuery,
     TableEntity,
     SqlTemplate,
 };

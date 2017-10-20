@@ -1,3 +1,4 @@
 import { BaseMapper } from "./baseMapper";
+import { BaseTableMapper } from "./baseTableMapper";
 
-export { BaseMapper };
+export { BaseMapper, BaseTableMapper };
