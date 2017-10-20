@@ -4,14 +4,15 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "pretest": "tsc -p tsconfig.test.json",
-    "test": "npm run copydb && nyc mocha dist/test --recursive",
+    "pretest": "npm run deletedist && npm run copydb && tsc -p tsconfig.test.json",
+    "test": "nyc mocha dist/test --recursive",
     "posttest": "npm run removenyc",
     "prepublish": "tsc",
     "cover": "tsc -p tsconfig.test.json && istanbul cover ./node_modules/mocha/bin/_mocha dist/test/**/*Test.js --recursive",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "copydb": "copyfiles -f ./test/db/sqlite.db ./dist/test/db/",
-    "removenyc": "rm -r .nyc_output"
+    "removenyc": "rm -r .nyc_output",
+    "deletedist": "rm -r dist"
   },
   "repository": {
     "type": "git",

@@ -37,15 +37,6 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         }
     }
 
-    public selectByKey(example: T): Promise<T[]> {
-        try {
-            const sqlParam = SqlTemplateProvider.getSelectByKey<T>(example);
-            const entityClass = EntityHelper.getEntityClass<T>(example);
-            return this.selectEntitiesInternal(entityClass, sqlParam.sqlExpression, sqlParam.params);
-        } catch (e) {
-            return new Promise<T[]>((resolve, reject) => reject(e));
-        }
-    }
 
     public selectCount(example: T): Promise<number> {
         try {
@@ -59,15 +50,6 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
     public delete(example: T): Promise<void> {
         try {
             const sqlParam = SqlTemplateProvider.getDelete<T>(example);
-            return this.runInternal(sqlParam.sqlExpression, sqlParam.params);
-        } catch (e) {
-            return new Promise<void>((resolve, reject) => reject(e));
-        }
-    }
-
-    public deleteByKey(example: T): Promise<void> {
-        try {
-            const sqlParam = SqlTemplateProvider.getDeleteByKey<T>(example);
             return this.runInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));

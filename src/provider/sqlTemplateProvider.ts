@@ -49,20 +49,19 @@ export class SqlTemplateProvider {
         return sqlParam;
     }
 
-    public static getDeleteByKey<T extends TableEntity>(o: T): SqlTemplate {
-        const columnInfos = SqlTemplateProvider.getColumnInfos(o);
+    public static getDeleteByKey<T extends TableEntity>(entityClass: { new(): T }, key: any): SqlTemplate {
+        const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
         }
 
-        const tableName = o.getTableName();
+        const tableName = new entityClass().getTableName();
         const keyColumnName = keyColumn.columnName;
-        const keyColumnValue = o[keyColumn.property];
         const expression = `DELETE FROM ${tableName} WHERE ${keyColumnName} = ?`;
         const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = expression;
-        sqlParam.params.push(keyColumnValue);
+        sqlParam.params.push(key);
         return sqlParam;
     }
 
@@ -125,19 +124,19 @@ export class SqlTemplateProvider {
         return sqlParam;
     }
 
-    public static getSelectByKey<T extends TableEntity>(o: T): SqlTemplate {
-        const columnInfos = SqlTemplateProvider.getColumnInfos(o);
+    public static getSelectByKey<T extends TableEntity>(entityClass: { new(): T }, key: any): SqlTemplate {
+        const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
         }
 
-        const tableName = o.getTableName();
+        const tableName = new entityClass().getTableName();
         const columnAsStr = SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
         const whereStr = keyColumn.columnName + " = ?";
         const sqlExpression = `SELECT ${columnAsStr} FROM ${tableName} WHERE ${whereStr}`;
         const params: any[] = [];
-        params.push(o[keyColumn.property]);
+        params.push(key);
 
         const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = sqlExpression;
@@ -151,18 +150,19 @@ export class SqlTemplateProvider {
         return this.getSelectByDynamicQuery<T>(entityClass, query);
     }
 
-    public static getSelectCountByKey<T extends TableEntity>(o: T): SqlTemplate {
-        const columnInfos = SqlTemplateProvider.getColumnInfos(o);
+    public static getSelectCountByKey<T extends TableEntity>(
+        entityClass: { new(): T }, key: any): SqlTemplate {
+        const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
         const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
         }
 
-        const tableName = o.getTableName();
+        const tableName = new entityClass().getTableName();
         const whereStr = keyColumn.columnName + " = ?";
         const sqlExpression = `SELECT COUNT(0) FROM ${tableName} WHERE ${whereStr}`;
         const params: any[] = [];
-        params.push(o[keyColumn.property]);
+        params.push(key);
 
         const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = sqlExpression;
@@ -286,7 +286,7 @@ export class SqlTemplateProvider {
         return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
     }
 
-    private static getColumnInfos<T extends Entity>(o: T): ColumnInfo[] {
+    private static getColumnInfos<T extends Entity>(o: T | { new(): T }): ColumnInfo[] {
         const entityName = EntityHelper.getEntityName(o);
         if (CommonHelper.isNullOrUndefined(entityName)) {
             throw new Error("cannot find entity, please set @column to entity!");

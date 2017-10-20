@@ -74,10 +74,33 @@ describe(".SqliteConnection", () => {
     });
 
     describe("#delete", () => {
-        it("delete by key", () => {
+        it("delete by key", (done) => {
             const newUser = new User();
             newUser.username = "the user need delete";
             newUser.password = "pwd";
+            userMapper.insertSelective(newUser)
+                .then((id) => {
+                    newUser.id = id;
+                    console.log("insert id: ", id);
+                    const searchUser = new User();
+                    searchUser.id = id;
+                    return userMapper.delete(searchUser);
+                })
+                .then(() => {
+                    const searchUser = new User();
+                    searchUser.id = newUser.id;
+                    return userMapper.select(searchUser);
+                })
+                .then((users) => {
+                    if (users.length === 0) {
+                        done();
+                    } else {
+                        done("user should be deleted");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
     });
 });
