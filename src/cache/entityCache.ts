@@ -8,6 +8,7 @@ export class EntityCache {
     }
 
     private static instance = new EntityCache();
+    private static entityClassCache: { [entity: string]: { new(): any } } = {};
     private readonly columnCache: { [entity: string]: { [property: string]: ColumnInfo } } = {};
     private constructor() {
         // hide constructor

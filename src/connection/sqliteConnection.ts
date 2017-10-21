@@ -46,6 +46,17 @@ export class SqliteConnection implements ISqlConnection {
         });
     }
     public selectCount(sql: string, params: any[], callback: (err: any, result: number) => void) {
-        throw new Error("Method not implemented.");
+        this.db.all(sql, params, (err: any, result: any) => {
+            if (CommonHelper.isNullOrUndefined(callback)) {
+                return;
+            }
+
+            if (CommonHelper.isNullOrUndefined(err)) {
+                console.log("xxxxxxxxxxXXXXXXXXXXXXXXXXX: ", result);
+                callback(null, 1);
+            } else {
+                callback(err, 1);
+            }
+        });
     }
 }

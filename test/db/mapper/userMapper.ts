@@ -9,4 +9,8 @@ export class UserMapper extends BaseTableMapper<User> {
     constructor(sqlConnection: ISqlConnection) {
         super(sqlConnection);
     }
+
+    public getEntityClass(): new () => User {
+        return User;
+    }
 }

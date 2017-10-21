@@ -37,8 +37,9 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         }
     }
 
-    public selectByKey(entityClass: { new(): T }, key: any): Promise<T[]> {
+    public selectByKey(key: any): Promise<T[]> {
         try {
+            const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
             return this.selectEntitiesInternal(entityClass, sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
@@ -46,9 +47,9 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         }
     }
 
-    public selectByDynamicQuery(
-        entityClass: { new(): T }, query: DynamicQuery<T>): Promise<T[]> {
+    public selectByDynamicQuery(query: DynamicQuery<T>): Promise<T[]> {
         try {
+            const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
             return this.selectEntitiesInternal(entityClass, sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
@@ -65,8 +66,9 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         }
     }
 
-    public selectCountByKey(entityClass: { new(): T }, key: any): Promise<number> {
+    public selectCountByKey(key: any): Promise<number> {
         try {
+            const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
             return this.selectCountInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
@@ -74,9 +76,9 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         }
     }
 
-    public selectCountByDynamicQuery(
-        entityClass: { new(): T }, query: DynamicQuery<T>): Promise<T[]> {
+    public selectCountByDynamicQuery(query: DynamicQuery<T>): Promise<T[]> {
         try {
+            const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectCountByDynamicQuery<T>(entityClass, query);
             return this.selectEntitiesInternal(entityClass, sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
@@ -93,17 +95,19 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         }
     }
 
-    public deleteByKey(entityClass: { new(): T }, key: any): Promise<number> {
+    public deleteByKey(key: any): Promise<number> {
         try {
+            const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getDeleteByKey<T>(entityClass, key);
-            return this.selectCountInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.runInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
         }
     }
 
-    public deleteByDynamicQuery(entityClass: { new(): T }, query: DynamicQuery<T>): Promise<void> {
+    public deleteByDynamicQuery(query: DynamicQuery<T>): Promise<void> {
         try {
+            const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getDeleteByDynamicQuery<T>(entityClass, query);
             return this.runInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {

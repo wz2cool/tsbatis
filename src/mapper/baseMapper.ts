@@ -10,6 +10,8 @@ export abstract class BaseMapper<T extends Entity> {
         this.sqlConnection = sqlQuery;
     }
 
+    public abstract getEntityClass(): { new(): T };
+
     protected runInternal(sql: string, params: any[]): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             this.sqlConnection.run(sql, params, (err, result) => {

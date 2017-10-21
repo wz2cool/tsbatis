@@ -1,12 +1,12 @@
 import { DatabaseType, Entity } from "../model";
 
-export abstract class ISqlConnection {
-    public abstract getDataBaseType(): DatabaseType;
+export interface ISqlConnection {
+    getDataBaseType(): DatabaseType;
 
-    public abstract run(sql: string, params: any[], callback: (err: any, result?: any) => void);
-    public abstract select(sql: string, params: any[], callback: (err: any, result: any[]) => void);
-    public abstract selectCount(sql: string, params: any[], callback: (err: any, result: number) => void);
-    public abstract selectEntities<T extends Entity>(
+    run(sql: string, params: any[], callback: (err: any, result?: any) => void);
+    select(sql: string, params: any[], callback: (err: any, result: any[]) => void);
+    selectCount(sql: string, params: any[], callback: (err: any, result: number) => void);
+    selectEntities<T extends Entity>(
         entityClass: { new(): T },
         sql: string,
         params: any[],
