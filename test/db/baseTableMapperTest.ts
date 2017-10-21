@@ -159,9 +159,37 @@ describe(".SqliteConnection", () => {
     });
 
     describe("#select", () => {
-        it("select by name", (done) => {
+        it("select by key", (done) => {
             const newUser = new User();
-            newUser.username = "newUserForSelectByName";
+            newUser.username = "select by key";
+            newUser.password = "pwd";
+            userMapper.insert(newUser)
+                .then((id) => {
+                    console.log("insert id: ", id);
+                    return userMapper.selectByKey(id);
+                })
+                .then((users) => {
+                    if (users.length === 0) {
+                        done("cannot find user");
+                        return;
+                    }
+
+                    const user = users[0];
+                    if (newUser.username === user.username
+                        && newUser.password === user.password) {
+                        done();
+                    } else {
+                        done("user is invalid");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+
+        it("select by example", (done) => {
+            const newUser = new User();
+            newUser.username = "newUserForSelectByExample";
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
@@ -169,6 +197,39 @@ describe(".SqliteConnection", () => {
                     const searchUser = new User();
                     searchUser.username = newUser.username;
                     return userMapper.select(searchUser);
+                })
+                .then((users) => {
+                    if (users.length === 0) {
+                        done("cannot find user");
+                        return;
+                    }
+
+                    const user = users[0];
+                    if (newUser.username === user.username
+                        && newUser.password === user.password) {
+                        done();
+                    } else {
+                        done("user is invalid");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+
+        it("select by dynamicQuery", (done) => {
+            const newUser = new User();
+            newUser.username = "newUserForSelectByDynamicQuery";
+            newUser.password = "pwd";
+            userMapper.insert(newUser)
+                .then((id) => {
+                    console.log("insert id: ", id);
+                    const nameFilter =
+                        new FilterDescriptor<User>((u) => u.username, FilterOperator.CONTAINS, "dynamicQuery");
+
+                    const query = DynamicQuery.createIntance<User>()
+                        .addFilters(nameFilter);
+                    return userMapper.selectByDynamicQuery(query);
                 })
                 .then((users) => {
                     if (users.length === 0) {
