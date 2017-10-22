@@ -31,7 +31,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const sqlParam = SqlTemplateProvider.getSelect<T>(example);
             const entityClass = EntityHelper.getEntityClass<T>(example);
-            return this.selectEntitiesInternal(entityClass, sqlParam.sqlExpression, sqlParam.params);
+            return this.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
@@ -41,7 +41,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
-            return this.selectEntitiesInternal(entityClass, sqlParam.sqlExpression, sqlParam.params);
+            return this.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
@@ -51,7 +51,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
-            return this.selectEntitiesInternal(entityClass, sqlParam.sqlExpression, sqlParam.params);
+            return this.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
@@ -80,7 +80,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectCountByDynamicQuery<T>(entityClass, query);
-            return this.selectEntitiesInternal(entityClass, sqlParam.sqlExpression, sqlParam.params);
+            return this.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
