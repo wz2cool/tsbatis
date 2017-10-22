@@ -50,7 +50,7 @@ export abstract class BaseMapper<T extends Entity> {
             const entities = await this.selectEntitiesRowBoundsInternal(sql, params, pageRowBounds);
             const selectCountSql = `SELECT COUNT(0) FROM (${sql}) AS t`;
             const total = await this.selectCountInternal(selectCountSql, params);
-            const page = new Page<T>(pageRowBounds, total, entities);
+            const page = new Page<T>(pageRowBounds.getPageNum(), pageRowBounds.getPageSize(), total, entities);
             return new Promise<Page<T>>((resolve, reject) => resolve(page));
         } catch (e) {
             return new Promise<Page<T>>((resolve, reject) => reject(e));

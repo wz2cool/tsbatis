@@ -1,5 +1,4 @@
 import { Entity } from "./entity";
-import { RowBounds } from "./rowBounds";
 
 export class Page<T extends Entity> {
     private pageNum: number;
@@ -8,12 +7,12 @@ export class Page<T extends Entity> {
     private pages: number;
     private entities: T[];
 
-    constructor(rowBounds: RowBounds, total: number, entities: T[]) {
-        // this.pageNum = pageNum;
-        // this.pageSize = pageSize;
-        // this.total = total;
-        // this.entities = entities;
-        // calculate pages
+    constructor(pageNum: number, pageSize: number, total: number, entities: T[]) {
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+        this.total = total;
+        this.entities = entities;
+        this.pageSize = this.calPages(pageSize, total);
     }
 
     public getPageNum(): number {
@@ -34,5 +33,9 @@ export class Page<T extends Entity> {
 
     public getEntities(): T[] {
         return this.entities;
+    }
+
+    private calPages(pageSize: number, total: number) {
+        return Math.ceil(total / pageSize);
     }
 }
