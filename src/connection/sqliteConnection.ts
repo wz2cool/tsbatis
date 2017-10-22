@@ -1,10 +1,11 @@
+import { injectable } from "inversify";
 import { CommonHelper } from "../helper";
 import { DatabaseType } from "../model";
 import { MappingProvider } from "../provider";
 import { ISqlConnection } from "./iSqlConnection";
 
+@injectable()
 export class SqliteConnection implements ISqlConnection {
-
     private readonly db: any;
     constructor(db: any) {
         this.db = db;

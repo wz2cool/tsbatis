@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import * as lodash from "lodash";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
@@ -5,6 +6,7 @@ import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, TableEnti
 import { SqlTemplateProvider } from "../provider";
 import { BaseMapper } from "./baseMapper";
 
+@injectable()
 export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<T> {
     constructor(sqlConnection: ISqlConnection) {
         super(sqlConnection);

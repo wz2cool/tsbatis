@@ -1,9 +1,11 @@
+import { injectable } from "inversify";
 import * as lodash from "lodash";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import { DatabaseType, DynamicQuery, Entity, Page, PageRowBounds, RowBounds } from "../model";
 import { SqlTemplateProvider } from "../provider";
 
+@injectable()
 export abstract class BaseInternalMapper<T extends Entity> {
     protected readonly sqlConnection: ISqlConnection;
     constructor(sqlQuery: ISqlConnection) {

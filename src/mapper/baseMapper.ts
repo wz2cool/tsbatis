@@ -1,8 +1,10 @@
+import { injectable } from "inversify";
 import * as lodash from "lodash";
 import { ISqlConnection } from "../connection";
 import { Entity, KeyValue, Page, PageRowBounds, RowBounds, SqlTemplate } from "../model";
 import { BaseInternalMapper } from "./baseInternalMapper";
 
+@injectable()
 export abstract class BaseMapper<T extends Entity> extends BaseInternalMapper<T> {
     constructor(sqlConnection: ISqlConnection) {
         super(sqlConnection);
