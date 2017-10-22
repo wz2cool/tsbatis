@@ -11,11 +11,12 @@ import {
 } from "./model";
 
 import { column } from "./decorator";
-import { BaseMapper } from "./mapper";
+import { BaseInternalMapper, BaseTableMapper } from "./mapper";
 import { MappingProvider, SqlTemplateProvider } from "./provider";
 
 export {
-  BaseMapper,
+  BaseInternalMapper,
+  BaseTableMapper,
   column,
   FilterCondition,
   FilterDescriptor,

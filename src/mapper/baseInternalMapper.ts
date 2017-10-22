@@ -4,7 +4,7 @@ import { CommonHelper, EntityHelper } from "../helper";
 import { DatabaseType, DynamicQuery, Entity, Page, PageRowBounds, RowBounds } from "../model";
 import { SqlTemplateProvider } from "../provider";
 
-export abstract class BaseMapper<T extends Entity> {
+export abstract class BaseInternalMapper<T extends Entity> {
     protected readonly sqlConnection: ISqlConnection;
     constructor(sqlQuery: ISqlConnection) {
         this.sqlConnection = sqlQuery;
@@ -12,7 +12,7 @@ export abstract class BaseMapper<T extends Entity> {
 
     public abstract getEntityClass(): { new(): T };
 
-    public run(sql: string, params: any[]): Promise<any> {
+    protected runInternal(sql: string, params: any[]): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             this.sqlConnection.run(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -24,7 +24,7 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    public selectEntities(sql: string, params: any[]): Promise<T[]> {
+    protected selectEntitiesInternal(sql: string, params: any[]): Promise<T[]> {
         const entityClass = this.getEntityClass();
         return new Promise<T[]>((resolve, reject) => {
             this.sqlConnection.selectEntities<T>(entityClass, sql, params, (err, result) => {
@@ -37,19 +37,19 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    public selectEntitiesRowBounds(sql: string, params: any[], rowBounds: RowBounds): Promise<T[]> {
+    protected selectEntitiesRowBoundsInternal(sql: string, params: any[], rowBounds: RowBounds): Promise<T[]> {
         const paging = this.getPaging(rowBounds);
         const selectPagingSql = `${sql} ${paging}`;
-        return this.selectEntities(selectPagingSql, params);
+        return this.selectEntitiesInternal(selectPagingSql, params);
     }
 
-    public async selectEntitiesPageRowBounds(
+    protected async selectEntitiesPageRowBoundsInternal(
         sql: string, params: any[], pageRowBounds: PageRowBounds): Promise<Page<T>> {
         try {
             const entityClass = this.getEntityClass();
-            const entities = await this.selectEntitiesRowBounds(sql, params, pageRowBounds);
+            const entities = await this.selectEntitiesRowBoundsInternal(sql, params, pageRowBounds);
             const selectCountSql = `SELECT COUNT(0) FROM (${sql}) AS t`;
-            const total = await this.selectCount(selectCountSql, params);
+            const total = await this.selectCountInternal(selectCountSql, params);
             const page = new Page<T>(pageRowBounds.getPageNum(), pageRowBounds.getPageSize(), total, entities);
             return new Promise<Page<T>>((resolve, reject) => resolve(page));
         } catch (e) {
@@ -57,7 +57,7 @@ export abstract class BaseMapper<T extends Entity> {
         }
     }
 
-    public select(sql: string, params: any[]): Promise<any[]> {
+    protected selectInternal(sql: string, params: any[]): Promise<any[]> {
         return new Promise<any[]>((resolve, reject) => {
             this.sqlConnection.select(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -69,7 +69,7 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    public selectCount(sql: string, params: any[]): Promise<number> {
+    protected selectCountInternal(sql: string, params: any[]): Promise<number> {
         return new Promise<number>((resolve, reject) => {
             this.sqlConnection.selectCount(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {

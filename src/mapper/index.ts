@@ -1,4 +1,4 @@
-import { BaseMapper } from "./baseMapper";
+import { BaseInternalMapper } from "./baseInternalMapper";
 import { BaseTableMapper } from "./baseTableMapper";
 
-export { BaseMapper, BaseTableMapper };
+export { BaseInternalMapper, BaseTableMapper };
