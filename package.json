@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/wz2cool/sql-dynamic-query#readme",
   "dependencies": {
-    "inversify": "^4.3.0",
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10"
   },
@@ -51,6 +50,6 @@
     "nyc": "^11.2.1",
     "sqlite3": "^3.1.13",
     "tslint": "^5.7.0",
-    "typescript": "^2.5.3"
+    "inversify": "^4.3.0"
   }
 }

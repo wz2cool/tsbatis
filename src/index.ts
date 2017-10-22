@@ -1,4 +1,5 @@
 import {
+  DynamicQuery,
   Entity,
   FilterCondition,
   FilterDescriptor,
@@ -10,12 +11,15 @@ import {
   TableEntity,
 } from "./model";
 
+import { ISqlConnection, SqliteConnection } from "./connection";
 import { column } from "./decorator";
-import { BaseInternalMapper, BaseTableMapper } from "./mapper";
+import { CommonHelper } from "./helper";
+import { BaseInternalMapper, BaseMapper, BaseTableMapper } from "./mapper";
 import { MappingProvider, SqlTemplateProvider } from "./provider";
 
 export {
   BaseInternalMapper,
+  BaseMapper,
   BaseTableMapper,
   column,
   FilterCondition,
@@ -27,4 +31,9 @@ export {
   SortDirection,
   SqlTemplateProvider,
   MappingProvider,
+  Entity,
+  ISqlConnection,
+  SqliteConnection,
+  DynamicQuery,
+  CommonHelper,
 };

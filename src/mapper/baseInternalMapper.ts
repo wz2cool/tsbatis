@@ -90,7 +90,9 @@ export abstract class BaseInternalMapper<T extends Entity> {
             case DatabaseType.SQLITE:
                 return `limit ${offset}, ${limit}`;
             default:
-                throw new Error(`don't support databaseType: ${DatabaseType[databaseType]}`);
+                const databaseTypeStr = DatabaseType[databaseType as number];
+                const err = `don't support databaseType: ${databaseTypeStr}`;
+                throw new Error(err);
         }
     }
 }
