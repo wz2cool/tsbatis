@@ -1,7 +1,7 @@
 import * as lodash from "lodash";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
-import { DynamicQuery, Entity } from "../model";
+import { DatabaseType, DynamicQuery, Entity, Page, PageRowBounds, RowBounds } from "../model";
 import { SqlTemplateProvider } from "../provider";
 
 export abstract class BaseMapper<T extends Entity> {
@@ -24,7 +24,8 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    protected selectEntitiesInternal(entityClass: { new(): T }, sql: string, params: any[]): Promise<T[]> {
+    protected selectEntitiesInternal(sql: string, params: any[]): Promise<T[]> {
+        const entityClass = this.getEntityClass();
         return new Promise<T[]>((resolve, reject) => {
             this.sqlConnection.selectEntities<T>(entityClass, sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -34,6 +35,26 @@ export abstract class BaseMapper<T extends Entity> {
                 }
             });
         });
+    }
+
+    protected selectEntitiesRowBoundsInternal(sql: string, params: any[], rowBounds: RowBounds): Promise<T[]> {
+        const paging = this.getPaging(rowBounds);
+        const selectPagingSql = `${sql} ${paging}`;
+        return this.selectEntitiesInternal(selectPagingSql, params);
+    }
+
+    protected async selectEntitiesPageRowBoundsInternal(
+        sql: string, params: any[], pageRowBounds: PageRowBounds): Promise<Page<T>> {
+        try {
+            const entityClass = this.getEntityClass();
+            const entities = await this.selectEntitiesRowBoundsInternal(sql, params, pageRowBounds);
+            const selectCountSql = `SELECT COUNT(0) FROM (${sql}) AS t`;
+            const total = await this.selectCountInternal(selectCountSql, params);
+            const page = new Page<T>(pageRowBounds, total, entities);
+            return new Promise<Page<T>>((resolve, reject) => resolve(page));
+        } catch (e) {
+            return new Promise<Page<T>>((resolve, reject) => reject(e));
+        }
     }
 
     protected selectInternal(sql: string, params: any[]): Promise<any[]> {
@@ -58,5 +79,18 @@ export abstract class BaseMapper<T extends Entity> {
                 }
             });
         });
+    }
+
+    private getPaging(rowBounds: RowBounds): string {
+        const databaseType = this.sqlConnection.getDataBaseType();
+        const offset = rowBounds.offset;
+        const limit = rowBounds.limit;
+        switch (databaseType) {
+            case DatabaseType.MYSQL:
+            case DatabaseType.SQLITE:
+                return `limit ${offset}, ${limit}`;
+            default:
+                throw new Error(`don't support databaseType: ${DatabaseType[databaseType]}`);
+        }
     }
 }

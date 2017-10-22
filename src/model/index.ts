@@ -9,6 +9,9 @@ import { FilterDescriptor } from "./filterDescriptor";
 import { FilterDescriptorBase } from "./filterDescriptorBase";
 import { FilterGroupDescriptor } from "./filterGroupDescriptor";
 import { FilterOperator } from "./filterOperator";
+import { Page } from "./page";
+import { PageRowBounds } from "./pageRowBounds";
+import { RowBounds } from "./rowBounds";
 import { SortDescriptor } from "./sortDescriptor";
 import { SortDescriptorBase } from "./sortDescritporBase";
 import { SortDirection } from "./sortDirection";
@@ -32,4 +35,7 @@ export {
     SortDirection,
     TableEntity,
     SqlTemplate,
+    RowBounds,
+    Page,
+    PageRowBounds,
 };

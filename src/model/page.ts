@@ -1,37 +1,38 @@
 import { Entity } from "./entity";
+import { RowBounds } from "./rowBounds";
 
 export class Page<T extends Entity> {
-    private _pageNum: number;
-    private _pageSize: number;
-    private _total: number;
-    private _pages: number;
-    private _entities: T[];
+    private pageNum: number;
+    private pageSize: number;
+    private total: number;
+    private pages: number;
+    private entities: T[];
 
-    constructor(pageNum: number, pageSize: number, total: number, entities: T[]) {
-        this._pageNum = pageNum;
-        this._pageSize = pageSize;
-        this._total = total;
-        this._entities = entities;
+    constructor(rowBounds: RowBounds, total: number, entities: T[]) {
+        // this.pageNum = pageNum;
+        // this.pageSize = pageSize;
+        // this.total = total;
+        // this.entities = entities;
         // calculate pages
     }
 
-    public get pageNum() {
-        return this._pageNum;
+    public getPageNum(): number {
+        return this.pageNum;
     }
 
-    public get pageSize() {
-        return this._pageSize;
+    public getPageSize(): number {
+        return this.pageSize;
     }
 
-    public get total() {
-        return this._total;
+    public getTotal(): number {
+        return this.total;
     }
 
-    public get pages() {
-        return this._pages;
+    public getPages(): number {
+        return this.pages;
     }
 
-    public get entities() {
-        return this._entities;
+    public getEntities(): T[] {
+        return this.entities;
     }
 }
