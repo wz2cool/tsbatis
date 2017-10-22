@@ -1,12 +1,12 @@
-import { Column } from "../../../../src/decorator";
+import { column } from "../../../../src/decorator";
 import { TableEntity } from "../../../../src/model";
 
 export class User extends TableEntity {
-    @Column("id", true, false)
+    @column("id", true, false)
     public id: number;
-    @Column("username")
+    @column("username")
     public username: string;
-    @Column("password")
+    @column("password")
     public password: string;
 
     public getTableName(): string {
