@@ -21,7 +21,7 @@ describe(".SqliteConnection", () => {
                     console.log("insert id: ", id);
                     const searchUser = new User();
                     searchUser.id = id;
-                    return userMapper.select(searchUser);
+                    return userMapper.selectByExample(searchUser);
                 })
                 .then((users) => {
                     if (users.length === 0) {
@@ -52,7 +52,7 @@ describe(".SqliteConnection", () => {
                 .then(() => {
                     const searchUser = new User();
                     searchUser.id = 2;
-                    return userMapper.select(searchUser);
+                    return userMapper.selectByExample(searchUser);
                 })
                 .then((users) => {
                     if (users.length === 0) {
@@ -110,7 +110,7 @@ describe(".SqliteConnection", () => {
                     console.log("insert id: ", id);
                     const searchUser = new User();
                     searchUser.username = newUser.username;
-                    return userMapper.delete(searchUser);
+                    return userMapper.deleteByExample(searchUser);
                 })
                 .then(() => {
                     return userMapper.selectByKey(newUser.id);
@@ -196,7 +196,7 @@ describe(".SqliteConnection", () => {
                     console.log("insert id: ", id);
                     const searchUser = new User();
                     searchUser.username = newUser.username;
-                    return userMapper.select(searchUser);
+                    return userMapper.selectByExample(searchUser);
                 })
                 .then((users) => {
                     if (users.length === 0) {

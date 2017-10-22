@@ -27,11 +27,11 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         return this.updateByKeyInternal(o, true);
     }
 
-    public select(example: T): Promise<T[]> {
+    public selectByExample(example: T): Promise<T[]> {
         try {
             const sqlParam = SqlTemplateProvider.getSelect<T>(example);
             const entityClass = EntityHelper.getEntityClass<T>(example);
-            return this.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.selectEntities(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
@@ -41,7 +41,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
-            return this.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.selectEntities(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
@@ -51,16 +51,16 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
-            return this.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.selectEntities(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
     }
 
-    public selectCount(example: T): Promise<number> {
+    public selectCountByExample(example: T): Promise<number> {
         try {
             const sqlParam = SqlTemplateProvider.getSelectCount<T>(example);
-            return this.selectCountInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.selectCount(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
         }
@@ -70,7 +70,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
-            return this.selectCountInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.selectCount(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
         }
@@ -80,16 +80,16 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectCountByDynamicQuery<T>(entityClass, query);
-            return this.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.selectEntities(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
     }
 
-    public delete(example: T): Promise<void> {
+    public deleteByExample(example: T): Promise<void> {
         try {
             const sqlParam = SqlTemplateProvider.getDelete<T>(example);
-            return this.runInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.run(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
         }
@@ -99,7 +99,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getDeleteByKey<T>(entityClass, key);
-            return this.runInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.run(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
         }
@@ -109,7 +109,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getDeleteByDynamicQuery<T>(entityClass, query);
-            return this.runInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.run(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
         }
@@ -118,7 +118,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
     private async insertInternal(o: T, selective: boolean, returnAutoIncreaseId: boolean): Promise<number> {
         try {
             const sqlParam = SqlTemplateProvider.getInsert<T>(o, selective);
-            const result = await this.runInternal(sqlParam.sqlExpression, sqlParam.params);
+            const result = await this.run(sqlParam.sqlExpression, sqlParam.params);
             if (!returnAutoIncreaseId) {
                 return new Promise<number>((resolve, reject) => resolve());
             }
@@ -137,7 +137,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
     private updateByKeyInternal(o: T, selective: boolean): Promise<void> {
         try {
             const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, selective);
-            return this.runInternal(sqlParam.sqlExpression, sqlParam.params);
+            return this.run(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
         }
@@ -146,7 +146,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
     private async getSeqIdForSqlite(o: T): Promise<number> {
         const sql = "SELECT seq FROM sqlite_sequence WHERE name = ?";
         const tableName = o.getTableName();
-        const result = await this.selectInternal(sql, [tableName]);
+        const result = await super.select(sql, [tableName]);
         return new Promise<number>((resolve, reject) => {
             if (result.length > 0) {
                 const seqId = Number(result[0].seq);
