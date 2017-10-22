@@ -75,13 +75,13 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<
         }
     }
 
-    public selectCountByDynamicQuery(query: DynamicQuery<T>): Promise<T[]> {
+    public selectCountByDynamicQuery(query: DynamicQuery<T>): Promise<number> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectCountByDynamicQuery<T>(entityClass, query);
-            return super.selectEntitiesInternal(sqlParam.sqlExpression, sqlParam.params);
+            return super.selectCountInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
-            return new Promise<T[]>((resolve, reject) => reject(e));
+            return new Promise<number>((resolve, reject) => reject(e));
         }
     }
 

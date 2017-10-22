@@ -250,4 +250,77 @@ describe(".SqliteConnection", () => {
                 });
         });
     });
+
+    describe("#selectCount", () => {
+        it("select count by key", (done) => {
+            const newUser = new User();
+            newUser.username = "select by key count";
+            newUser.password = "pwd";
+            userMapper.insert(newUser)
+                .then((id) => {
+                    console.log("insert id: ", id);
+                    return userMapper.selectCountByKey(id);
+                })
+                .then((count) => {
+                    if (count === 1) {
+                        done();
+                    } else {
+                        done("count should be 1");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+
+        it("select count by example", (done) => {
+            const newUser = new User();
+            newUser.username = "newUserForSelectCountByExample";
+            newUser.password = "pwd";
+            userMapper.insert(newUser)
+                .then((id) => {
+                    console.log("insert id: ", id);
+                    const searchUser = new User();
+                    searchUser.username = newUser.username;
+                    return userMapper.selectCountByExample(searchUser);
+                })
+                .then((count) => {
+                    if (count === 1) {
+                        done();
+                    } else {
+                        done("count should be 1");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+
+        it("select count by dynamicQuery", (done) => {
+            const newUser = new User();
+            newUser.username = "newUserForSelectCountByDynamicQuery";
+            newUser.password = "pwd";
+            userMapper.insert(newUser)
+                .then((id) => {
+                    console.log("insert id: ", id);
+                    const nameFilter =
+                        new FilterDescriptor<User>(
+                            (u) => u.username, FilterOperator.EQUAL, "newUserForSelectCountByDynamicQuery");
+
+                    const query = DynamicQuery.createIntance<User>()
+                        .addFilters(nameFilter);
+                    return userMapper.selectCountByDynamicQuery(query);
+                })
+                .then((count) => {
+                    if (count === 1) {
+                        done();
+                    } else {
+                        done("count should be 1");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
 });

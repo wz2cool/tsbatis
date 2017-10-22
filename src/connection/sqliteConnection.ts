@@ -52,7 +52,6 @@ export class SqliteConnection implements ISqlConnection {
             }
 
             if (CommonHelper.isNullOrUndefined(err)) {
-                console.log("xxxxxxxxxxXXXXXXXXXXXXXXXXX: ", result);
                 callback(null, 1);
             } else {
                 callback(err, 1);
