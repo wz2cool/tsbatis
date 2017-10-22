@@ -8,6 +8,11 @@ export abstract class BaseMapper<T extends Entity> extends BaseInternalMapper<T>
         super(sqlConnection);
     }
 
+    public select(sql: string, paramMap: { [key: string]: any }): Promise<any> {
+        const sqlTemplate = this.getSqlTemplate(sql, paramMap);
+        return super.selectInternal(sqlTemplate.sqlExpression, sqlTemplate.params);
+    }
+
     public selectEntities(sql: string, paramMap: { [key: string]: any }): Promise<T[]> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
         return super.selectEntitiesInternal(sqlTemplate.sqlExpression, sqlTemplate.params);
