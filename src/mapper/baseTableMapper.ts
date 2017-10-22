@@ -3,10 +3,9 @@ import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, TableEntity } from "../model";
 import { SqlTemplateProvider } from "../provider";
-import { BaseInternalMapper } from "./baseInternalMapper";
+import { BaseMapper } from "./baseMapper";
 
-export abstract class BaseTableMapper<T extends TableEntity> extends BaseInternalMapper<T> {
-    protected readonly sqlConnection: ISqlConnection;
+export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<T> {
     constructor(sqlConnection: ISqlConnection) {
         super(sqlConnection);
     }

@@ -9,6 +9,7 @@ import { FilterDescriptor } from "./filterDescriptor";
 import { FilterDescriptorBase } from "./filterDescriptorBase";
 import { FilterGroupDescriptor } from "./filterGroupDescriptor";
 import { FilterOperator } from "./filterOperator";
+import { KeyValue } from "./keyValue";
 import { Page } from "./page";
 import { PageRowBounds } from "./pageRowBounds";
 import { RowBounds } from "./rowBounds";
@@ -38,4 +39,5 @@ export {
     RowBounds,
     Page,
     PageRowBounds,
+    KeyValue,
 };
