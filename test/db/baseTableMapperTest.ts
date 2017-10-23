@@ -7,7 +7,7 @@ import { User } from "./entity/table/user";
 import { UserMapper } from "./mapper/userMapper";
 
 describe(".SqliteConnection", () => {
-    const dbPath = path.join(__dirname, "sqlite.db");
+    const dbPath = path.join(__dirname, "../sqlite.db");
     const db = new sqlite3.Database(dbPath);
     const connection = new SqliteConnection(db);
     const userMapper = new UserMapper(connection);

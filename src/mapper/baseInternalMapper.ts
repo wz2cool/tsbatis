@@ -1,10 +1,10 @@
 import { injectable } from "inversify";
 import * as lodash from "lodash";
+import "reflect-metadata";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import { DatabaseType, DynamicQuery, Entity, Page, PageRowBounds, RowBounds } from "../model";
 import { SqlTemplateProvider } from "../provider";
-import "reflect-metadata";
 
 @injectable()
 export abstract class BaseInternalMapper<T extends Entity> {

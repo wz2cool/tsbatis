@@ -1,5 +1,6 @@
 import { injectable } from "inversify";
 import * as lodash from "lodash";
+import "reflect-metadata";
 import { ISqlConnection } from "../connection";
 import { Entity, KeyValue, Page, PageRowBounds, RowBounds, SqlTemplate } from "../model";
 import { BaseInternalMapper } from "./baseInternalMapper";
