@@ -9,7 +9,6 @@ export class InjectableSqlitedb {
 
     constructor() {
         const dbPath = path.join(__dirname, "../../northwind.db");
-        console.log("ccccccccccccccccccccccccccccccccccccccc: ", dbPath);
         this.sqlitedb = new sqlite3.Database(dbPath);
     }
 }
