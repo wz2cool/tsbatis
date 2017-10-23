@@ -4,6 +4,7 @@ import "reflect-metadata";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import {
+    DatabaseType,
     Entity,
     FilterDescriptorBase,
     KeyValue,

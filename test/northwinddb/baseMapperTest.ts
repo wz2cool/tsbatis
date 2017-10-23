@@ -18,7 +18,7 @@ import { InjectableSqliteConnection } from "./connection/injectableSqliteConnect
 import { InjectableSqlitedb } from "./connection/injectableSqlitedb";
 import { NorthwindProductView } from "./entity/view/NothwindProductView";
 import { ProductViewMapper } from "./mapper/productViewMapper";
-import { QueryTemplate } from "./template/queryTemplate";
+import { ProductViewTemplate } from "./template/productViewTemplate";
 
 const myContainer = new Container();
 myContainer.bind<InjectableSqliteConnection>(InjectableSqliteConnection).toSelf();
@@ -36,7 +36,7 @@ describe("baseMapper Test", () => {
     describe("base Mapper test", () => {
         it("mybatis style sql template", (done) => {
             const productViewMapper = myContainer.get<ProductViewMapper>(ProductViewMapper);
-            const query = QueryTemplate.getSelectPriceGreaterThan20<NorthwindProductView>(NorthwindProductView);
+            const query = ProductViewTemplate.getSelectPriceGreaterThan20();
             const paramMap: { [key: string]: any } = {};
             paramMap.price = 20;
             productViewMapper.selectEntities(query, paramMap)
