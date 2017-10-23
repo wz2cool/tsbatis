@@ -70,7 +70,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     public selectCountByKey(key: any): Promise<number> {
         try {
             const entityClass = this.getEntityClass();
-            const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
+            const sqlParam = SqlTemplateProvider.getSelectCountByKey<T>(entityClass, key);
             return super.selectCount(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));

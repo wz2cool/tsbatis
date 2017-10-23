@@ -253,6 +253,7 @@ describe(".SqliteConnection", () => {
                     return userMapper.selectCountByKey(id);
                 })
                 .then((count) => {
+                    console.log("count: ", count);
                     if (count >= 1) {
                         done();
                     } else {

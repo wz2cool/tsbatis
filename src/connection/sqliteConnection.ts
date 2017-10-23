@@ -48,7 +48,7 @@ export class SqliteConnection implements ISqlConnection {
         });
     }
     public selectCount(sql: string, params: any[], callback: (err: any, result: number) => void) {
-        console.log("sql: ", sql);
+        console.log("selec Count sql: ", sql);
         console.log("params: ", params);
         this.db.all(sql, params, (err: any, result: any) => {
             if (CommonHelper.isNullOrUndefined(callback)) {
