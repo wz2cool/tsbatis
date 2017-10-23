@@ -8,7 +8,8 @@ export class InjectableSqlitedb {
     public readonly sqlitedb: sqlite3.Database;
 
     constructor() {
-        const dbPath = path.join(__dirname, "../northwind.db");
+        const dbPath = path.join(__dirname, "../../northwind.db");
+        console.log("ccccccccccccccccccccccccccccccccccccccc: ", dbPath);
         this.sqlitedb = new sqlite3.Database(dbPath);
     }
 }

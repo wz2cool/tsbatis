@@ -2,16 +2,15 @@ import { inject, injectable } from "inversify";
 import "reflect-metadata";
 import { BaseMapper, ISqlConnection } from "../../../src";
 import { InjectableSqliteConnection } from "../connection/injectableSqliteConnection";
-import { OrderView } from "../entity/view/orderView";
-import { TYPES } from "../ioc/types";
+import { NorthwindProductView } from "../entity/view/NothwindProductView";
 
 @injectable()
-export class OrderViewMapper extends BaseMapper<OrderView> {
+export class ProductViewMapper extends BaseMapper<NorthwindProductView> {
     constructor(connection: InjectableSqliteConnection) {
         super(connection);
     }
 
-    public getEntityClass(): new () => OrderView {
-        return OrderView;
+    public getEntityClass(): new () => NorthwindProductView {
+        return NorthwindProductView;
     }
 }

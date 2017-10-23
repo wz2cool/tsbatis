@@ -8,6 +8,7 @@ import {
     FilterDescriptor,
     FilterOperator,
     ISqlConnection,
+    SortDescriptor,
     SqliteConnection,
 } from "../../src";
 
@@ -15,19 +16,41 @@ import { Container } from "inversify";
 import "reflect-metadata";
 import { InjectableSqliteConnection } from "./connection/injectableSqliteConnection";
 import { InjectableSqlitedb } from "./connection/injectableSqlitedb";
-import { OrderView } from "./entity/view/orderView";
-import { TYPES } from "./ioc/types";
-import { OrderViewMapper } from "./mapper/orderViewMapper";
+import { NorthwindProductView } from "./entity/view/NothwindProductView";
+import { ProductViewMapper } from "./mapper/productViewMapper";
+import { QueryTemplate } from "./template/queryTemplate";
 
 const myContainer = new Container();
 myContainer.bind<InjectableSqliteConnection>(InjectableSqliteConnection).toSelf();
-myContainer.bind<OrderViewMapper>(OrderViewMapper).toSelf();
+myContainer.bind<ProductViewMapper>(ProductViewMapper).toSelf();
 myContainer.bind<InjectableSqlitedb>(InjectableSqlitedb).toSelf();
 
-describe("inject Test", () => {
-    it("should get inject value", () => {
-        const orderViewMapper = myContainer.get<OrderViewMapper>(OrderViewMapper);
-        console.log("inject value: ", orderViewMapper);
-        expect(false).to.be.eq(CommonHelper.isNullOrUndefined(orderViewMapper));
+describe("baseMapper Test", () => {
+    describe("inject Test", () => {
+        it("should get inject value", () => {
+            const productViewMapper = myContainer.get<ProductViewMapper>(ProductViewMapper);
+            expect(false).to.be.eq(CommonHelper.isNullOrUndefined(productViewMapper));
+        });
+    });
+
+    describe("base Mapper test", () => {
+        it("mybatis sql template", (done) => {
+            const productViewMapper = myContainer.get<ProductViewMapper>(ProductViewMapper);
+            const query = QueryTemplate.getSelectPriceGreaterThan20<NorthwindProductView>(NorthwindProductView);
+            const paramMap: { [key: string]: any } = {};
+            paramMap.price = 20;
+            productViewMapper.selectEntities(query, paramMap)
+                .then((priceViews) => {
+                    if (priceViews.length > 0) {
+                        console.log(priceViews);
+                        done();
+                    } else {
+                        done("should have items");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
     });
 });

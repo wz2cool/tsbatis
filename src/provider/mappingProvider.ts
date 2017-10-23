@@ -8,7 +8,6 @@ export class MappingProvider {
         const cache = EntityCache.getInstance();
         const entityName = EntityHelper.getEntityName(entity);
         const columnInfos = cache.getColumnInfos(entityName);
-
         return lodash.map(dbObjs, (dbObj) => {
             const entityObj = EntityHelper.createObject<T>(entity);
             columnInfos.forEach((colInfo) => {

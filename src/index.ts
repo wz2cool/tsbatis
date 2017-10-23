@@ -13,7 +13,7 @@ import {
 
 import { ISqlConnection, SqliteConnection } from "./connection";
 import { column } from "./decorator";
-import { CommonHelper } from "./helper";
+import { CommonHelper, EntityHelper } from "./helper";
 import { BaseInternalMapper, BaseMapper, BaseTableMapper } from "./mapper";
 import { MappingProvider, SqlTemplateProvider } from "./provider";
 
@@ -36,4 +36,5 @@ export {
   SqliteConnection,
   DynamicQuery,
   CommonHelper,
+  EntityHelper,
 };
