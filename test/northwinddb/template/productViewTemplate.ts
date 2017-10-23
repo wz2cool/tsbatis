@@ -18,7 +18,7 @@ export class ProductViewTemplate {
         //     `LEFT JOIN Category ON Product.CategoryId = Category.Id ${wherePlaceholder} ${orderByPlaceholder}`;
 
         // return query;
-
+        const columnAsPlaceHolder =  
 
     }
 
