@@ -39,7 +39,7 @@ describe("baseMapper Test", () => {
             const query = ProductViewTemplate.getSelectPriceGreaterThan20();
             const paramMap: { [key: string]: any } = {};
             paramMap.price = 20;
-            productViewMapper.selectEntities(query, paramMap)
+            productViewMapper.mybatisSelectEntities(query, paramMap)
                 .then((priceViews) => {
                     if (priceViews.length > 0) {
                         console.log(priceViews);
