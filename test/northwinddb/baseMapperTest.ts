@@ -8,6 +8,7 @@ import {
     FilterDescriptor,
     FilterOperator,
     ISqlConnection,
+    PageRowBounds,
     SortDescriptor,
     SqliteConnection,
 } from "../../src";
@@ -34,8 +35,8 @@ describe("baseMapper Test", () => {
     });
 
     describe("base Mapper test", () => {
+        const productViewMapper = myContainer.get<ProductViewMapper>(ProductViewMapper);
         it("mybatis style sql template", (done) => {
-            const productViewMapper = myContainer.get<ProductViewMapper>(ProductViewMapper);
             const query = ProductViewTemplate.getSelectPriceGreaterThan20();
             const paramMap: { [key: string]: any } = {};
             paramMap.price = 20;
@@ -47,6 +48,27 @@ describe("baseMapper Test", () => {
                     } else {
                         done("should have items");
                     }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+
+        it("paging", (done) => {
+            const priceFilter =
+                new FilterDescriptor<NorthwindProductView>((u) => u.unitPrice, FilterOperator.GREATER_THAN, 20);
+            const nameSort =
+                new SortDescriptor<NorthwindProductView>((u) => u.productName);
+            const dynamicQuery = DynamicQuery.createIntance<NorthwindProductView>()
+                .addFilters(priceFilter).addSorts(nameSort);
+
+            const sqlTemplate = ProductViewTemplate.getSelectProductViewByDynamicQuery(dynamicQuery);
+            const pageRowBounds = new PageRowBounds(1, 20);
+            productViewMapper
+                .selectEntitiesPageRowBounds(sqlTemplate.sqlExpression, sqlTemplate.params, pageRowBounds)
+                .then((page) => {
+                    console.log(page);
+                    done();
                 })
                 .catch((err) => {
                     done(err);

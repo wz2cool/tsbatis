@@ -5,9 +5,12 @@ import {
   FilterDescriptor,
   FilterDescriptorBase,
   FilterOperator,
+  PageRowBounds,
+  RowBounds,
   SortDescriptor,
   SortDescriptorBase,
   SortDirection,
+  SqlTemplate,
   TableEntity,
 } from "./model";
 
@@ -37,4 +40,7 @@ export {
   DynamicQuery,
   CommonHelper,
   EntityHelper,
+  SqlTemplate,
+  RowBounds,
+  PageRowBounds,
 };

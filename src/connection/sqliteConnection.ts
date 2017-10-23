@@ -55,9 +55,9 @@ export class SqliteConnection implements ISqlConnection {
             }
 
             if (CommonHelper.isNullOrUndefined(err)) {
-                callback(null, 1);
+                callback(null, result[0].total);
             } else {
-                callback(err, 1);
+                callback(err, null);
             }
         });
     }

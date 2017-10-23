@@ -6,8 +6,10 @@ export class PageRowBounds extends RowBounds {
 
     // (pageNum = 1) is first page.
     constructor(pageNum: number, pageSize: number) {
-        const usePageNume = pageNum < 1 ? 1 : pageNum;
+        const usePageNume = (pageNum < 1) ? 1 : pageNum;
         super((usePageNume - 1) * pageSize, pageSize);
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
     }
 
     public getPageNum(): number {

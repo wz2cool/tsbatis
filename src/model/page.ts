@@ -12,7 +12,7 @@ export class Page<T extends Entity> {
         this.pageSize = pageSize;
         this.total = total;
         this.entities = entities;
-        this.pageSize = this.calPages(pageSize, total);
+        this.pages = this.calPages(pageSize, total);
     }
 
     public getPageNum(): number {
