@@ -2,7 +2,7 @@ import { expect } from "chai";
 import * as path from "path";
 import * as sqlite3 from "sqlite3";
 import {
-    BaseMapper,
+    BaseMybatisMapper,
     CommonHelper,
     DynamicQuery,
     FilterDescriptor,

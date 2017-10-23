@@ -5,9 +5,9 @@ import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, TableEntity } from "../model";
 import { SqlTemplateProvider } from "../provider";
-import { BaseMapper } from "./baseMapper";
+import { BaseMybatisMapper } from "./baseMybatisMapper";
 
-export abstract class BaseTableMapper<T extends TableEntity> extends BaseMapper<T> {
+export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatisMapper<T> {
     constructor(sqlConnection: ISqlConnection) {
         super(sqlConnection);
     }

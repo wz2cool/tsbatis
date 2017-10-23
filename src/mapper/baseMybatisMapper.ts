@@ -16,7 +16,7 @@ import { SqlTemplateProvider } from "../provider";
 import { BaseInternalMapper } from "./baseInternalMapper";
 
 @injectable()
-export abstract class BaseMapper<T extends Entity> extends BaseInternalMapper<T> {
+export abstract class BaseMybatisMapper<T extends Entity> extends BaseInternalMapper<T> {
     constructor(sqlConnection: ISqlConnection) {
         super(sqlConnection);
     }
