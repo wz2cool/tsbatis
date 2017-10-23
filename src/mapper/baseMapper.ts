@@ -73,10 +73,8 @@ export abstract class BaseMapper<T extends Entity> {
         try {
             const entityClass = this.getEntityClass();
             const entities = await this.selectEntitiesRowBounds(plainSql, params, pageRowBounds);
-            const selectCountSql = `SELECT COUNT(0) AS total FROM (${plainSql}) AS t`;
-            console.log("selectCountSql: ", selectCountSql);
+            const selectCountSql = `SELECT COUNT(0) FROM (${plainSql}) AS t`;
             const total = await this.selectCount(selectCountSql, params);
-            console.log("xxxxxxxxxxxxxxxxxxxx: ", pageRowBounds, total);
             const page = new Page<T>(pageRowBounds.getPageNum(), pageRowBounds.getPageSize(), total, entities);
             return new Promise<Page<T>>((resolve, reject) => resolve(page));
         } catch (e) {

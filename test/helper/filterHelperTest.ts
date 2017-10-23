@@ -235,7 +235,6 @@ describe(".FilterHelper", () => {
 
         it("expression should return empty if array is empty.", () => {
             const result = FilterHelper.getFilterExpression(opeartor, columnInfo, []);
-            console.log("result ", result.sqlExpression);
             expect("").to.be.eq(result.sqlExpression);
             expect(0).to.be.eq(result.params.length);
         });
@@ -258,7 +257,6 @@ describe(".FilterHelper", () => {
 
         it("expression should return empty if array is empty.", () => {
             const result = FilterHelper.getFilterExpression(opeartor, columnInfo, []);
-            console.log("result ", result.sqlExpression);
             expect("").to.be.eq(result.sqlExpression);
             expect(0).to.be.eq(result.params.length);
         });

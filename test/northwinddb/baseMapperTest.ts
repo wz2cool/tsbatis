@@ -43,7 +43,6 @@ describe("baseMapper Test", () => {
             productViewMapper.mybatisSelectEntities(query, paramMap)
                 .then((priceViews) => {
                     if (priceViews.length > 0) {
-                        console.log(priceViews);
                         done();
                     } else {
                         done("should have items");
@@ -56,7 +55,7 @@ describe("baseMapper Test", () => {
 
         it("paging", (done) => {
             const priceFilter =
-                new FilterDescriptor<NorthwindProductView>((u) => u.unitPrice, FilterOperator.GREATER_THAN, 20);
+                new FilterDescriptor<NorthwindProductView>((u) => u.unitPrice, FilterOperator.LESS_THAN, 20);
             const nameSort =
                 new SortDescriptor<NorthwindProductView>((u) => u.productName);
             const dynamicQuery = DynamicQuery.createIntance<NorthwindProductView>()
@@ -67,8 +66,15 @@ describe("baseMapper Test", () => {
             productViewMapper
                 .selectEntitiesPageRowBounds(sqlTemplate.sqlExpression, sqlTemplate.params, pageRowBounds)
                 .then((page) => {
-                    console.log(page);
-                    done();
+                    const pageIndexEq = page.getPageNum() === pageRowBounds.getPageNum();
+                    const pageSizeEq = page.getPageSize() === pageRowBounds.getPageSize();
+                    const entitiesCountEq = page.getEntities.length <= pageRowBounds.getPageSize();
+                    const pagesEq = page.getPages() === Math.ceil(page.getTotal() / page.getPageSize());
+                    if (pageIndexEq && pageSizeEq && entitiesCountEq && pagesEq) {
+                        done();
+                    } else {
+                        done("something is invalid");
+                    }
                 })
                 .catch((err) => {
                     done(err);

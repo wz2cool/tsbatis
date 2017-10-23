@@ -41,7 +41,6 @@ export class SqliteConnection implements ISqlConnection {
 
             if (CommonHelper.isNullOrUndefined(err)) {
                 const entities = MappingProvider.toEntities<T>(entityClass, result);
-                console.log(entities);
                 callback(null, entities);
             } else {
                 callback(err, []);
@@ -49,13 +48,16 @@ export class SqliteConnection implements ISqlConnection {
         });
     }
     public selectCount(sql: string, params: any[], callback: (err: any, result: number) => void) {
+        console.log("sql: ", sql);
+        console.log("params: ", params);
         this.db.all(sql, params, (err: any, result: any) => {
             if (CommonHelper.isNullOrUndefined(callback)) {
                 return;
             }
 
             if (CommonHelper.isNullOrUndefined(err)) {
-                callback(null, result[0].total);
+                const count = lodash.values(result[0])[0];
+                callback(null, count);
             } else {
                 callback(err, null);
             }

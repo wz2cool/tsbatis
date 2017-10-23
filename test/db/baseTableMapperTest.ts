@@ -18,7 +18,6 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    console.log("insert id: ", id);
                     const searchUser = new User();
                     searchUser.id = id;
                     return userMapper.selectByExample(searchUser);
@@ -61,7 +60,6 @@ describe(".SqliteConnection", () => {
                     }
 
                     const user = users[0];
-                    console.log(user);
                     if (updateUser.username === user.username) {
                         done();
                     } else {
@@ -82,7 +80,6 @@ describe(".SqliteConnection", () => {
             userMapper.insertSelective(newUser)
                 .then((id) => {
                     newUser.id = id;
-                    console.log("insert id: ", id);
                     return userMapper.deleteByKey(id);
                 })
                 .then(() => {
@@ -107,7 +104,6 @@ describe(".SqliteConnection", () => {
             userMapper.insertSelective(newUser)
                 .then((id) => {
                     newUser.id = id;
-                    console.log("insert id: ", id);
                     const searchUser = new User();
                     searchUser.username = newUser.username;
                     return userMapper.deleteByExample(searchUser);
@@ -134,7 +130,6 @@ describe(".SqliteConnection", () => {
             userMapper.insertSelective(newUser)
                 .then((id) => {
                     newUser.id = id;
-                    console.log("insert id: ", id);
                     const nameFilter =
                         new FilterDescriptor<User>((u) => u.username, FilterOperator.CONTAINS, "dynamicQuery");
 
@@ -165,7 +160,6 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    console.log("insert id: ", id);
                     return userMapper.selectByKey(id);
                 })
                 .then((users) => {
@@ -193,7 +187,6 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    console.log("insert id: ", id);
                     const searchUser = new User();
                     searchUser.username = newUser.username;
                     return userMapper.selectByExample(searchUser);
@@ -223,7 +216,6 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    console.log("insert id: ", id);
                     const nameFilter =
                         new FilterDescriptor<User>((u) => u.username, FilterOperator.CONTAINS, "dynamicQuery");
 
@@ -258,11 +250,9 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    console.log("insert id: ", id);
                     return userMapper.selectCountByKey(id);
                 })
                 .then((count) => {
-                    console.log("bbbbbbbbbbbbbbbbbbbb: ", count);
                     if (count >= 1) {
                         done();
                     } else {
@@ -280,7 +270,6 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    console.log("insert id: ", id);
                     const searchUser = new User();
                     searchUser.username = newUser.username;
                     return userMapper.selectCountByExample(searchUser);
@@ -303,7 +292,6 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    console.log("insert id: ", id);
                     const nameFilter =
                         new FilterDescriptor<User>(
                             (u) => u.username, FilterOperator.EQUAL, "newUserForSelectCountByDynamicQuery");

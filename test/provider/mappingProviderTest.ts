@@ -34,7 +34,6 @@ describe(".MappingProvider", () => {
         });
 
         it("return date if property is date and value is yyyy-MM-dd", () => {
-            console.log(typeof new Date());
             const value = (MappingProvider as any).toPropertyValue("2000-10-01", "Date");
             const expectValue = new Date("2000-10-01").toLocaleDateString();
             expect(expectValue).to.be.eq(value.toLocaleDateString());

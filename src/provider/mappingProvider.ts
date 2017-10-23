@@ -39,7 +39,6 @@ export class MappingProvider {
                 if ("Invalid Date" === value.toString()) {
                     throw new TypeError(`"${dbValue}" cannot be coverted to Date`);
                 } else {
-                    console.log(value.toString());
                     return value;
                 }
             default:

@@ -160,7 +160,7 @@ export class SqlTemplateProvider {
 
         const tableName = new entityClass().getTableName();
         const whereStr = keyColumn.columnName + " = ?";
-        const sqlExpression = `SELECT COUNT(0) FROM ${tableName} WHERE ${whereStr}`;
+        const sqlExpression = `SELECT COUNT(0) AS total FROM ${tableName} WHERE ${whereStr}`;
         const params: any[] = [];
         params.push(key);
 
