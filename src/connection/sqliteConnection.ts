@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import "reflect-metadata";
 import { CommonHelper } from "../helper";
 import { DatabaseType } from "../model";
 import { MappingProvider } from "../provider";
