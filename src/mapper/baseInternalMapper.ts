@@ -3,7 +3,16 @@ import * as lodash from "lodash";
 import "reflect-metadata";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
-import { DatabaseType, DynamicQuery, Entity, Page, PageRowBounds, RowBounds } from "../model";
+import {
+    Entity,
+    FilterDescriptorBase,
+    KeyValue,
+    Page,
+    PageRowBounds,
+    RowBounds,
+    SortDescriptorBase,
+    SqlTemplate,
+} from "../model";
 import { SqlTemplateProvider } from "../provider";
 
 @injectable()
@@ -14,6 +23,18 @@ export abstract class BaseInternalMapper<T extends Entity> {
     }
 
     public abstract getEntityClass(): { new(): T };
+
+    public getColumnExpression(): string {
+        return SqlTemplateProvider.getColumnsExpression(this.getEntityClass());
+    }
+
+    public getFilterExpression(filters: FilterDescriptorBase[]): SqlTemplate {
+        return SqlTemplateProvider.getFilterExpression(this.getEntityClass(), filters);
+    }
+
+    public getSortExpression(sorts: SortDescriptorBase[]): SqlTemplate {
+        return SqlTemplateProvider.getSortExpression(this.getEntityClass(), sorts);
+    }
 
     protected runInternal(plainSql: string, params: any[]): Promise<any> {
         return new Promise<any>((resolve, reject) => {

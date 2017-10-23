@@ -34,7 +34,7 @@ describe("baseMapper Test", () => {
     });
 
     describe("base Mapper test", () => {
-        it("mybatis sql template", (done) => {
+        it("mybatis style sql template", (done) => {
             const productViewMapper = myContainer.get<ProductViewMapper>(ProductViewMapper);
             const query = QueryTemplate.getSelectPriceGreaterThan20<NorthwindProductView>(NorthwindProductView);
             const paramMap: { [key: string]: any } = {};
