@@ -13,7 +13,7 @@ import {
     SqlTemplate,
 } from "../model";
 import { SqlTemplateProvider } from "../provider";
-import { BaseMapper } from "./baseInternalMapper";
+import { BaseMapper } from "./baseMapper";
 
 @injectable()
 export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> {

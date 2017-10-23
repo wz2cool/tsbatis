@@ -1,4 +1,4 @@
-import { BaseMapper } from "./baseInternalMapper";
+import { BaseMapper } from "./baseMapper";
 import { BaseMybatisMapper } from "./baseMybatisMapper";
 import { BaseTableMapper } from "./baseTableMapper";
 
