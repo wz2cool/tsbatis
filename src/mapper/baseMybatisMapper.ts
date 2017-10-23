@@ -13,39 +13,39 @@ import {
     SqlTemplate,
 } from "../model";
 import { SqlTemplateProvider } from "../provider";
-import { BaseInternalMapper } from "./baseInternalMapper";
+import { BaseMapper } from "./baseInternalMapper";
 
 @injectable()
-export abstract class BaseMybatisMapper<T extends Entity> extends BaseInternalMapper<T> {
+export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> {
     constructor(sqlConnection: ISqlConnection) {
         super(sqlConnection);
     }
 
     public mybatisSelect(sql: string, paramMap: { [key: string]: any }): Promise<any> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
-        return super.selectInternal(sqlTemplate.sqlExpression, sqlTemplate.params);
+        return super.select(sqlTemplate.sqlExpression, sqlTemplate.params);
     }
 
     public mybatisSelectEntities(sql: string, paramMap: { [key: string]: any }): Promise<T[]> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
-        return super.selectEntitiesInternal(sqlTemplate.sqlExpression, sqlTemplate.params);
+        return super.selectEntities(sqlTemplate.sqlExpression, sqlTemplate.params);
     }
 
     public mybatisSelectEntitiesRowBounds(
         sql: string, paramMap: { [key: string]: any }, rowBounds: RowBounds): Promise<T[]> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
-        return super.selectEntitiesRowBoundsInternal(sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds);
+        return super.selectEntitiesRowBounds(sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds);
     }
 
     public mybatisSelectEntitiesPageRowBounds(
         sql: string, paramMap: { [key: string]: any }, pageRowBounds: PageRowBounds): Promise<Page<T>> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
-        return super.selectEntitiesPageRowBoundsInternal(sqlTemplate.sqlExpression, sqlTemplate.params, pageRowBounds);
+        return super.selectEntitiesPageRowBounds(sqlTemplate.sqlExpression, sqlTemplate.params, pageRowBounds);
     }
 
     public mybatisSelectCount(sql: string, paramMap: { [key: string]: any }): Promise<number> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
-        return super.selectCountInternal(sqlTemplate.sqlExpression, sqlTemplate.params);
+        return super.selectCount(sqlTemplate.sqlExpression, sqlTemplate.params);
     }
 
     private getSqlTemplate(sql: string, paramMap: { [key: string]: any }): SqlTemplate {

@@ -14,11 +14,11 @@ import {
 import { ISqlConnection, SqliteConnection } from "./connection";
 import { column } from "./decorator";
 import { CommonHelper, EntityHelper } from "./helper";
-import { BaseInternalMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
+import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import { MappingProvider, SqlTemplateProvider } from "./provider";
 
 export {
-  BaseInternalMapper,
+  BaseMapper,
   BaseMybatisMapper,
   BaseTableMapper,
   column,
