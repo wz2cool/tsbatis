@@ -1,6 +1,6 @@
 {
-  "name": "sql-dynamic-query",
-  "version": "1.0.0",
+  "name": "tsbatis",
+  "version": "0.0.1",
   "description": "",
   "main": "test.js",
   "scripts": {
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wz2cool/sql-dynamic-query.git"
+    "url": "git+https://github.com/wz2cool/tsbatis.git"
   },
   "author": "wz2cool",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wz2cool/sql-dynamic-query/issues"
+    "url": "https://github.com/wz2cool/tsbatis/issues"
   },
-  "homepage": "https://github.com/wz2cool/sql-dynamic-query#readme",
+  "homepage": "https://github.com/wz2cool/tsbatis#readme",
   "dependencies": {
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
