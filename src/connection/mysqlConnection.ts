@@ -9,8 +9,10 @@ import { ISqlConnection } from "./iSqlConnection";
 @injectable()
 export class MysqlConnection implements ISqlConnection {
     private readonly pool: any;
-    constructor(pool: any) {
+    private readonly enableLog: boolean;
+    constructor(pool: any, enableLog = false) {
         this.pool = pool;
+        this.enableLog = enableLog;
     }
 
     public getDataBaseType(): DatabaseType {
@@ -52,10 +54,12 @@ export class MysqlConnection implements ISqlConnection {
     }
 
     public select(sql: string, params: any[], callback: (err: any, result: any[]) => void) {
+        this.log(`select sql: '${sql}', params:'${params}'`);
         this.pool.query(sql, params, callback);
     }
 
     public selectCount(sql: string, params: any[], callback: (err: any, result: number) => void) {
+        this.log(`selectCount sql: '${sql}', params:'${params}'`);
         this.pool.query(sql, params, (err, result) => {
             if (CommonHelper.isNullOrUndefined(callback)) {
                 return;
@@ -72,6 +76,7 @@ export class MysqlConnection implements ISqlConnection {
 
     public selectEntities<T extends Entity>(
         entityClass: new () => T, sql: string, params: any[], callback: (err: any, result: T[]) => void) {
+        this.log(`selectEntities sql: '${sql}', params:'${params}'`);
         this.pool.query(sql, params, (err, result) => {
             if (CommonHelper.isNullOrUndefined(err)) {
                 const entities = MappingProvider.toEntities<T>(entityClass, result);
@@ -101,12 +106,15 @@ export class MysqlConnection implements ISqlConnection {
     }
 
     private runTransactionInternal(connection: any, sqlTemplate: SqlTemplate): Promise<any> {
+        this.log(`begin run: '${sqlTemplate.sqlExpression}', params:'${sqlTemplate.params}'`);
         return new Promise<any>((resolve, reject) => {
             connection.query(sqlTemplate.sqlExpression, sqlTemplate.params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
                     resolve(result);
                 } else {
                     return connection.rollback(() => {
+                        this.log(`rollback changes!` +
+                            `error when run: '${sqlTemplate.sqlExpression}', params:'${sqlTemplate.params}'`);
                         reject(err);
                     });
                 }
@@ -119,6 +127,7 @@ export class MysqlConnection implements ISqlConnection {
             connection.commit((commitError) => {
                 if (commitError) {
                     return connection.rollback(() => {
+                        this.log("rollback changes! commit has error.");
                         reject(commitError);
                     });
                 } else {
@@ -126,5 +135,11 @@ export class MysqlConnection implements ISqlConnection {
                 }
             });
         });
+    }
+
+    private log(log: string) {
+        if (this.enableLog) {
+            console.log("[tsbatis]: ", log);
+        }
     }
 }
