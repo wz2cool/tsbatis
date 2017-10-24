@@ -79,7 +79,7 @@ export class MysqlConnection implements ISqlConnection {
             } else {
                 callback(err, []);
             }
-        })
+        });
     }
 
     private getBeginTransactionConnection(pool: any): Promise<any> {
