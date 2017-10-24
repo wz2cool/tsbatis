@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import * as lodash from "lodash";
 import "reflect-metadata";
 import { CommonHelper } from "../helper";
-import { DatabaseType } from "../model";
+import { DatabaseType, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
 import { ISqlConnection } from "./iSqlConnection";
 
@@ -21,6 +21,10 @@ export class SqliteConnection implements ISqlConnection {
         console.log("sql: ", sql);
         console.log("params: ", params);
         this.db.run(sql, params, callback);
+    }
+
+    public runTransaction(sqlTemplates: SqlTemplate[], callback: (err: any, result: any[]) => void) {
+        throw new Error("Method not implemented.");
     }
     public select(sql: string, params: any[], callback: (err: any, result: any[]) => void) {
         console.log("sql: ", sql);
@@ -59,7 +63,7 @@ export class SqliteConnection implements ISqlConnection {
                 const count = lodash.values(result[0])[0] as number;
                 callback(null, count);
             } else {
-                callback(err, null);
+                callback(err, 0);
             }
         });
     }
