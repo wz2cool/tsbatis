@@ -8,7 +8,7 @@ import { ISqlConnection } from "./iSqlConnection";
 
 @injectable()
 export class MysqlConnection implements ISqlConnection {
-    public readonly pool: any;
+    private readonly pool: any;
     constructor(pool: any) {
         this.pool = pool;
     }
