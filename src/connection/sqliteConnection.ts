@@ -56,7 +56,7 @@ export class SqliteConnection implements ISqlConnection {
             }
 
             if (CommonHelper.isNullOrUndefined(err)) {
-                const count = lodash.values(result[0])[0];
+                const count = lodash.values(result[0])[0] as number;
                 callback(null, count);
             } else {
                 callback(err, null);
