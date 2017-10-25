@@ -80,10 +80,10 @@ describe(".SqliteConnection", () => {
             userMapper.insertSelective(newUser)
                 .then((id) => {
                     newUser.id = id;
-                    return userMapper.deleteByKey(id);
+                    return userMapper.deleteByPrimaryKey(id);
                 })
                 .then(() => {
-                    return userMapper.selectByKey(newUser.id);
+                    return userMapper.selectByPrimaryKey(newUser.id);
                 })
                 .then((users) => {
                     if (users.length === 0) {
@@ -109,7 +109,7 @@ describe(".SqliteConnection", () => {
                     return userMapper.deleteByExample(searchUser);
                 })
                 .then(() => {
-                    return userMapper.selectByKey(newUser.id);
+                    return userMapper.selectByPrimaryKey(newUser.id);
                 })
                 .then((users) => {
                     if (users.length === 0) {
@@ -138,7 +138,7 @@ describe(".SqliteConnection", () => {
                     return userMapper.deleteByDynamicQuery(query);
                 })
                 .then(() => {
-                    return userMapper.selectByKey(newUser.id);
+                    return userMapper.selectByPrimaryKey(newUser.id);
                 })
                 .then((users) => {
                     if (users.length === 0) {
@@ -160,7 +160,7 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    return userMapper.selectByKey(id);
+                    return userMapper.selectByPrimaryKey(id);
                 })
                 .then((users) => {
                     if (users.length === 0) {
@@ -250,7 +250,7 @@ describe(".SqliteConnection", () => {
             newUser.password = "pwd";
             userMapper.insert(newUser)
                 .then((id) => {
-                    return userMapper.selectCountByKey(id);
+                    return userMapper.selectCountByPrimaryKey(id);
                 })
                 .then((count) => {
                     console.log("count: ", count);

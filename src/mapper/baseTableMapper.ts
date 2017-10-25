@@ -38,7 +38,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
-    public selectByKey(key: any): Promise<T[]> {
+    public selectByPrimaryKey(key: any): Promise<T[]> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
@@ -67,7 +67,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
-    public selectCountByKey(key: any): Promise<number> {
+    public selectCountByPrimaryKey(key: any): Promise<number> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectCountByKey<T>(entityClass, key);
@@ -96,7 +96,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
-    public deleteByKey(key: any): Promise<number> {
+    public deleteByPrimaryKey(key: any): Promise<number> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getDeleteByKey<T>(entityClass, key);

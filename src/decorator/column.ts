@@ -4,7 +4,7 @@ import { EntityCache } from "../cache/entityCache";
 import { CommonHelper } from "../helper";
 import { ColumnInfo } from "../model/columnInfo";
 
-export function column(name: string, isKey?: boolean, insertable?: boolean);
+export function column(name: string, isPrimaryKey?: boolean, insertable?: boolean);
 export function column(
     name: string,
     table: string);
