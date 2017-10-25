@@ -169,18 +169,28 @@ export class SqlTemplateProvider {
 
     public static getSelectByDynamicQuery<T extends TableEntity>(
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlTemplate {
-        const columnInfos = SqlTemplateProvider.getColumnInfos(new entityClass());
-        const table = (new entityClass()).getTableName();
-        const columnStr = SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
-        const selectSql = `SELECT ${columnStr} FROM ${table}`;
+        const selectSql = this.getSelectSql(entityClass);
         return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
     }
 
     public static getSelectCountByDynamicQuery<T extends TableEntity>(
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlTemplate {
+        const selectSql = this.getSelectCountSql(entityClass);
+        return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
+    }
+
+    public static getSelectSql<T extends TableEntity>(entityClass: { new(): T }) {
+        const columnInfos = SqlTemplateProvider.getColumnInfos(new entityClass());
+        const table = (new entityClass()).getTableName();
+        const columnStr = SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
+        const selectSql = `SELECT ${columnStr} FROM ${table}`;
+        return selectSql;
+    }
+
+    public static getSelectCountSql<T extends TableEntity>(entityClass: { new(): T }) {
         const table = (new entityClass()).getTableName();
         const selectSql = `SELECT COUNT(0) FROM ${table}`;
-        return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
+        return selectSql;
     }
 
     public static getSqlByDynamicQuery<T extends Entity>(
