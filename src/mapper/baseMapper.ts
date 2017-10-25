@@ -107,6 +107,7 @@ export abstract class BaseMapper<T extends Entity> {
     public async selectEntitiesWithRelation(
         plainSql: string, params: any[], relations: RelationBase[]): Promise<T[]> {
         try {
+            console.log(plainSql);
             const entityClass = this.getEntityClass();
             const entities = await this.selectEntities(plainSql, params);
             for (const entity of entities) {

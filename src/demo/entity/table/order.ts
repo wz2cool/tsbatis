@@ -18,6 +18,6 @@ export class Order extends TableEntity {
     public orderDetail: OrderDetail;
 
     public getTableName(): string {
-        return "Orders";
+        return "orders";
     }
 }

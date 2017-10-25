@@ -27,6 +27,7 @@ export class AssociationRelation<TSource extends Entity, TRef extends Entity> ex
         this.refPropFun = refPropFn;
         this.refEntityClass = refEntityClass;
         this.dynamicQuery = dynamicQuery;
+        this.selectSql = selectSql;
     }
 
     public getMappingProp(): string {
