@@ -10,7 +10,9 @@ import {
     DatabaseType,
     DynamicQuery,
     Entity,
+    FilterDescriptor,
     FilterDescriptorBase,
+    FilterOperator,
     KeyValue,
     Page,
     PageRowBounds,
@@ -118,42 +120,37 @@ export abstract class BaseMapper<T extends Entity> {
         }
     }
 
-    public async assignRelation(sourceEntity: any, relation: RelationBase): Promise<void> {
+    public async assignRelation<TR extends Entity>(sourceEntity: TR, relation: RelationBase): Promise<void> {
         const mappingProp = relation.getMappingProp();
         const sourceValue = sourceEntity[relation.getSourceProp()];
         const refEntityClass = relation.getRefEntityClass();
-        const refEntityName = EntityHelper.getEntityName(refEntityClass);
-        const refColumnInfo = this.entityCache.getColumnInfo(refEntityName, relation.getRefSourceProp());
-        const dynamicQuery = relation.getDynamicQuery();
-        let params = [];
-        params.push(sourceValue);
-        let useSql = `${relation.getSelectSql()} WHERE ${refColumnInfo.getQueryColumn()} = ?`;
-        if (!CommonHelper.isNullOrUndefined(dynamicQuery)) {
-            const filters = dynamicQuery.filters;
-            const sorts = dynamicQuery.sorts;
-            if (!CommonHelper.isNullOrUndefined(filters) && filters.length > 0) {
-                const filterSqlTemplate = SqlTemplateProvider.getFilterExpression(refEntityClass, filters);
-                useSql = `${useSql} ${filterSqlTemplate.sqlExpression}`;
-                params = params.concat(filterSqlTemplate.params);
-            }
+        let dynamicQuery = relation.getDynamicQuery();
 
-            if (!CommonHelper.isNullOrUndefined(sorts) && sorts.length > 0) {
-                const sortTemplate = SqlTemplateProvider.getSortExpression(refEntityClass, sorts);
-                useSql = `${useSql} ${sortTemplate.sqlExpression}`;
-                params = params.concat(sortTemplate.params);
-            }
+        const refColumnFilter = new FilterDescriptor();
+        refColumnFilter.propertyPath = relation.getRefSourceProp();
+        refColumnFilter.value = sourceValue;
+
+        if (CommonHelper.isNullOrUndefined(dynamicQuery)) {
+            dynamicQuery = DynamicQuery.createIntance().addFilters(refColumnFilter);
+        } else {
+            dynamicQuery.addFilters(refColumnFilter);
         }
+        const sqlTemplate =
+            SqlTemplateProvider.getSqlByDynamicQuery(refEntityClass, relation.getSelectSql(), dynamicQuery);
+
         let nestEntities;
         if (relation instanceof AssociationRelation) {
             // only take one row.
             const rowBounds = new RowBounds(0, 1);
-            nestEntities = await this.selectEntitiesRowBoundInternal(refEntityClass, useSql, params, rowBounds);
+            nestEntities = await this.selectEntitiesRowBoundInternal(
+                refEntityClass, sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds);
             if (!CommonHelper.isNullOrUndefined(nestEntities) && nestEntities.length > 0) {
                 sourceEntity[mappingProp] = nestEntities[0];
             }
         } else {
             // one to many.
-            nestEntities = await this.selectEntitiesInternal(refEntityClass, useSql, params);
+            nestEntities = await this.selectEntitiesInternal(
+                refEntityClass, sqlTemplate.sqlExpression, sqlTemplate.params);
             sourceEntity[mappingProp] = nestEntities;
         }
 
