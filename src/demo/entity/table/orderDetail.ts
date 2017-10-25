@@ -1,4 +1,5 @@
-import { column, TableEntity } from "../../../../src";
+import { column } from "../../../decorator";
+import { TableEntity } from "../../../model";
 import { Product } from "./product";
 
 export class OrderDetail extends TableEntity {
