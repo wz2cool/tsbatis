@@ -1,4 +1,6 @@
 import {
+  AssociationRelation,
+  CollectionRelation,
   ColumnInfo,
   CustomFilterDescriptor,
   CustomSortDescriptor,
@@ -13,6 +15,7 @@ import {
   KeyValue,
   Page,
   PageRowBounds,
+  RelationBase,
   RowBounds,
   SortDescriptor,
   SortDescriptorBase,
@@ -28,6 +31,8 @@ import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import { MappingProvider, SqlTemplateProvider } from "./provider";
 
 export {
+  AssociationRelation,
+  CollectionRelation,
   ColumnInfo,
   CustomFilterDescriptor,
   CustomSortDescriptor,
@@ -42,6 +47,7 @@ export {
   KeyValue,
   Page,
   PageRowBounds,
+  RelationBase,
   RowBounds,
   SortDescriptor,
   SortDescriptorBase,
