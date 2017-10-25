@@ -121,45 +121,49 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     public async assignRelation<TR extends Entity>(sourceEntity: TR, relation: RelationBase): Promise<void> {
-        const mappingProp = relation.getMappingProp();
-        const sourceValue = sourceEntity[relation.getSourceProp()];
-        const refEntityClass = relation.getRefEntityClass();
-        let dynamicQuery = relation.getDynamicQuery();
+        try {
+            const mappingProp = relation.getMappingProp();
+            const sourceValue = sourceEntity[relation.getSourceProp()];
+            const refEntityClass = relation.getRefEntityClass();
+            let dynamicQuery = relation.getDynamicQuery();
+            const refColumnFilter = new FilterDescriptor();
+            refColumnFilter.propertyPath = relation.getRefSourceProp();
+            refColumnFilter.value = sourceValue;
 
-        const refColumnFilter = new FilterDescriptor();
-        refColumnFilter.propertyPath = relation.getRefSourceProp();
-        refColumnFilter.value = sourceValue;
-
-        if (CommonHelper.isNullOrUndefined(dynamicQuery)) {
-            dynamicQuery = DynamicQuery.createIntance().addFilters(refColumnFilter);
-        } else {
-            dynamicQuery.addFilters(refColumnFilter);
-        }
-        const sqlTemplate =
-            SqlTemplateProvider.getSqlByDynamicQuery(refEntityClass, relation.getSelectSql(), dynamicQuery);
-
-        let nestEntities;
-        if (relation instanceof AssociationRelation) {
-            // only take one row.
-            const rowBounds = new RowBounds(0, 1);
-            nestEntities = await this.selectEntitiesRowBoundInternal(
-                refEntityClass, sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds);
-            if (!CommonHelper.isNullOrUndefined(nestEntities) && nestEntities.length > 0) {
-                sourceEntity[mappingProp] = nestEntities[0];
+            if (CommonHelper.isNullOrUndefined(dynamicQuery)) {
+                dynamicQuery = DynamicQuery.createIntance().addFilters(refColumnFilter);
+            } else {
+                dynamicQuery.addFilters(refColumnFilter);
             }
-        } else {
-            // one to many.
-            nestEntities = await this.selectEntitiesInternal(
-                refEntityClass, sqlTemplate.sqlExpression, sqlTemplate.params);
-            sourceEntity[mappingProp] = nestEntities;
-        }
+            const sqlTemplate =
+                SqlTemplateProvider.getSqlByDynamicQuery(refEntityClass, relation.getSelectSql(), dynamicQuery);
 
-        if (!CommonHelper.isNullOrUndefined(relation.relations) && relation.relations.length > 0) {
-            for (const nestEntity of nestEntities) {
-                for (const nestRelation of relation.relations) {
-                    await this.assignRelation(nestEntity, nestRelation);
+            let nestEntities;
+            if (relation instanceof AssociationRelation) {
+                // only take one row.
+                const rowBounds = new RowBounds(0, 1);
+                nestEntities = await this.selectEntitiesRowBoundInternal(
+                    refEntityClass, sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds);
+                if (!CommonHelper.isNullOrUndefined(nestEntities) && nestEntities.length > 0) {
+                    sourceEntity[mappingProp] = nestEntities[0];
+                }
+            } else {
+                // one to many.
+                nestEntities = await this.selectEntitiesInternal(
+                    refEntityClass, sqlTemplate.sqlExpression, sqlTemplate.params);
+                sourceEntity[mappingProp] = nestEntities;
+            }
+
+            if (!CommonHelper.isNullOrUndefined(relation.relations) && relation.relations.length > 0) {
+                for (const nestEntity of nestEntities) {
+                    for (const nestRelation of relation.relations) {
+                        await this.assignRelation(nestEntity, nestRelation);
+                    }
                 }
             }
+            return new Promise<void>((resolve, reject) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
         }
     }
 
