@@ -1,4 +1,4 @@
-import { DatabaseType, Entity, SqlTemplate } from "../model";
+import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 
 export interface ISqlConnection {
     getDataBaseType(): DatabaseType;
@@ -11,4 +11,5 @@ export interface ISqlConnection {
         sql: string,
         params: any[],
         callback: (err: any, result: T[]) => void);
+    getPaging(rowBounds: RowBounds): string;
 }

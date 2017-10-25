@@ -1,3 +1,5 @@
+import { AssociationRelation } from "./associationRelation";
+import { CollectionRelation } from "./collectionRelation";
 import { ColumnInfo } from "./columnInfo";
 import { CustomFilterDescriptor } from "./customFilterDescriptor";
 import { CustomSortDescriptor } from "./customSortDescriptor";
@@ -12,6 +14,7 @@ import { FilterOperator } from "./filterOperator";
 import { KeyValue } from "./keyValue";
 import { Page } from "./page";
 import { PageRowBounds } from "./pageRowBounds";
+import { RelationBase } from "./relationBase";
 import { RowBounds } from "./rowBounds";
 import { SortDescriptor } from "./sortDescriptor";
 import { SortDescriptorBase } from "./sortDescritporBase";
@@ -40,4 +43,7 @@ export {
     Page,
     PageRowBounds,
     KeyValue,
+    RelationBase,
+    AssociationRelation,
+    CollectionRelation,
 };

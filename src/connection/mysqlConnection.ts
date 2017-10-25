@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import * as lodash from "lodash";
 import "reflect-metadata";
 import { CommonHelper } from "../helper";
-import { DatabaseType, Entity, SqlTemplate } from "../model";
+import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
 import { ISqlConnection } from "./iSqlConnection";
 
@@ -13,6 +13,12 @@ export class MysqlConnection implements ISqlConnection {
     constructor(pool: any, enableLog = false) {
         this.pool = pool;
         this.enableLog = enableLog;
+    }
+
+    public getPaging(rowBounds: RowBounds): string {
+        const offset = rowBounds.offset;
+        const limit = rowBounds.limit;
+        return `limit ${offset}, ${limit}`;
     }
 
     public getDataBaseType(): DatabaseType {

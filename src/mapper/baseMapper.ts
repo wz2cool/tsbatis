@@ -1,15 +1,19 @@
 import { injectable } from "inversify";
 import * as lodash from "lodash";
 import "reflect-metadata";
+import { EntityCache } from "../cache";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import {
+    AssociationRelation,
+    CollectionRelation,
     DatabaseType,
     Entity,
     FilterDescriptorBase,
     KeyValue,
     Page,
     PageRowBounds,
+    RelationBase,
     RowBounds,
     SortDescriptorBase,
     SqlTemplate,
@@ -19,6 +23,7 @@ import { SqlTemplateProvider } from "../provider";
 @injectable()
 export abstract class BaseMapper<T extends Entity> {
     protected readonly sqlConnection: ISqlConnection;
+    protected readonly entityCache = EntityCache.getInstance();
     constructor(sqlQuery: ISqlConnection) {
         this.sqlConnection = sqlQuery;
     }
@@ -51,21 +56,11 @@ export abstract class BaseMapper<T extends Entity> {
 
     public selectEntities(plainSql: string, params: any[]): Promise<T[]> {
         const entityClass = this.getEntityClass();
-        return new Promise<T[]>((resolve, reject) => {
-            this.sqlConnection.selectEntities<T>(entityClass, plainSql, params, (err, result) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
-            });
-        });
+        return this.selectEntitiesInternal<T>(entityClass, plainSql, params);
     }
 
     public selectEntitiesRowBounds(plainSql: string, params: any[], rowBounds: RowBounds): Promise<T[]> {
-        const paging = this.getPaging(rowBounds);
-        const selectPagingSql = `${plainSql} ${paging}`;
-        return this.selectEntities(selectPagingSql, params);
+        return this.selectEntitiesRowBoundInternal<T>(this.getEntityClass(), plainSql, params, rowBounds);
     }
 
     public async selectEntitiesPageRowBounds(
@@ -106,18 +101,90 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    private getPaging(rowBounds: RowBounds): string {
-        const databaseType = this.sqlConnection.getDataBaseType();
-        const offset = rowBounds.offset;
-        const limit = rowBounds.limit;
-        switch (databaseType) {
-            case DatabaseType.MYSQL:
-            case DatabaseType.SQLITE:
-                return `limit ${offset}, ${limit}`;
-            default:
-                const databaseTypeStr = DatabaseType[databaseType as number];
-                const err = `don't support databaseType: ${databaseTypeStr}`;
-                throw new Error(err);
+    public async selectEntitiesWithRelation(
+        plainSql: string, params: any[], relations: RelationBase[]): Promise<T[]> {
+        try {
+            const entityClass = this.getEntityClass();
+            const entities = await this.selectEntities(plainSql, params);
+            for (const entity of entities) {
+                for (const relation of relations) {
+                    await this.assignRelation(entity, relation);
+                }
+            }
+            return new Promise<T[]>((resolve, reject) => resolve(entities));
+        } catch (e) {
+            return new Promise<T[]>((resolve, reject) => reject(e));
         }
+    }
+
+    public async assignRelation(sourceEntity: any, relation: RelationBase): Promise<void> {
+        const mappingProp = relation.getMappingProp();
+        const sourceProp = relation.getSourceProp();
+        const refProp = relation.getRefSourceProp();
+        const sourceValue = sourceEntity[sourceProp];
+        const selectSql = relation.getSelectSql();
+        const refEntityClass = relation.getRefEntityClass();
+        const refEntityName = EntityHelper.getEntityName(refEntityClass);
+        const refColumnInfo = this.entityCache.getColumnInfo(refEntityName, refProp);
+        const refQueryColumn = refColumnInfo.getQueryColumn();
+        const dynamicQuery = relation.getDynamicQuery();
+        let params = [];
+        params.push(sourceValue);
+        let useSql = `${selectSql} WHERE ${refQueryColumn} = ?`;
+        if (!CommonHelper.isNullOrUndefined(dynamicQuery)) {
+            const filters = dynamicQuery.filters;
+            const sorts = dynamicQuery.sorts;
+            if (!CommonHelper.isNullOrUndefined(filters) && filters.length > 0) {
+                const filterSqlTemplate = SqlTemplateProvider.getFilterExpression(refEntityClass, filters);
+                useSql = `${useSql} ${filterSqlTemplate.sqlExpression}`;
+                params = params.concat(filterSqlTemplate.params);
+            }
+
+            if (!CommonHelper.isNullOrUndefined(sorts) && sorts.length > 0) {
+                const sortTemplate = SqlTemplateProvider.getSortExpression(refEntityClass, sorts);
+                useSql = `${useSql} ${sortTemplate.sqlExpression}`;
+                params = params.concat(sortTemplate.params);
+            }
+        }
+        let nestEntities;
+        if (relation instanceof AssociationRelation) {
+            // only take one row.
+            const rowBounds = new RowBounds(0, 1);
+            nestEntities = await this.selectEntitiesRowBoundInternal(refEntityClass, useSql, params, rowBounds);
+            if (!CommonHelper.isNullOrUndefined(nestEntities) && nestEntities.length > 0) {
+                sourceEntity[mappingProp] = nestEntities[0];
+            }
+        } else {
+            // one to many.
+            nestEntities = await this.selectEntitiesInternal(refEntityClass, useSql, params);
+            sourceEntity[mappingProp] = nestEntities;
+        }
+
+        if (!CommonHelper.isNullOrUndefined(relation.relations) && relation.relations.length > 0) {
+            for (const nestEntity of nestEntities) {
+                for (const nestRelation of relation.relations) {
+                    await this.assignRelation(nestEntity, nestRelation);
+                }
+            }
+        }
+    }
+
+    private selectEntitiesInternal<TR>(entityClass: { new(): TR }, plainSql: string, params: any[]): Promise<TR[]> {
+        return new Promise<TR[]>((resolve, reject) => {
+            this.sqlConnection.selectEntities<TR>(entityClass, plainSql, params, (err, result) => {
+                if (CommonHelper.isNullOrUndefined(err)) {
+                    resolve(result);
+                } else {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    private selectEntitiesRowBoundInternal<TR>(
+        entityClass: { new(): TR }, plainSql: string, params: any[], rowBounds: RowBounds): Promise<TR[]> {
+        const paging = this.sqlConnection.getPaging(rowBounds);
+        const selectPagingSql = `${plainSql} ${paging}`;
+        return this.selectEntitiesInternal<TR>(entityClass, selectPagingSql, params);
     }
 }

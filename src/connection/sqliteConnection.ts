@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import * as lodash from "lodash";
 import "reflect-metadata";
 import { CommonHelper } from "../helper";
-import { DatabaseType, SqlTemplate } from "../model";
+import { DatabaseType, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
 import { ISqlConnection } from "./iSqlConnection";
 
@@ -15,6 +15,12 @@ export class SqliteConnection implements ISqlConnection {
 
     public getDataBaseType(): DatabaseType {
         return DatabaseType.SQLITE;
+    }
+
+    public getPaging(rowBounds: RowBounds): string {
+        const offset = rowBounds.offset;
+        const limit = rowBounds.limit;
+        return `limit ${offset}, ${limit}`;
     }
 
     public run(sql: string, params: any[], callback: (err: any, result?: any) => void) {
