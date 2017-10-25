@@ -75,17 +75,8 @@ export class SqlTemplateProvider {
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(new entityClass());
         const table = (new entityClass()).getTableName();
-        const filters = query.filters;
-        const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, filters);
-        let expression = `DELETE FROM ${table}`;
-        expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
-            ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
-        let params: any = [];
-        params = params.concat(filterSqlParam.params);
-        const result = new SqlTemplate();
-        result.sqlExpression = expression;
-        result.params = params;
-        return result;
+        const deleteSql = `DELETE FROM ${table}`;
+        return this.getSqlByDynamicQuery<T>(entityClass, deleteSql, query);
     }
 
     public static getUpdateByKey<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
@@ -160,7 +151,7 @@ export class SqlTemplateProvider {
 
         const tableName = new entityClass().getTableName();
         const whereStr = keyColumn.columnName + " = ?";
-        const sqlExpression = `SELECT COUNT(0) AS total FROM ${tableName} WHERE ${whereStr}`;
+        const sqlExpression = `SELECT COUNT(0) FROM ${tableName} WHERE ${whereStr}`;
         const params: any[] = [];
         params.push(key);
 
@@ -180,34 +171,27 @@ export class SqlTemplateProvider {
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(new entityClass());
         const table = (new entityClass()).getTableName();
-        const filters = query.filters;
-        const sorts = query.sorts;
-        const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, filters);
-        const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, sorts);
         const columnStr = SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
-        let expression = `SELECT ${columnStr} FROM ${table}`;
-        expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
-            ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
-        expression = CommonHelper.isBlank(sortSqlParam.sqlExpression)
-            ? expression : `${expression} ORDER BY ${sortSqlParam.sqlExpression}`;
-        let params: any = [];
-        params = params.concat(filterSqlParam.params);
-        params = params.concat(sortSqlParam.params);
-
-        const result = new SqlTemplate();
-        result.sqlExpression = expression;
-        result.params = params;
-        return result;
+        const selectSql = `SELECT ${columnStr} FROM ${table}`;
+        return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
     }
 
     public static getSelectCountByDynamicQuery<T extends TableEntity>(
         entityClass: { new(): T }, query: DynamicQuery<T>): SqlTemplate {
         const table = (new entityClass()).getTableName();
-        const filters = query.filters;
-        const sorts = query.sorts;
-        const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, filters);
-        const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, sorts);
-        let expression = `SELECT COUNT(0) FROM ${table}`;
+        const selectSql = `SELECT COUNT(0) FROM ${table}`;
+        return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
+    }
+
+    public static getSqlByDynamicQuery<T extends Entity>(
+        entityClass: { new(): T }, sql: string, dynamicQuery: DynamicQuery<T>): SqlTemplate {
+        if (CommonHelper.isNullOrUndefined(dynamicQuery)) {
+            return new SqlTemplate();
+        }
+
+        const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, dynamicQuery.filters);
+        const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, dynamicQuery.sorts);
+        let expression = sql;
         expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
             ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
         expression = CommonHelper.isBlank(sortSqlParam.sqlExpression)

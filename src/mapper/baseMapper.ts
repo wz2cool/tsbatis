@@ -8,6 +8,7 @@ import {
     AssociationRelation,
     CollectionRelation,
     DatabaseType,
+    DynamicQuery,
     Entity,
     FilterDescriptorBase,
     KeyValue,
@@ -119,18 +120,14 @@ export abstract class BaseMapper<T extends Entity> {
 
     public async assignRelation(sourceEntity: any, relation: RelationBase): Promise<void> {
         const mappingProp = relation.getMappingProp();
-        const sourceProp = relation.getSourceProp();
-        const refProp = relation.getRefSourceProp();
-        const sourceValue = sourceEntity[sourceProp];
-        const selectSql = relation.getSelectSql();
+        const sourceValue = sourceEntity[relation.getSourceProp()];
         const refEntityClass = relation.getRefEntityClass();
         const refEntityName = EntityHelper.getEntityName(refEntityClass);
-        const refColumnInfo = this.entityCache.getColumnInfo(refEntityName, refProp);
-        const refQueryColumn = refColumnInfo.getQueryColumn();
+        const refColumnInfo = this.entityCache.getColumnInfo(refEntityName, relation.getRefSourceProp());
         const dynamicQuery = relation.getDynamicQuery();
         let params = [];
         params.push(sourceValue);
-        let useSql = `${selectSql} WHERE ${refQueryColumn} = ?`;
+        let useSql = `${relation.getSelectSql()} WHERE ${refColumnInfo.getQueryColumn()} = ?`;
         if (!CommonHelper.isNullOrUndefined(dynamicQuery)) {
             const filters = dynamicQuery.filters;
             const sorts = dynamicQuery.sorts;
