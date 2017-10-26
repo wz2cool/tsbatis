@@ -18,7 +18,7 @@ const relation = Relation.getOrderToOrderDetailRelation();
 const connection = new MysqlConnection(pool);
 const mapper = new OrderMapper(connection);
 
-mapper.selectByPrimaryKey(31, [relation])
+mapper.selectByPrimaryKey(31, [Relation.getOrderToOrderDetailRelation(), Relation.getOrderToOrderStatusRelation()])
     .then((orders) => {
         console.log(JSON.stringify(orders));
     })

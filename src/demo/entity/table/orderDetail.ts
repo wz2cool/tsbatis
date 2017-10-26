@@ -1,5 +1,6 @@
 import { column } from "../../../decorator";
 import { TableEntity } from "../../../model";
+import { OrderDetailStatus } from "./orderDetailStatus";
 import { Product } from "./product";
 
 export class OrderDetail extends TableEntity {
@@ -15,7 +16,10 @@ export class OrderDetail extends TableEntity {
     public discount: number;
     @column("product_id")
     public productId: number;
+    @column("status_id")
+    public statusId: number;
 
+    public status: OrderDetailStatus;
     public product: Product;
     public getTableName(): string {
         return "order_details";
