@@ -14,9 +14,9 @@ export class AssociationRelation<TSource extends Entity, TRef extends Entity> ex
 
     constructor(
         // one to one.
-        mappingPropFn: (t: TSource) => TRef,
-        sourcePropFn: (t: TSource) => any,
-        refPropFn: (t: TRef) => any,
+        mappingPropFn: (source: TSource) => TRef,
+        sourcePropFn: (source: TSource) => any,
+        refPropFn: (ref: TRef) => any,
         refEntityClass: { new(): TRef },
         selectSql: string,
         dynamicQuery: DynamicQuery<TRef> = null) {
