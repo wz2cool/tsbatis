@@ -1,7 +1,9 @@
 import * as mysql from "mysql";
 import { MysqlConnection } from "../connection";
+import { RelationBase } from "../model";
 import { SqlTemplateProvider } from "../provider";
 import { Relations } from "./entity/relation/relations";
+import { Customer } from "./entity/table/customer";
 import { Order } from "./entity/table/order";
 import { CustomerMapper } from "./mapper/customerMapper";
 import { OrderMapper } from "./mapper/orderMapper";
@@ -29,7 +31,8 @@ const connection = new MysqlConnection(pool);
 //     });
 
 const mapper = new CustomerMapper(connection);
-mapper.selectByPrimaryKey("28", [Relations.getCustomer_OrderRelation()])
+const relections: Array<RelationBase<Customer>> = [Relations.getCustomer_OrderRelation()];
+mapper.selectByPrimaryKey("28", relections)
     .then((customer) => {
         console.log(JSON.stringify(customer));
     })

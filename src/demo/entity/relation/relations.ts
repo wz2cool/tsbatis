@@ -50,7 +50,7 @@ export class Relations {
         return relation;
     }
 
-    public static getOrder_OrderStatusRelation(): AssociationRelation<Order, OrderStatus> {
+    public static getOrder_OrderStatusRelation(): RelationBase<Order> {
         const relation = new AssociationRelation<Order, OrderStatus>(
             (source: Order) => source.status,
             (source: Order) => source.statusId,
@@ -61,7 +61,7 @@ export class Relations {
         return relation;
     }
 
-    public static getCustomer_OrderRelation(): CollectionRelation<Customer, Order> {
+    public static getCustomer_OrderRelation(): RelationBase<Customer> {
         const statusFilter = new FilterDescriptor<Order>((o) => o.statusId, FilterOperator.EQUAL, 3);
         const dynamicQuery = DynamicQuery.createIntance<Order>().addFilters(statusFilter);
         const relation = new CollectionRelation<Customer, Order>(

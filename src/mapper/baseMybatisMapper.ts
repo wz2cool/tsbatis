@@ -30,7 +30,7 @@ export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> 
     public mybatisSelectEntities(
         sql: string,
         paramMap: { [key: string]: any },
-        relations: RelationBase[] = []): Promise<T[]> {
+        relations: Array<RelationBase<T>> = []): Promise<T[]> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
         return super.selectEntities(sqlTemplate.sqlExpression, sqlTemplate.params, relations);
     }
@@ -39,7 +39,7 @@ export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> 
         sql: string,
         paramMap: { [key: string]: any },
         rowBounds: RowBounds,
-        relations: RelationBase[] = []): Promise<T[]> {
+        relations: Array<RelationBase<T>> = []): Promise<T[]> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
         return super.selectEntitiesRowBounds(sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds, relations);
     }
@@ -48,7 +48,7 @@ export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> 
         sql: string,
         paramMap: { [key: string]: any },
         pageRowBounds: PageRowBounds,
-        relations: RelationBase[] = []): Promise<Page<T>> {
+        relations: Array<RelationBase<T>> = []): Promise<Page<T>> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
         return super.selectEntitiesPageRowBounds(
             sqlTemplate.sqlExpression, sqlTemplate.params, pageRowBounds, relations);

@@ -57,7 +57,7 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    public selectEntities(plainSql: string, params: any[], relations: RelationBase[] = []): Promise<T[]> {
+    public selectEntities(plainSql: string, params: any[], relations: Array<RelationBase<T>> = []): Promise<T[]> {
         return this.selectEntitiesWithRelationInteral(plainSql, params, relations);
     }
 
@@ -65,7 +65,7 @@ export abstract class BaseMapper<T extends Entity> {
         plainSql: string,
         params: any[],
         rowBounds: RowBounds,
-        relations: RelationBase[] = []): Promise<T[]> {
+        relations: Array<RelationBase<T>> = []): Promise<T[]> {
         return this.selectEntitiesRowBoundWithRelationInteral(plainSql, params, rowBounds, relations);
     }
 
@@ -73,7 +73,7 @@ export abstract class BaseMapper<T extends Entity> {
         plainSql: string,
         params: any[],
         pageRowBounds: PageRowBounds,
-        relations: RelationBase[] = []): Promise<Page<T>> {
+        relations: Array<RelationBase<T>> = []): Promise<Page<T>> {
         try {
             const entityClass = this.getEntityClass();
             const entities = await this.selectEntitiesRowBounds(plainSql, params, pageRowBounds, relations);
@@ -111,7 +111,7 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     private async selectEntitiesWithRelationInteral(
-        plainSql: string, params: any[], relations: RelationBase[]): Promise<T[]> {
+        plainSql: string, params: any[], relations: Array<RelationBase<T>>): Promise<T[]> {
         try {
             console.log(plainSql);
             const entityClass = this.getEntityClass();
@@ -131,13 +131,14 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     private async selectEntitiesRowBoundWithRelationInteral(
-        plainSql: string, params: any[], rowBounds: RowBounds, relations: RelationBase[]) {
+        plainSql: string, params: any[], rowBounds: RowBounds, relations: Array<RelationBase<T>>) {
         const paging = this.sqlConnection.getPaging(rowBounds);
         const selectPagingSql = `${plainSql} ${paging}`;
         return this.selectEntitiesWithRelationInteral(plainSql, params, relations);
     }
 
-    private async assignRelationInternal<TR extends Entity>(sourceEntity: TR, relation: RelationBase): Promise<void> {
+    private async assignRelationInternal<TR extends Entity>(
+        sourceEntity: TR, relation: RelationBase<TR>): Promise<void> {
         try {
             const mappingProp = relation.getMappingProp();
             const sourceValue = sourceEntity[relation.getSourceProp()];
@@ -201,7 +202,7 @@ export abstract class BaseMapper<T extends Entity> {
         plainSql: string,
         params: any[],
         rowBounds: RowBounds,
-        relations: RelationBase[] = []): Promise<TR[]> {
+        relations: Array<RelationBase<TR>> = []): Promise<TR[]> {
         const paging = this.sqlConnection.getPaging(rowBounds);
         const selectPagingSql = `${plainSql} ${paging}`;
         return this.selectEntitiesInternal<TR>(entityClass, selectPagingSql, params);

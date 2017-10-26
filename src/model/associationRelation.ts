@@ -4,7 +4,7 @@ import { Entity } from "./entity";
 import { RelationBase } from "./relationBase";
 
 // one to one
-export class AssociationRelation<TSource extends Entity, TRef extends Entity> extends RelationBase {
+export class AssociationRelation<TSource extends Entity, TRef extends Entity> extends RelationBase<TSource> {
     private readonly mappingPropFn: (t: TSource) => TRef;
     private readonly sourcePropFn: (t: TSource) => any;
     private readonly refPropFun: (t: TRef) => any;
