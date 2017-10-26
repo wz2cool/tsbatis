@@ -57,9 +57,8 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    public selectEntities(plainSql: string, params: any[]): Promise<T[]> {
-        const entityClass = this.getEntityClass();
-        return this.selectEntitiesInternal<T>(entityClass, plainSql, params);
+    public selectEntities(plainSql: string, params: any[], relations: RelationBase[] = []): Promise<T[]> {
+        return this.selectEntitiesWithRelationInteral(plainSql, params, relations);
     }
 
     public selectEntitiesRowBounds(plainSql: string, params: any[], rowBounds: RowBounds): Promise<T[]> {
@@ -104,15 +103,18 @@ export abstract class BaseMapper<T extends Entity> {
         });
     }
 
-    public async selectEntitiesWithRelation(
+    private async selectEntitiesWithRelationInteral(
         plainSql: string, params: any[], relations: RelationBase[]): Promise<T[]> {
         try {
             console.log(plainSql);
             const entityClass = this.getEntityClass();
-            const entities = await this.selectEntities(plainSql, params);
-            for (const entity of entities) {
-                for (const relation of relations) {
-                    await this.assignRelation(entity, relation);
+            const entities = await this.selectEntitiesInternal<T>(entityClass, plainSql, params);
+            if (!CommonHelper.isNullOrUndefined(entities) && entities.length > 0
+                && !CommonHelper.isNullOrUndefined(relations) && relations.length > 0) {
+                for (const entity of entities) {
+                    for (const relation of relations) {
+                        await this.assignRelationInternal(entity, relation);
+                    }
                 }
             }
             return new Promise<T[]>((resolve, reject) => resolve(entities));
@@ -121,7 +123,7 @@ export abstract class BaseMapper<T extends Entity> {
         }
     }
 
-    public async assignRelation<TR extends Entity>(sourceEntity: TR, relation: RelationBase): Promise<void> {
+    private async assignRelationInternal<TR extends Entity>(sourceEntity: TR, relation: RelationBase): Promise<void> {
         try {
             const mappingProp = relation.getMappingProp();
             const sourceValue = sourceEntity[relation.getSourceProp()];
@@ -158,7 +160,7 @@ export abstract class BaseMapper<T extends Entity> {
             if (!CommonHelper.isNullOrUndefined(relation.relations) && relation.relations.length > 0) {
                 for (const nestEntity of nestEntities) {
                     for (const nestRelation of relation.relations) {
-                        await this.assignRelation(nestEntity, nestRelation);
+                        await this.assignRelationInternal(nestEntity, nestRelation);
                     }
                 }
             }

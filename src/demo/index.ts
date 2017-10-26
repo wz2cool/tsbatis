@@ -19,7 +19,7 @@ const connection = new MysqlConnection(pool);
 const mapper = new OrderMapper(connection);
 
 const sql = SqlTemplateProvider.getSelectSql(Order) + " where id = ?";
-mapper.selectEntitiesWithRelation(sql, [30], [relation])
+mapper.selectEntities(sql, [30], [relation])
     .then((orders) => {
         console.log(JSON.stringify(orders));
     })
