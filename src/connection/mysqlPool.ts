@@ -7,7 +7,7 @@ import { MappingProvider } from "../provider";
 import { ISqlConnection } from "./iSqlConnection";
 
 @injectable()
-export class MysqlConnection implements ISqlConnection {
+export class MysqlPool implements ISqlConnection {
     private readonly pool: any;
     private readonly enableLog: boolean;
     constructor(pool: any, enableLog = false) {
@@ -91,6 +91,10 @@ export class MysqlConnection implements ISqlConnection {
                 callback(err, []);
             }
         });
+    }
+
+    public beginTransaction(){
+        
     }
 
     private getBeginTransactionConnection(pool: any): Promise<any> {

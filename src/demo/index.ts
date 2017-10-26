@@ -1,5 +1,5 @@
 import * as mysql from "mysql";
-import { MysqlConnection } from "../connection";
+import { MysqlPool } from "../connection";
 import { RelationBase } from "../model";
 import { SqlTemplateProvider } from "../provider";
 import { Relations } from "./entity/relation/relations";
@@ -17,7 +17,7 @@ const pool = mysql.createPool({
     password: "ku8lhu9lAg",
 });
 
-const connection = new MysqlConnection(pool);
+const connection = new MysqlPool(pool);
 // const mapper = new OrderMapper(connection);
 
 // mapper.selectByPrimaryKey(31, [

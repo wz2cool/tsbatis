@@ -1,5 +1,5 @@
 import { ISqlConnection } from "./iSqlConnection";
-import { MysqlConnection } from "./mysqlConnection";
+import { MysqlPool } from "./mysqlPool";
 import { SqliteConnection } from "./sqliteConnection";
 
-export { ISqlConnection, MysqlConnection, SqliteConnection };
+export { ISqlConnection, MysqlPool, SqliteConnection };
