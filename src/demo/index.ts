@@ -1,8 +1,9 @@
 import * as mysql from "mysql";
 import { MysqlConnection } from "../connection";
 import { SqlTemplateProvider } from "../provider";
-import { Relation } from "./entity/relation/relation";
+import { Relations } from "./entity/relation/relations";
 import { Order } from "./entity/table/order";
+import { CustomerMapper } from "./mapper/customerMapper";
 import { OrderMapper } from "./mapper/orderMapper";
 
 const pool = mysql.createPool({
@@ -14,13 +15,23 @@ const pool = mysql.createPool({
     password: "ku8lhu9lAg",
 });
 
-const relation = Relation.getOrderToOrderDetailRelation();
 const connection = new MysqlConnection(pool);
-const mapper = new OrderMapper(connection);
+// const mapper = new OrderMapper(connection);
 
-mapper.selectByPrimaryKey(31, [Relation.getOrderToOrderDetailRelation(), Relation.getOrderToOrderStatusRelation()])
-    .then((orders) => {
-        console.log(JSON.stringify(orders));
+// mapper.selectByPrimaryKey(31, [
+//     Relations.getOrder_OrderDetailRelation(),
+//     Relations.getOrder_OrderStatusRelation()])
+//     .then((orders) => {
+//         console.log(JSON.stringify(orders));
+//     })
+//     .catch((err) => {
+//         console.error(err);
+//     });
+
+const mapper = new CustomerMapper(connection);
+mapper.selectByPrimaryKey("28", [Relations.getCustom_OrderRelation()])
+    .then((customer) => {
+        console.log(JSON.stringify(customer));
     })
     .catch((err) => {
         console.error(err);

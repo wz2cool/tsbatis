@@ -16,6 +16,8 @@ export class Order extends TableEntity {
     public shipStateProvince: string;
     @column("status_id")
     public statusId: number;
+    @column("customer_id")
+    public customerId: number;
 
     // for one to one relation (association)
     public orderDetail: OrderDetail;
