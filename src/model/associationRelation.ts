@@ -4,28 +4,28 @@ import { Entity } from "./entity";
 import { RelationBase } from "./relationBase";
 
 // one to one
-export class AssociationRelation<TSource extends Entity, TRef extends Entity> extends RelationBase {
-    private readonly mappingPropFn: (t: TSource) => TRef;
+export class AssociationRelation<TSource extends Entity, TTarget extends Entity> extends RelationBase {
+    private readonly mappingPropFn: (t: TSource) => TTarget;
     private readonly sourcePropFn: (t: TSource) => any;
-    private readonly refPropFun: (t: TRef) => any;
-    private readonly refEntityClass: { new(): TRef };
+    private readonly targetPropFun: (t: TTarget) => any;
+    private readonly targetEntityClass: { new(): TTarget };
     private readonly selectSql: string;
-    private readonly dynamicQuery: DynamicQuery<TRef>;
+    private readonly dynamicQuery: DynamicQuery<TTarget>;
 
     constructor(
         // one to one.
-        mappingPropFn: (source: TSource) => TRef,
+        mappingPropFn: (source: TSource) => TTarget,
         sourcePropFn: (source: TSource) => any,
-        refPropFn: (ref: TRef) => any,
-        refEntityClass: { new(): TRef },
+        targetPropFn: (target: TTarget) => any,
+        targetEntityClass: { new(): TTarget },
         selectSql: string,
-        dynamicQuery: DynamicQuery<TRef> = null) {
+        dynamicQuery: DynamicQuery<TTarget> = null) {
         super();
 
         this.mappingPropFn = mappingPropFn;
         this.sourcePropFn = sourcePropFn;
-        this.refPropFun = refPropFn;
-        this.refEntityClass = refEntityClass;
+        this.targetPropFun = targetPropFn;
+        this.targetEntityClass = targetEntityClass;
         this.dynamicQuery = dynamicQuery;
         this.selectSql = selectSql;
     }
@@ -38,19 +38,19 @@ export class AssociationRelation<TSource extends Entity, TRef extends Entity> ex
         return EntityHelper.getPropertyName<TSource>(this.sourcePropFn);
     }
 
-    public getRefSourceProp(): string {
-        return EntityHelper.getPropertyName<TRef>(this.refPropFun);
+    public getTargetProp(): string {
+        return EntityHelper.getPropertyName<TTarget>(this.targetPropFun);
     }
 
-    public getRefEntityClass(): new () => TRef {
-        return this.refEntityClass;
+    public getTargetEntityClass(): new () => TTarget {
+        return this.targetEntityClass;
     }
 
     public getSelectSql(): string {
         return this.selectSql;
     }
 
-    public getDynamicQuery(): DynamicQuery<TRef> {
+    public getDynamicQuery(): DynamicQuery<TTarget> {
         return this.dynamicQuery;
     }
 }

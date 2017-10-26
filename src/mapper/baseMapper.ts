@@ -142,10 +142,10 @@ export abstract class BaseMapper<T extends Entity> {
         try {
             const mappingProp = relation.getMappingProp();
             const sourceValue = sourceEntity[relation.getSourceProp()];
-            const refEntityClass = relation.getRefEntityClass();
+            const refEntityClass = relation.getTargetEntityClass();
             let dynamicQuery = relation.getDynamicQuery();
             const refColumnFilter = new FilterDescriptor();
-            refColumnFilter.propertyPath = relation.getRefSourceProp();
+            refColumnFilter.propertyPath = relation.getTargetProp();
             refColumnFilter.value = sourceValue;
 
             if (CommonHelper.isNullOrUndefined(dynamicQuery)) {
