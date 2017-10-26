@@ -33,6 +33,18 @@ export abstract class BaseMapper<T extends Entity> {
 
     public abstract getEntityClass(): { new(): T };
 
+    public beginTransaction(): Promise<ISqlConnection> {
+        return this.sqlConnection.beginTransaction();
+    }
+
+    public rollback(): Promise<void> {
+        return this.sqlConnection.rollback();
+    }
+
+    public commit(): Promise<void> {
+        return this.sqlConnection.commit();
+    }
+
     public getColumnExpression(): string {
         return SqlTemplateProvider.getColumnsExpression(this.getEntityClass());
     }
@@ -46,15 +58,7 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     public run(plainSql: string, params: any[]): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
-            this.sqlConnection.run(plainSql, params, (err, result) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
-            });
-        });
+        return this.sqlConnection.run(plainSql, params);
     }
 
     public selectEntities(plainSql: string, params: any[], relations: RelationBase[] = []): Promise<T[]> {
@@ -87,27 +91,11 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     public select(plainSql: string, params: any[]): Promise<any[]> {
-        return new Promise<any[]>((resolve, reject) => {
-            this.sqlConnection.select(plainSql, params, (err, result) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
-            });
-        });
+        return this.sqlConnection.select(plainSql, params);
     }
 
     public selectCount(plainSql: string, params: any[]): Promise<number> {
-        return new Promise<number>((resolve, reject) => {
-            this.sqlConnection.selectCount(plainSql, params, (err, result) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
-            });
-        });
+        return this.sqlConnection.selectCount(plainSql, params);
     }
 
     private async selectEntitiesWithRelationInteral(
@@ -132,7 +120,7 @@ export abstract class BaseMapper<T extends Entity> {
 
     private async selectEntitiesRowBoundWithRelationInteral(
         plainSql: string, params: any[], rowBounds: RowBounds, relations: RelationBase[]) {
-        const paging = this.sqlConnection.getPaging(rowBounds);
+        const paging = this.sqlConnection.getRowBoundsExpression(rowBounds);
         const selectPagingSql = `${plainSql} ${paging}`;
         return this.selectEntitiesWithRelationInteral(plainSql, params, relations);
     }
@@ -186,15 +174,7 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     private selectEntitiesInternal<TR>(entityClass: { new(): TR }, plainSql: string, params: any[]): Promise<TR[]> {
-        return new Promise<TR[]>((resolve, reject) => {
-            this.sqlConnection.selectEntities<TR>(entityClass, plainSql, params, (err, result) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
-            });
-        });
+        return this.sqlConnection.selectEntities(entityClass, plainSql, params);
     }
 
     private selectEntitiesRowBoundInternal<TR>(
@@ -203,7 +183,7 @@ export abstract class BaseMapper<T extends Entity> {
         params: any[],
         rowBounds: RowBounds,
         relations: RelationBase[] = []): Promise<TR[]> {
-        const paging = this.sqlConnection.getPaging(rowBounds);
+        const paging = this.sqlConnection.getRowBoundsExpression(rowBounds);
         const selectPagingSql = `${plainSql} ${paging}`;
         return this.selectEntitiesInternal<TR>(entityClass, selectPagingSql, params);
     }

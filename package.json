@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/wz2cool/tsbatis#readme",
   "dependencies": {
-    "@types/mysql": "^0.0.34",
     "inversify": "^4.3.0",
     "lodash": "^4.17.4",
     "mysql": "^2.15.0",
