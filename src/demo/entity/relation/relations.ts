@@ -61,7 +61,7 @@ export class Relations {
         return relation;
     }
 
-    public static getCustom_OrderRelation(): CollectionRelation<Customer, Order> {
+    public static getCustomer_OrderRelation(): CollectionRelation<Customer, Order> {
         const statusFilter = new FilterDescriptor<Order>((o) => o.statusId, FilterOperator.EQUAL, 3);
         const dynamicQuery = DynamicQuery.createIntance<Order>().addFilters(statusFilter);
         const relation = new CollectionRelation<Customer, Order>(

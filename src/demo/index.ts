@@ -29,7 +29,7 @@ const connection = new MysqlConnection(pool);
 //     });
 
 const mapper = new CustomerMapper(connection);
-mapper.selectByPrimaryKey("28", [Relations.getCustom_OrderRelation()])
+mapper.selectByPrimaryKey("28", [Relations.getCustomer_OrderRelation()])
     .then((customer) => {
         console.log(JSON.stringify(customer));
     })
