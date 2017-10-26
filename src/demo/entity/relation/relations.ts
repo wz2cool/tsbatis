@@ -1,4 +1,11 @@
-import { AssociationRelation, CollectionRelation, RelationBase } from "../../../model";
+import {
+    AssociationRelation,
+    CollectionRelation,
+    DynamicQuery,
+    FilterDescriptor,
+    FilterOperator,
+    RelationBase,
+} from "../../../model";
 import { SqlTemplateProvider } from "../../../provider";
 import { Customer } from "../table/customer";
 import { Order } from "../table/order";
@@ -49,17 +56,21 @@ export class Relations {
             (source: Order) => source.statusId,
             (ref: OrderStatus) => ref.id,
             OrderStatus,
+            // 获取查询table 语句
             SqlTemplateProvider.getSelectSql(OrderStatus));
         return relation;
     }
 
     public static getCustom_OrderRelation(): CollectionRelation<Customer, Order> {
+        const statusFilter = new FilterDescriptor<Order>((o) => o.statusId, FilterOperator.EQUAL, 3);
+        const dynamicQuery = DynamicQuery.createIntance<Order>().addFilters(statusFilter);
         const relation = new CollectionRelation<Customer, Order>(
             (source: Customer) => source.orders,
             (source: Customer) => source.id,
             (ref: Order) => ref.customerId,
             Order,
-            SqlTemplateProvider.getSelectSql(Order));
+            SqlTemplateProvider.getSelectSql(Order),
+            dynamicQuery);
         relation.relations.push(Relations.getOrder_OrderDetailRelation());
         relation.relations.push(Relations.getOrder_OrderStatusRelation());
         return relation;

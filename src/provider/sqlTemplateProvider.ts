@@ -7,6 +7,7 @@ import {
     CustomSortDescriptor,
     DynamicQuery,
     Entity,
+    FilterCondition,
     FilterDescriptor,
     FilterDescriptorBase,
     FilterGroupDescriptor,
@@ -231,7 +232,7 @@ export class SqlTemplateProvider {
 
                 expression = CommonHelper.isBlank(expression)
                     ? sqlParam.sqlExpression
-                    : `${expression} ${filter.condition} ${sqlParam.sqlExpression}`;
+                    : `${expression} ${FilterCondition[filter.condition]} ${sqlParam.sqlExpression}`;
             }
         });
 
