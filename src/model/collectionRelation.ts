@@ -7,7 +7,7 @@ import { RelationBase } from "./relationBase";
 export class CollectionRelation<TSource extends Entity, TTarget extends Entity> extends RelationBase {
     private readonly mappingPropFn: (t: TSource) => TTarget[];
     private readonly sourcePropFn: (t: TSource) => any;
-    private readonly targetPropFun: (t: TTarget) => any;
+    private readonly targetPropFn: (t: TTarget) => any;
     private readonly targetEntityClass: { new(): TTarget };
     private readonly selectSql: string;
     private readonly dynamicQuery: DynamicQuery<TTarget>;
@@ -24,7 +24,7 @@ export class CollectionRelation<TSource extends Entity, TTarget extends Entity> 
 
         this.mappingPropFn = mappingPropFn;
         this.sourcePropFn = sourcePropFn;
-        this.targetPropFun = targetPropFn;
+        this.targetPropFn = targetPropFn;
         this.targetEntityClass = targetEntityClass;
         this.dynamicQuery = dynamicQuery;
         this.selectSql = selectSql;
@@ -39,7 +39,7 @@ export class CollectionRelation<TSource extends Entity, TTarget extends Entity> 
     }
 
     public getTargetProp(): string {
-        return EntityHelper.getPropertyName<TTarget>(this.targetPropFun);
+        return EntityHelper.getPropertyName<TTarget>(this.targetPropFn);
     }
 
     public getTargetEntityClass(): new () => TTarget {
