@@ -3,7 +3,7 @@ import * as lodash from "lodash";
 import "reflect-metadata";
 import { ISqlConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
-import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, TableEntity } from "../model";
+import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, RelationBase, TableEntity } from "../model";
 import { SqlTemplateProvider } from "../provider";
 import { BaseMybatisMapper } from "./baseMybatisMapper";
 
@@ -28,31 +28,31 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         return this.updateByKeyInternal(o, true);
     }
 
-    public selectByExample(example: T): Promise<T[]> {
+    public selectByExample(example: T, relations: RelationBase[] = []): Promise<T[]> {
         try {
             const sqlParam = SqlTemplateProvider.getSelect<T>(example);
             const entityClass = EntityHelper.getEntityClass<T>(example);
-            return super.selectEntities(sqlParam.sqlExpression, sqlParam.params);
+            return super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
     }
 
-    public selectByPrimaryKey(key: any): Promise<T[]> {
+    public selectByPrimaryKey(key: any, relations: RelationBase[] = []): Promise<T[]> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
-            return super.selectEntities(sqlParam.sqlExpression, sqlParam.params);
+            return super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }
     }
 
-    public selectByDynamicQuery(query: DynamicQuery<T>): Promise<T[]> {
+    public selectByDynamicQuery(query: DynamicQuery<T>, relations: RelationBase[] = []): Promise<T[]> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
-            return super.selectEntities(sqlParam.sqlExpression, sqlParam.params);
+            return super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
         }

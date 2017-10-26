@@ -8,6 +8,7 @@ import {
     KeyValue,
     Page,
     PageRowBounds,
+    RelationBase,
     RowBounds,
     SortDescriptorBase,
     SqlTemplate,
@@ -26,21 +27,31 @@ export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> 
         return super.select(sqlTemplate.sqlExpression, sqlTemplate.params);
     }
 
-    public mybatisSelectEntities(sql: string, paramMap: { [key: string]: any }): Promise<T[]> {
+    public mybatisSelectEntities(
+        sql: string,
+        paramMap: { [key: string]: any },
+        relations: RelationBase[] = []): Promise<T[]> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
-        return super.selectEntities(sqlTemplate.sqlExpression, sqlTemplate.params);
+        return super.selectEntities(sqlTemplate.sqlExpression, sqlTemplate.params, relations);
     }
 
     public mybatisSelectEntitiesRowBounds(
-        sql: string, paramMap: { [key: string]: any }, rowBounds: RowBounds): Promise<T[]> {
+        sql: string,
+        paramMap: { [key: string]: any },
+        rowBounds: RowBounds,
+        relations: RelationBase[] = []): Promise<T[]> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
-        return super.selectEntitiesRowBounds(sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds);
+        return super.selectEntitiesRowBounds(sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds, relations);
     }
 
     public mybatisSelectEntitiesPageRowBounds(
-        sql: string, paramMap: { [key: string]: any }, pageRowBounds: PageRowBounds): Promise<Page<T>> {
+        sql: string,
+        paramMap: { [key: string]: any },
+        pageRowBounds: PageRowBounds,
+        relations: RelationBase[] = []): Promise<Page<T>> {
         const sqlTemplate = this.getSqlTemplate(sql, paramMap);
-        return super.selectEntitiesPageRowBounds(sqlTemplate.sqlExpression, sqlTemplate.params, pageRowBounds);
+        return super.selectEntitiesPageRowBounds(
+            sqlTemplate.sqlExpression, sqlTemplate.params, pageRowBounds, relations);
     }
 
     public mybatisSelectCount(sql: string, paramMap: { [key: string]: any }): Promise<number> {
