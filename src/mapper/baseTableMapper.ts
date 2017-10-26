@@ -28,7 +28,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         return this.updateByKeyInternal(o, true);
     }
 
-    public selectByExample(example: T, relations: Array<RelationBase<T>> = []): Promise<T[]> {
+    public selectByExample(example: T, relations: RelationBase[] = []): Promise<T[]> {
         try {
             const sqlParam = SqlTemplateProvider.getSelect<T>(example);
             const entityClass = EntityHelper.getEntityClass<T>(example);
@@ -38,7 +38,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
-    public selectByPrimaryKey(key: any, relations: Array<RelationBase<T>> = []): Promise<T[]> {
+    public selectByPrimaryKey(key: any, relations: RelationBase[] = []): Promise<T[]> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
@@ -48,7 +48,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
-    public selectByDynamicQuery(query: DynamicQuery<T>, relations: Array<RelationBase<T>> = []): Promise<T[]> {
+    public selectByDynamicQuery(query: DynamicQuery<T>, relations: RelationBase[] = []): Promise<T[]> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);

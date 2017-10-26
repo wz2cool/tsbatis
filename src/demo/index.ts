@@ -31,8 +31,7 @@ const connection = new MysqlConnection(pool);
 //     });
 
 const mapper = new CustomerMapper(connection);
-const relections: Array<RelationBase<Customer>> = [Relations.getCustomer_OrderRelation()];
-mapper.selectByPrimaryKey("28", relections)
+mapper.selectByPrimaryKey("28", [Relations.getCustomer_OrderRelation()])
     .then((customer) => {
         console.log(JSON.stringify(customer));
     })

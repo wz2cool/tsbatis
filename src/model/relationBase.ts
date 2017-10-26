@@ -1,8 +1,8 @@
 import { DynamicQuery } from "./dynamicQuery";
 import { Entity } from "./entity";
 
-export abstract class RelationBase<TSource extends Entity> {
-    public relations: Array<RelationBase<TSource>> = [];
+export abstract class RelationBase {
+    public relations: RelationBase[] = [];
 
     public abstract getMappingProp(): string;
     public abstract getSourceProp(): string;
