@@ -10,7 +10,7 @@ import { CustomerMapper } from "../mapper/customerMapper";
 import { StudentMapper } from "../mapper/studentMapper";
 
 export class TansTest {
-    private readonly mapper: StudentMapper;
+    private readonly conn: MysqlConnection;
     constructor() {
         const connection = mysql.createConnection({
             host: "sql12.freemysqlhosting.net",
@@ -22,12 +22,11 @@ export class TansTest {
         });
 
         const conn = new MysqlConnection(connection);
-        this.mapper = new StudentMapper(conn);
     }
 
     public async insertSuccess(): Promise<void> {
         try {
-            const transConnection = await this.mapper.beginTransaction();
+            const transConnection = await this.conn.beginTransaction();
             try {
                 const transMapper = new StudentMapper(transConnection);
                 const newStudent = new Student();
@@ -49,7 +48,7 @@ export class TansTest {
 
     public async insertRollback(): Promise<void> {
         try {
-            const transConnection = await this.mapper.beginTransaction();
+            const transConnection = await this.conn.beginTransaction();
             try {
                 const transMapper = new StudentMapper(transConnection);
                 const newStudent = new Student();

@@ -33,18 +33,6 @@ export abstract class BaseMapper<T extends Entity> {
 
     public abstract getEntityClass(): { new(): T };
 
-    public beginTransaction(): Promise<ISqlConnection> {
-        return this.sqlConnection.beginTransaction();
-    }
-
-    public rollback(): Promise<void> {
-        return this.sqlConnection.rollback();
-    }
-
-    public commit(): Promise<void> {
-        return this.sqlConnection.commit();
-    }
-
     public getColumnExpression(): string {
         return SqlTemplateProvider.getColumnsExpression(this.getEntityClass());
     }
