@@ -1,6 +1,5 @@
 import { injectable } from "inversify";
 import * as lodash from "lodash";
-import * as mysql from "mysql";
 import "reflect-metadata";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
@@ -8,9 +7,9 @@ import { MappingProvider } from "../provider";
 import { ITransactionConnection } from "./iTransactionConnection";
 
 export class MysqlConnection implements ITransactionConnection {
-    private readonly connection: mysql.IConnection;
+    private readonly connection: any;
     private readonly enableLog: boolean;
-    constructor(connection: mysql.IConnection, enableLog: boolean = false) {
+    constructor(connection: any, enableLog: boolean = false) {
         this.connection = connection;
         this.enableLog = enableLog;
     }
