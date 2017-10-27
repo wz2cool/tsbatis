@@ -5,9 +5,9 @@ import "reflect-metadata";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
-import { ISqlConnection } from "./iSqlConnection";
+import { ITransactionConnection } from "./iTransactionConnection";
 
-export class MysqlConnection implements ISqlConnection {
+export class MysqlConnection implements ITransactionConnection {
     private readonly connection: mysql.IConnection;
     constructor(connection: mysql.IConnection) {
         this.connection = connection;
@@ -80,8 +80,8 @@ export class MysqlConnection implements ISqlConnection {
         });
     }
 
-    public beginTransaction(): Promise<ISqlConnection> {
-        return new Promise<ISqlConnection>((resolve, reject) => {
+    public beginTransaction(): Promise<ITransactionConnection> {
+        return new Promise<ITransactionConnection>((resolve, reject) => {
             this.connection.beginTransaction((err) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
                     resolve(this);

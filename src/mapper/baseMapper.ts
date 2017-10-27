@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import * as lodash from "lodash";
 import "reflect-metadata";
 import { EntityCache } from "../cache";
-import { ISqlConnection } from "../connection";
+import { ISqlConnection, ITransactionConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import {
     AssociationRelation,
@@ -33,7 +33,7 @@ export abstract class BaseMapper<T extends Entity> {
 
     public abstract getEntityClass(): { new(): T };
 
-    public beginTransation(): Promise<ISqlConnection> {
+    public beginTransation(): Promise<ITransactionConnection> {
         return this.sqlConnection.beginTransaction();
     }
 

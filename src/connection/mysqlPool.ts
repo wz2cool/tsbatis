@@ -6,6 +6,7 @@ import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
 import { ISqlConnection } from "./iSqlConnection";
+import { ITransactionConnection } from "./iTransactionConnection";
 import { MysqlConnection } from "./mysqlConnection";
 
 @injectable()
@@ -21,22 +22,69 @@ export class MysqlPool implements ISqlConnection {
         return DatabaseType.MYSQL;
     }
     public getRowBoundsExpression(rowBounds: RowBounds): string {
-        throw new Error("Method not implemented.");
+        const offset = rowBounds.offset;
+        const limit = rowBounds.limit;
+        return `limit ${offset}, ${limit}`;
     }
     public run(sql: string, params: any[]): Promise<any> {
-        throw new Error("Method not implemented.");
+        return new Promise<any>((resolve, reject) => {
+            this.pool.query(sql, params, (err, result) => {
+                if (CommonHelper.isNullOrUndefined(err)) {
+                    resolve(result);
+                } else {
+                    reject(err);
+                }
+            });
+        });
     }
     public select(sql: string, params: any[]): Promise<any[]> {
-        throw new Error("Method not implemented.");
+        return new Promise<any[]>((resolve, reject) => {
+            this.pool.query(sql, params, (err, result) => {
+                if (CommonHelper.isNullOrUndefined(err)) {
+                    resolve(result);
+                } else {
+                    reject(err);
+                }
+            });
+        });
     }
     public selectCount(sql: string, params: any[]): Promise<number> {
-        throw new Error("Method not implemented.");
+        return new Promise<number>((resolve, reject) => {
+            this.pool.query(sql, params, (err, result) => {
+                try {
+                    if (CommonHelper.isNullOrUndefined(err)) {
+                        const count = lodash.values(result[0])[0] as number;
+                        resolve(count);
+                    } else {
+                        reject(err);
+                    }
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
     }
-    public selectEntities<T extends Entity>(entityClass: new () => T, sql: string, params: any[]): Promise<T[]> {
-        throw new Error("Method not implemented.");
+
+    public selectEntities<T extends Entity>(
+        entityClass: new () => T, sql: string, params: any[]): Promise<T[]> {
+        return new Promise<T[]>((resolve, reject) => {
+            this.pool.query(sql, params, (err, result) => {
+                try {
+                    if (CommonHelper.isNullOrUndefined(err)) {
+                        const entities = MappingProvider.toEntities<T>(entityClass, result);
+                        resolve(entities);
+                    } else {
+                        reject(err);
+                    }
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
     }
-    public async beginTransaction(): Promise<ISqlConnection> {
-        return new Promise<ISqlConnection>((resolve, reject) => {
+
+    public async beginTransaction(): Promise<ITransactionConnection> {
+        return new Promise<ITransactionConnection>((resolve, reject) => {
             this.pool.getConnection((err, conn) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
                     resolve(new MysqlConnection(conn));
@@ -45,11 +93,5 @@ export class MysqlPool implements ISqlConnection {
                 }
             });
         });
-    }
-    public rollback(): Promise<void> {
-        throw new Error("Please use 'MysqlConnection' to rollback.");
-    }
-    public commit(): Promise<void> {
-        throw new Error("Please use 'MysqlConnection' to commit.");
     }
 }

@@ -1,4 +1,5 @@
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
+import { ITransactionConnection } from "./iTransactionConnection";
 
 export interface ISqlConnection {
     getDataBaseType(): DatabaseType;
@@ -11,8 +12,5 @@ export interface ISqlConnection {
         sql: string,
         params: any[]): Promise<T[]>;
 
-    beginTransaction(): Promise<ISqlConnection>;
-    rollback(): Promise<void>;
-    commit(): Promise<void>;
-
+    beginTransaction(): Promise<ITransactionConnection>;
 }

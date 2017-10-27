@@ -1,5 +1,5 @@
 import * as mysql from "mysql";
-import { MysqlConnection } from "../../connection";
+import { MysqlPool } from "../../connection";
 import { RelationBase } from "../../model";
 import { SqlTemplateProvider } from "../../provider";
 import { Relations } from "../entity/relation/relations";
@@ -10,9 +10,9 @@ import { CustomerMapper } from "../mapper/customerMapper";
 import { StudentMapper } from "../mapper/studentMapper";
 
 export class TansTest {
-    private readonly conn: MysqlConnection;
+    private readonly pool: MysqlPool;
     constructor() {
-        const connection = mysql.createConnection({
+        const pool = mysql.createPool({
             host: "sql12.freemysqlhosting.net",
             port: 3306,
             // tslint:disable-next-line:object-literal-sort-keys
@@ -21,12 +21,12 @@ export class TansTest {
             password: "ku8lhu9lAg",
         });
 
-        const conn = new MysqlConnection(connection);
+        const conn = new MysqlPool(pool);
     }
 
     public async insertSuccess(): Promise<void> {
         try {
-            const transConnection = await this.conn.beginTransaction();
+            const transConnection = await this.pool.beginTransaction();
             try {
                 const transMapper = new StudentMapper(transConnection);
                 const newStudent = new Student();
@@ -48,7 +48,7 @@ export class TansTest {
 
     public async insertRollback(): Promise<void> {
         try {
-            const transConnection = await this.conn.beginTransaction();
+            const transConnection = await this.pool.beginTransaction();
             try {
                 const transMapper = new StudentMapper(transConnection);
                 const newStudent = new Student();
