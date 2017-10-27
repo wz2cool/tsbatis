@@ -94,7 +94,7 @@ export class MysqlPool implements ISqlConnection {
         return new Promise<ITransactionConnection>((resolve, reject) => {
             this.pool.getConnection((err, conn) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
-                    resolve(new MysqlConnection(conn));
+                    resolve(new MysqlConnection(conn, this.enableLog));
                 } else {
                     reject(err);
                 }

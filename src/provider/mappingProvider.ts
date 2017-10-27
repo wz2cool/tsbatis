@@ -1,17 +1,18 @@
 import * as lodash from "lodash";
 import { EntityCache } from "../cache";
-import { EntityHelper } from "../helper";
+import { CommonHelper, EntityHelper } from "../helper";
 import { Entity } from "../model";
 
 export class MappingProvider {
-    public static toEntities<T extends Entity>(entity: T | { new(): T }, dbObjs: any[]): T[] {
+    public static toEntities<T extends Entity>(
+        entity: T | { new(): T }, dbObjs: any[], underscoreToCamelCase = true): T[] {
         const cache = EntityCache.getInstance();
         const entityName = EntityHelper.getEntityName(entity);
         const columnInfos = cache.getColumnInfos(entityName);
         return lodash.map(dbObjs, (dbObj) => {
             const entityObj = EntityHelper.createObject<T>(entity);
             columnInfos.forEach((colInfo) => {
-                const dbValue = dbObj[colInfo.underscoreProperty];
+                const dbValue = underscoreToCamelCase ? dbObj[colInfo.underscoreProperty] : dbObj[colInfo.property];
                 const propertyType = colInfo.propertyType;
                 const propertyValue = MappingProvider.toPropertyValue(dbValue, propertyType);
                 entityObj[colInfo.property] = propertyValue;
@@ -22,6 +23,10 @@ export class MappingProvider {
 
     private static toPropertyValue(dbValue: any, propertyType: string): any {
         const usePropType = propertyType.toLowerCase();
+        if (CommonHelper.isNullOrUndefined(dbValue)) {
+            return null;
+        }
+
         switch (usePropType) {
             case "number":
                 return Number(dbValue);
