@@ -9,8 +9,10 @@ import { ITransactionConnection } from "./iTransactionConnection";
 
 export class MysqlConnection implements ITransactionConnection {
     private readonly connection: mysql.IConnection;
-    constructor(connection: mysql.IConnection) {
+    private readonly enableLog: boolean;
+    constructor(connection: mysql.IConnection, enableLog: boolean = false) {
         this.connection = connection;
+        this.enableLog = enableLog;
     }
 
     public getDataBaseType(): DatabaseType {
@@ -24,6 +26,7 @@ export class MysqlConnection implements ITransactionConnection {
     }
 
     public run(sql: string, params: any[]): Promise<any> {
+        this.log(`run:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<any>((resolve, reject) => {
             this.connection.query(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -36,6 +39,7 @@ export class MysqlConnection implements ITransactionConnection {
     }
 
     public select(sql: string, params: any[]): Promise<any[]> {
+        this.log(`select:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<any[]>((resolve, reject) => {
             this.connection.query(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -47,6 +51,7 @@ export class MysqlConnection implements ITransactionConnection {
         });
     }
     public selectCount(sql: string, params: any[]): Promise<number> {
+        this.log(`selectCount:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<number>((resolve, reject) => {
             this.connection.query(sql, params, (err, result) => {
                 try {
@@ -64,6 +69,7 @@ export class MysqlConnection implements ITransactionConnection {
     }
     public selectEntities<T extends Entity>(
         entityClass: new () => T, sql: string, params: any[]): Promise<T[]> {
+        this.log(`selectEntities:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<T[]>((resolve, reject) => {
             this.connection.query(sql, params, (err, result) => {
                 try {
@@ -81,6 +87,7 @@ export class MysqlConnection implements ITransactionConnection {
     }
 
     public beginTransaction(): Promise<ITransactionConnection> {
+        this.log("beginTransaction...");
         return new Promise<ITransactionConnection>((resolve, reject) => {
             this.connection.beginTransaction((err) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -93,6 +100,7 @@ export class MysqlConnection implements ITransactionConnection {
     }
 
     public rollback(): Promise<void> {
+        this.log("rollback...");
         return new Promise<void>((resolve, reject) => {
             this.connection.rollback(() => {
                 resolve();
@@ -101,6 +109,7 @@ export class MysqlConnection implements ITransactionConnection {
     }
 
     public commit(): Promise<void> {
+        this.log("commit...");
         return new Promise<void>((resolve, reject) => {
             this.connection.commit((err) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -110,5 +119,11 @@ export class MysqlConnection implements ITransactionConnection {
                 }
             });
         });
+    }
+
+    private log(log: string): void {
+        if (this.enableLog) {
+            console.log(`[TSBATIS] ${log}`);
+        }
     }
 }

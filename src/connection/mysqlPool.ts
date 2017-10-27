@@ -26,7 +26,9 @@ export class MysqlPool implements ISqlConnection {
         const limit = rowBounds.limit;
         return `limit ${offset}, ${limit}`;
     }
+
     public run(sql: string, params: any[]): Promise<any> {
+        this.log(`run:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<any>((resolve, reject) => {
             this.pool.query(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -37,7 +39,9 @@ export class MysqlPool implements ISqlConnection {
             });
         });
     }
+
     public select(sql: string, params: any[]): Promise<any[]> {
+        this.log(`select:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<any[]>((resolve, reject) => {
             this.pool.query(sql, params, (err, result) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -48,7 +52,9 @@ export class MysqlPool implements ISqlConnection {
             });
         });
     }
+
     public selectCount(sql: string, params: any[]): Promise<number> {
+        this.log(`selectCount:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<number>((resolve, reject) => {
             this.pool.query(sql, params, (err, result) => {
                 try {
@@ -67,6 +73,7 @@ export class MysqlPool implements ISqlConnection {
 
     public selectEntities<T extends Entity>(
         entityClass: new () => T, sql: string, params: any[]): Promise<T[]> {
+        this.log(`selectEntities:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<T[]>((resolve, reject) => {
             this.pool.query(sql, params, (err, result) => {
                 try {
@@ -83,7 +90,8 @@ export class MysqlPool implements ISqlConnection {
         });
     }
 
-    public async beginTransaction(): Promise<ITransactionConnection> {
+    public beginTransaction(): Promise<ITransactionConnection> {
+        this.log("beginTransaction...");
         return new Promise<ITransactionConnection>((resolve, reject) => {
             this.pool.getConnection((err, conn) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
@@ -93,5 +101,11 @@ export class MysqlPool implements ISqlConnection {
                 }
             });
         });
+    }
+
+    private log(log: string): void {
+        if (this.enableLog) {
+            console.log(`[TSBATIS] ${log}`);
+        }
     }
 }
