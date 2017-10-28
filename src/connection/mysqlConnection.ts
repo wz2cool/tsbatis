@@ -2,9 +2,9 @@ import * as lodash from "lodash";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
-import { ITransactionConnection } from "./iTransactionConnection";
+import { IConnection } from "./iConnection";
 
-export class MysqlConnection implements ITransactionConnection {
+export class MysqlConnection implements IConnection {
     private readonly connection: any;
     private readonly enableLog: boolean;
     constructor(connection: any, enableLog: boolean = false) {
@@ -83,12 +83,12 @@ export class MysqlConnection implements ITransactionConnection {
         });
     }
 
-    public beginTransaction(): Promise<ITransactionConnection> {
+    public beginTransaction(): Promise<void> {
         this.log("beginTransaction...");
-        return new Promise<ITransactionConnection>((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             this.connection.beginTransaction((err) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
-                    resolve(this);
+                    resolve();
                 } else {
                     reject(err);
                 }

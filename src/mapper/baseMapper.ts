@@ -22,17 +22,13 @@ import {
 import { SqlTemplateProvider } from "../provider";
 
 export abstract class BaseMapper<T extends Entity> {
-    protected readonly sqlConnection: IConnection;
+    protected readonly connection: IConnection;
     protected readonly entityCache = EntityCache.getInstance();
-    constructor(sqlQuery: IConnection) {
-        this.sqlConnection = sqlQuery;
+    constructor(connection: IConnection) {
+        this.connection = connection;
     }
 
     public abstract getEntityClass(): { new(): T };
-
-    public beginTransation(): Promise<ITransactionConnection> {
-        return this.sqlConnection.beginTransaction();
-    }
 
     public getColumnExpression(): string {
         return SqlTemplateProvider.getColumnsExpression(this.getEntityClass());
@@ -47,7 +43,7 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     public run(plainSql: string, params: any[]): Promise<any> {
-        return this.sqlConnection.run(plainSql, params);
+        return this.connection.run(plainSql, params);
     }
 
     public selectEntities(plainSql: string, params: any[], relations: RelationBase[] = []): Promise<T[]> {
@@ -80,11 +76,11 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     public select(plainSql: string, params: any[]): Promise<any[]> {
-        return this.sqlConnection.select(plainSql, params);
+        return this.connection.select(plainSql, params);
     }
 
     public selectCount(plainSql: string, params: any[]): Promise<number> {
-        return this.sqlConnection.selectCount(plainSql, params);
+        return this.connection.selectCount(plainSql, params);
     }
 
     private async selectEntitiesWithRelationInteral(
@@ -109,7 +105,7 @@ export abstract class BaseMapper<T extends Entity> {
 
     private async selectEntitiesRowBoundWithRelationInteral(
         plainSql: string, params: any[], rowBounds: RowBounds, relations: RelationBase[]) {
-        const paging = this.sqlConnection.getRowBoundsExpression(rowBounds);
+        const paging = this.connection.getRowBoundsExpression(rowBounds);
         const selectPagingSql = `${plainSql} ${paging}`;
         return this.selectEntitiesWithRelationInteral(plainSql, params, relations);
     }
@@ -163,7 +159,7 @@ export abstract class BaseMapper<T extends Entity> {
     }
 
     private selectEntitiesInternal<TR>(entityClass: { new(): TR }, plainSql: string, params: any[]): Promise<TR[]> {
-        return this.sqlConnection.selectEntities(entityClass, plainSql, params);
+        return this.connection.selectEntities(entityClass, plainSql, params);
     }
 
     private selectEntitiesRowBoundInternal<TR>(
@@ -172,7 +168,7 @@ export abstract class BaseMapper<T extends Entity> {
         params: any[],
         rowBounds: RowBounds,
         relations: RelationBase[] = []): Promise<TR[]> {
-        const paging = this.sqlConnection.getRowBoundsExpression(rowBounds);
+        const paging = this.connection.getRowBoundsExpression(rowBounds);
         const selectPagingSql = `${plainSql} ${paging}`;
         return this.selectEntitiesInternal<TR>(entityClass, selectPagingSql, params);
     }

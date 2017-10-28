@@ -122,9 +122,9 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
                 return new Promise<number>((resolve, reject) => resolve());
             }
 
-            if (this.sqlConnection.getDataBaseType() === DatabaseType.MYSQL) {
+            if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
                 return new Promise<number>((resolve, reject) => resolve(Number(result.insertId)));
-            } else if (this.sqlConnection.getDataBaseType() === DatabaseType.SQLITE) {
+            } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE) {
                 const seqId = await this.getSeqIdForSqlite(o);
                 return new Promise<number>((resolve, reject) => resolve(Number(seqId)));
             }

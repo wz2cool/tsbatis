@@ -1,8 +1,8 @@
 import * as sqlite3 from "sqlite3";
 import { DatabaseType, Entity, RowBounds } from "../model";
-import { ITransactionConnection } from "./iTransactionConnection";
+import { IConnection } from "./iConnection";
 
-export class SqliteConnection implements ITransactionConnection {
+export class SqliteConnection implements IConnection {
 
     private readonly db: sqlite3.Database;
     constructor(db: sqlite3.Database) {
@@ -27,7 +27,7 @@ export class SqliteConnection implements ITransactionConnection {
     public selectEntities<T extends Entity>(entityClass: new () => T, sql: string, params: any[]): Promise<T[]> {
         throw new Error("Method not implemented.");
     }
-    public beginTransaction(): Promise<ITransactionConnection> {
+    public beginTransaction(): Promise<void> {
         const constructor = (this.db as any).constructor;
         throw new Error("Method not implemented.");
     }
