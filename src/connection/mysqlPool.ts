@@ -1,6 +1,4 @@
-import { injectable } from "inversify";
 import * as lodash from "lodash";
-import "reflect-metadata";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
@@ -8,7 +6,6 @@ import { IConnection } from "./iConnection";
 import { ITransactionConnection } from "./iTransactionConnection";
 import { MysqlConnection } from "./mysqlConnection";
 
-@injectable()
 export class MysqlPool implements IConnection {
     private readonly pool: any;
     private readonly enableLog: boolean;

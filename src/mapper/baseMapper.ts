@@ -1,6 +1,4 @@
-import { injectable } from "inversify";
 import * as lodash from "lodash";
-import "reflect-metadata";
 import { EntityCache } from "../cache";
 import { IConnection, ITransactionConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
@@ -23,7 +21,6 @@ import {
 } from "../model";
 import { SqlTemplateProvider } from "../provider";
 
-@injectable()
 export abstract class BaseMapper<T extends Entity> {
     protected readonly sqlConnection: IConnection;
     protected readonly entityCache = EntityCache.getInstance();

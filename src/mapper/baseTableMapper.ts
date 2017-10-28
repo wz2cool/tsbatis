@@ -1,6 +1,4 @@
-import { injectable } from "inversify";
 import * as lodash from "lodash";
-import "reflect-metadata";
 import { IConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, RelationBase, TableEntity } from "../model";

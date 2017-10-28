@@ -1,6 +1,4 @@
-import { injectable } from "inversify";
 import * as lodash from "lodash";
-import "reflect-metadata";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";

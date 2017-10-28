@@ -1,6 +1,4 @@
-import { injectable } from "inversify";
 import * as lodash from "lodash";
-import "reflect-metadata";
 import { IConnection } from "../connection";
 import {
     Entity,
@@ -16,7 +14,6 @@ import {
 import { SqlTemplateProvider } from "../provider";
 import { BaseMapper } from "./baseMapper";
 
-@injectable()
 export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> {
     constructor(sqlConnection: IConnection) {
         super(sqlConnection);
