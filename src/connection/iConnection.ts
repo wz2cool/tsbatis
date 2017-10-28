@@ -1,7 +1,7 @@
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { ITransactionConnection } from "./iTransactionConnection";
 
-export interface ISqlConnection {
+export interface IConnection {
     getDataBaseType(): DatabaseType;
     getRowBoundsExpression(rowBounds: RowBounds): string;
     run(sql: string, params: any[]): Promise<any>;

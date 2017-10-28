@@ -5,7 +5,7 @@ import { Entity } from "../model";
 
 export class MappingProvider {
     public static toEntities<T extends Entity>(
-        entity: T | { new(): T }, dbObjs: any[], underscoreToCamelCase = true): T[] {
+        entity: T | { new(): T }, dbObjs: any[], underscoreToCamelCase = false): T[] {
         const cache = EntityCache.getInstance();
         const entityName = EntityHelper.getEntityName(entity);
         const columnInfos = cache.getColumnInfos(entityName);

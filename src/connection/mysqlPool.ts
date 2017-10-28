@@ -4,12 +4,12 @@ import "reflect-metadata";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
-import { ISqlConnection } from "./iSqlConnection";
+import { IConnection } from "./iConnection";
 import { ITransactionConnection } from "./iTransactionConnection";
 import { MysqlConnection } from "./mysqlConnection";
 
 @injectable()
-export class MysqlPool implements ISqlConnection {
+export class MysqlPool implements IConnection {
     private readonly pool: any;
     private readonly enableLog: boolean;
     constructor(pool: any, enableLog = false) {
@@ -77,7 +77,7 @@ export class MysqlPool implements ISqlConnection {
             this.pool.query(sql, params, (err, result) => {
                 try {
                     if (CommonHelper.isNullOrUndefined(err)) {
-                        const entities = MappingProvider.toEntities<T>(entityClass, result);
+                        const entities = MappingProvider.toEntities<T>(entityClass, result, true);
                         resolve(entities);
                     } else {
                         reject(err);

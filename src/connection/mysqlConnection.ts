@@ -73,7 +73,7 @@ export class MysqlConnection implements ITransactionConnection {
             this.connection.query(sql, params, (err, result) => {
                 try {
                     if (CommonHelper.isNullOrUndefined(err)) {
-                        const entities = MappingProvider.toEntities<T>(entityClass, result);
+                        const entities = MappingProvider.toEntities<T>(entityClass, result, true);
                         resolve(entities);
                     } else {
                         reject(err);

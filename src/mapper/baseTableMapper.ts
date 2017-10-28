@@ -1,14 +1,14 @@
 import { injectable } from "inversify";
 import * as lodash from "lodash";
 import "reflect-metadata";
-import { ISqlConnection } from "../connection";
+import { IConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, RelationBase, TableEntity } from "../model";
 import { SqlTemplateProvider } from "../provider";
 import { BaseMybatisMapper } from "./baseMybatisMapper";
 
 export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatisMapper<T> {
-    constructor(sqlConnection: ISqlConnection) {
+    constructor(sqlConnection: IConnection) {
         super(sqlConnection);
     }
 

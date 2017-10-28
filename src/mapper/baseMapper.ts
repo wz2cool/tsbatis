@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import * as lodash from "lodash";
 import "reflect-metadata";
 import { EntityCache } from "../cache";
-import { ISqlConnection, ITransactionConnection } from "../connection";
+import { IConnection, ITransactionConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import {
     AssociationRelation,
@@ -25,9 +25,9 @@ import { SqlTemplateProvider } from "../provider";
 
 @injectable()
 export abstract class BaseMapper<T extends Entity> {
-    protected readonly sqlConnection: ISqlConnection;
+    protected readonly sqlConnection: IConnection;
     protected readonly entityCache = EntityCache.getInstance();
-    constructor(sqlQuery: ISqlConnection) {
+    constructor(sqlQuery: IConnection) {
         this.sqlConnection = sqlQuery;
     }
 
