@@ -24,7 +24,7 @@ import {
   TableEntity,
 } from "./model";
 
-import { IConnection, MysqlConnection } from "./connection";
+import { IConnection, MysqlConnection, MysqlConnectionPool, ConnectionFactory, SqliteConnection, SqliteConnectionPool } from "./connection";
 import { column } from "./decorator";
 import { CommonHelper, EntityHelper } from "./helper";
 import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
@@ -57,6 +57,10 @@ export {
 
   IConnection,
   MysqlConnection,
+  MysqlConnectionPool,
+  ConnectionFactory,
+  SqliteConnection,
+  SqliteConnectionPool,
 
   column,
 
