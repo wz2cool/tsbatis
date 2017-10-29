@@ -14,6 +14,6 @@ export class Student extends TableEntity {
     public updateTime: Date;
 
     public getTableName(): string {
-        return "student";
+        return "students";
     }
 }

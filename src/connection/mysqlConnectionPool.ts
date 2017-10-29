@@ -12,7 +12,7 @@ export class MysqlConnectionPool implements IConnectionPool {
         const mysql = this.getDriver();
         this.pool = mysql.createPool({
             host: config.host,
-            port: config.post,
+            port: config.port,
             database: config.database,
             user: config.user,
             password: config.password,

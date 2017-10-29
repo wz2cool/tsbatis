@@ -118,6 +118,17 @@ export class MysqlConnection implements IConnection {
         });
     }
 
+    public release(): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            try {
+                this.connection.release();
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
     private log(log: string): void {
         if (this.enableLog) {
             console.log(`[TSBATIS] ${log}`);

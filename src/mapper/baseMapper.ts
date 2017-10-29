@@ -1,6 +1,6 @@
 import * as lodash from "lodash";
 import { EntityCache } from "../cache";
-import { IConnection, ITransactionConnection } from "../connection";
+import { IConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
 import {
     AssociationRelation,

@@ -3,7 +3,6 @@ import { DatabaseType, Entity, RowBounds } from "../model";
 import { IConnection } from "./iConnection";
 
 export class SqliteConnection implements IConnection {
-
     private readonly db: sqlite3.Database;
     constructor(db: sqlite3.Database) {
         this.db = db;
@@ -37,6 +36,9 @@ export class SqliteConnection implements IConnection {
     }
     public commit(): Promise<void> {
         // remember close db.
+        throw new Error("Method not implemented.");
+    }
+    public release(): Promise<void> {
         throw new Error("Method not implemented.");
     }
 }
