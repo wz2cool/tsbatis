@@ -1,8 +1,12 @@
+import * as lodash from "lodash";
 import * as sqlite3 from "sqlite3";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds } from "../model";
+import { MappingProvider } from "../provider";
 import { IConnection } from "./iConnection";
 
+// https://github.com/mapbox/node-sqlite3/issues/304
+// create new db if start a transaction.
 export class SqliteConnection implements IConnection {
     private readonly db: sqlite3.Database;
     private readonly enableLog: boolean;
@@ -15,21 +19,75 @@ export class SqliteConnection implements IConnection {
     public getDataBaseType(): DatabaseType {
         return DatabaseType.SQLITE;
     }
+
     public getRowBoundsExpression(rowBounds: RowBounds): string {
-        throw new Error("Method not implemented.");
+        const offset = rowBounds.offset;
+        const limit = rowBounds.limit;
+        return `limit ${offset}, ${limit}`;
     }
+
     public run(sql: string, params: any[]): Promise<any> {
-        throw new Error("Method not implemented.");
+        this.log(`run:\r\nsql: ${sql}\r\nparams: ${params}`);
+        return new Promise<any>((resolve, reject) => {
+            this.db.run(sql, params, (err, row) => {
+                if (CommonHelper.isNullOrUndefined(err)) {
+                    resolve(row);
+                } else {
+                    reject(err);
+                }
+            });
+        });
     }
     public select(sql: string, params: any[]): Promise<any[]> {
-        throw new Error("Method not implemented.");
+        this.log(`select:\r\nsql: ${sql}\r\nparams: ${params}`);
+        return new Promise<any[]>((resolve, reject) => {
+            this.db.all(sql, params, (err, result) => {
+                if (CommonHelper.isNullOrUndefined(err)) {
+                    resolve(result);
+                } else {
+                    reject(err);
+                }
+            });
+        });
     }
+
     public selectCount(sql: string, params: any[]): Promise<number> {
-        throw new Error("Method not implemented.");
+        this.log(`selectCount:\r\nsql: ${sql}\r\nparams: ${params}`);
+        return new Promise<number>((resolve, reject) => {
+            this.db.all(sql, params, (err, result) => {
+                try {
+                    if (CommonHelper.isNullOrUndefined(err)) {
+                        const count = lodash.values(result[0])[0] as number;
+                        resolve(count);
+                    } else {
+                        reject(err);
+                    }
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
     }
-    public selectEntities<T extends Entity>(entityClass: new () => T, sql: string, params: any[]): Promise<T[]> {
-        throw new Error("Method not implemented.");
+
+    public selectEntities<T extends Entity>(
+        entityClass: new () => T, sql: string, params: any[]): Promise<T[]> {
+        this.log(`selectEntities:\r\nsql: ${sql}\r\nparams: ${params}`);
+        return new Promise<T[]>((resolve, reject) => {
+            this.db.all(sql, params, (err, result) => {
+                try {
+                    if (CommonHelper.isNullOrUndefined(err)) {
+                        const entities = MappingProvider.toEntities<T>(entityClass, result, true);
+                        resolve(entities);
+                    } else {
+                        reject(err);
+                    }
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
     }
+
     public async beginTransaction(): Promise<void> {
         try {
             this.log(`beginTransaction...`);
