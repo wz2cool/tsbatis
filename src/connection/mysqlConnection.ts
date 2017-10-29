@@ -131,7 +131,8 @@ export class MysqlConnection implements IConnection {
     }
 
     private log(log: string): void {
-        if (this.enableLog) {
+        if (!CommonHelper.isNullOrUndefined(this.enableLog)
+            && this.enableLog) {
             console.log(`[TSBATIS] ${log}`);
         }
     }

@@ -32,7 +32,7 @@ export class MysqlConnectionPool implements IConnectionPool {
         });
     }
 
-    public getDriver(): any {
+    private getDriver(): any {
         // tslint:disable-next-line:no-implicit-dependencies
         return require("mysql");
     }
