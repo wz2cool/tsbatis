@@ -1,4 +1,5 @@
 import * as mysql from "mysql";
+import * as path from "path";
 import { ConnectionFactory } from "../../connection";
 import { MysqlConnectionConfig, RelationBase, SqliteConnectionConfig } from "../../model";
 import { SqlTemplateProvider } from "../../provider";
@@ -13,7 +14,7 @@ export class TansTest {
     private readonly connectionFactory: ConnectionFactory;
     constructor() {
         const config = new SqliteConnectionConfig();
-        config.filepath = "./sqlite.db";
+        config.filepath = path.join(__dirname, "../sqlite.db");
         const connectionFactory = new ConnectionFactory(config, true);
         this.connectionFactory = connectionFactory;
     }

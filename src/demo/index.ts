@@ -1,7 +1,7 @@
 import { TansTest } from "./test/tansTest";
 
 const tansTest = new TansTest();
-tansTest.insertSuccess()
+tansTest.insertRollback()
     .then(() => {
         console.log("success");
     })
