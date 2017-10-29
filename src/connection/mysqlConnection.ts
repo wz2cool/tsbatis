@@ -119,6 +119,7 @@ export class MysqlConnection implements IConnection {
     }
 
     public release(): Promise<void> {
+        this.log("release...");
         return new Promise<void>((resolve, reject) => {
             try {
                 this.connection.release();
