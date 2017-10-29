@@ -1,6 +1,6 @@
 import * as mysql from "mysql";
 import { ConnectionFactory } from "../../connection";
-import { MysqlConnectionConfig, RelationBase } from "../../model";
+import { MysqlConnectionConfig, RelationBase, SqliteConnectionConfig } from "../../model";
 import { SqlTemplateProvider } from "../../provider";
 import { Relations } from "../entity/relation/relations";
 import { Customer } from "../entity/table/customer";
@@ -12,13 +12,8 @@ import { StudentMapper } from "../mapper/studentMapper";
 export class TansTest {
     private readonly connectionFactory: ConnectionFactory;
     constructor() {
-        const config = new MysqlConnectionConfig();
-        config.host = "sql12.freemysqlhosting.net";
-        config.port = 3306;
-        config.database = "sql12200910";
-        config.user = "sql12200910";
-        config.password = "ku8lhu9lAg";
-
+        const config = new SqliteConnectionConfig();
+        config.filepath = "./sqlite.db";
         const connectionFactory = new ConnectionFactory(config, true);
         this.connectionFactory = connectionFactory;
     }
