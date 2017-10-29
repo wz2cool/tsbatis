@@ -13,6 +13,7 @@ import {
   FilterGroupDescriptor,
   FilterOperator,
   KeyValue,
+  MysqlConnectionConfig,
   Page,
   PageRowBounds,
   RelationBase,
@@ -20,11 +21,12 @@ import {
   SortDescriptor,
   SortDescriptorBase,
   SortDirection,
+  SqliteConnectionConfig,
   SqlTemplate,
   TableEntity,
 } from "./model";
 
-import { IConnection, MysqlConnection, MysqlConnectionPool, ConnectionFactory, SqliteConnection, SqliteConnectionPool } from "./connection";
+import { ConnectionFactory, IConnection } from "./connection";
 import { column } from "./decorator";
 import { CommonHelper, EntityHelper } from "./helper";
 import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
@@ -54,13 +56,11 @@ export {
   SortDirection,
   SqlTemplate,
   TableEntity,
+  SqliteConnectionConfig,
+  MysqlConnectionConfig,
 
   IConnection,
-  MysqlConnection,
-  MysqlConnectionPool,
   ConnectionFactory,
-  SqliteConnection,
-  SqliteConnectionPool,
 
   column,
 
