@@ -119,15 +119,20 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
             const sqlParam = SqlTemplateProvider.getInsert<T>(o, selective);
             const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
             if (!returnAutoIncreaseId) {
-                return new Promise<number>((resolve, reject) => resolve());
+                return new Promise<number>((resolve, reject) => resolve(1));
             }
-
+            let insertId: number;
             if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
-                return new Promise<number>((resolve, reject) => resolve(Number(result.insertId)));
+                insertId = Number(result.insertId);
             } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE) {
-                const seqId = await this.getSeqIdForSqlite(o);
-                return new Promise<number>((resolve, reject) => resolve(Number(seqId)));
+                insertId = await this.getSeqIdForSqlite(o);
+            } else {
+                insertId = 0;
             }
+            // assgin id;
+            const keyColumn = SqlTemplateProvider.getKeyColumn<T>(o);
+            o[keyColumn.property] = insertId;
+            return new Promise<number>((resolve, reject) => resolve(1));
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
         }

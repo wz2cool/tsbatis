@@ -19,6 +19,11 @@ import {
 } from "../model";
 
 export class SqlTemplateProvider {
+    public static getKeyColumn<T extends TableEntity>(o: T): ColumnInfo {
+        const columnInfos = SqlTemplateProvider.getColumnInfos(o);
+        return lodash.find(columnInfos, (s) => s.isKey);
+    }
+
     public static getInsert<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(o);
         const columnNames: string[] = [];

@@ -30,6 +30,7 @@ export class SqliteConnection implements IConnection {
         return new Promise<any>((resolve, reject) => {
             this.db.run(sql, params, (err, row) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
+                    console.log("xxxxxxxxxxxxxxxxxx: ", row);
                     resolve(row);
                 } else {
                     reject(err);
