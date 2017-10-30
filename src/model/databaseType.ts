@@ -1,4 +1,4 @@
 export enum DatabaseType {
-    SQLITE,
+    SQLITE3,
     MYSQL,
 }

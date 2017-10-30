@@ -10,20 +10,20 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         super(sqlConnection);
     }
 
-    public insert(o: T, returnAutoIncreaseId: boolean = true): Promise<number> {
-        return this.insertInternal(o, false, returnAutoIncreaseId);
+    public insert(o: T): Promise<number> {
+        return this.insertInternal(o, false);
     }
 
-    public insertSelective(o: T, returnAutoIncreaseId: boolean = true): Promise<number> {
-        return this.insertInternal(o, true, returnAutoIncreaseId);
+    public insertSelective(o: T): Promise<number> {
+        return this.insertInternal(o, true);
     }
 
-    public updateByKey(o: T): Promise<void> {
-        return this.updateByKeyInternal(o, false);
+    public updateByPrimaryKey(o: T): Promise<number> {
+        return this.updateByPrimaryKeyInternal(o, false);
     }
 
-    public updateByKeySelective(o: T): Promise<void> {
-        return this.updateByKeyInternal(o, true);
+    public updateByPrimaryKeySelective(o: T): Promise<number> {
+        return this.updateByPrimaryKeyInternal(o, true);
     }
 
     public selectByExample(example: T, relations: RelationBase[] = []): Promise<T[]> {
@@ -85,12 +85,12 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
-    public deleteByExample(example: T): Promise<void> {
+    public deleteByExample(example: T): Promise<number> {
         try {
             const sqlParam = SqlTemplateProvider.getDelete<T>(example);
-            return super.run(sqlParam.sqlExpression, sqlParam.params);
+            return this.deleteInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
-            return new Promise<void>((resolve, reject) => reject(e));
+            return new Promise<number>((resolve, reject) => reject(e));
         }
     }
 
@@ -98,61 +98,112 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getDeleteByKey<T>(entityClass, key);
-            return super.run(sqlParam.sqlExpression, sqlParam.params);
+            return this.deleteInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
         }
     }
 
-    public deleteByDynamicQuery(query: DynamicQuery<T>): Promise<void> {
+    public deleteByDynamicQuery(query: DynamicQuery<T>): Promise<number> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getDeleteByDynamicQuery<T>(entityClass, query);
-            return super.run(sqlParam.sqlExpression, sqlParam.params);
-        } catch (e) {
-            return new Promise<void>((resolve, reject) => reject(e));
-        }
-    }
-
-    private async insertInternal(o: T, selective: boolean, returnAutoIncreaseId: boolean): Promise<number> {
-        try {
-            const sqlParam = SqlTemplateProvider.getInsert<T>(o, selective);
-            const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
-            if (!returnAutoIncreaseId) {
-                return new Promise<number>((resolve, reject) => resolve());
-            }
-
-            if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
-                return new Promise<number>((resolve, reject) => resolve(Number(result.insertId)));
-            } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE) {
-                const seqId = await this.getSeqIdForSqlite(o);
-                return new Promise<number>((resolve, reject) => resolve(Number(seqId)));
-            }
+            return this.deleteInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
         }
     }
 
-    private updateByKeyInternal(o: T, selective: boolean): Promise<void> {
+    private async insertInternal(o: T, selective: boolean): Promise<number> {
+        try {
+            const sqlParam = SqlTemplateProvider.getInsert<T>(o, selective);
+            const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
+            let insertId: number;
+            let effectCount: number;
+            if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
+                insertId = Number(result.insertId);
+                effectCount = Number(result.affectedRows);
+            } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE3) {
+                insertId = await this.getSeqIdForSqlite(o);
+                effectCount = await this.getEffectCountForSqlite();
+            } else {
+                insertId = 0;
+                effectCount = 0;
+            }
+            // assgin id;
+            const keyColumn = SqlTemplateProvider.getKeyColumn<T>(o);
+            o[keyColumn.property] = insertId;
+            return new Promise<number>((resolve, reject) => resolve(effectCount));
+        } catch (e) {
+            return new Promise<number>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async updateByPrimaryKeyInternal(o: T, selective: boolean): Promise<number> {
         try {
             const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, selective);
-            return super.run(sqlParam.sqlExpression, sqlParam.params);
+            const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
+            let effectCount: number;
+            if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
+                effectCount = Number(result.affectedRows);
+            } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE3) {
+                effectCount = await this.getEffectCountForSqlite();
+            } else {
+                effectCount = 0;
+            }
+            return new Promise<number>((resolve, reject) => resolve(effectCount));
         } catch (e) {
-            return new Promise<void>((resolve, reject) => reject(e));
+            return new Promise<number>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async deleteInternal(plainSql: string, params: any[]): Promise<number> {
+        try {
+            const result = await super.run(plainSql, params);
+            let effectCount: number;
+            if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
+                effectCount = Number(result.affectedRows);
+            } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE3) {
+                effectCount = await this.getEffectCountForSqlite();
+            } else {
+                effectCount = 0;
+            }
+            return new Promise<number>((resolve, reject) => resolve(effectCount));
+        } catch (e) {
+            return new Promise<number>((resolve, reject) => reject(e));
         }
     }
 
     private async getSeqIdForSqlite(o: T): Promise<number> {
-        const sql = "SELECT seq FROM sqlite_sequence WHERE name = ?";
-        const tableName = o.getTableName();
-        const result = await super.select(sql, [tableName]);
-        return new Promise<number>((resolve, reject) => {
-            if (result.length > 0) {
-                const seqId = Number(result[0].seq);
-                resolve(seqId);
-            } else {
-                reject(new Error("cannot find seqId"));
-            }
-        });
+        try {
+            const sql = "SELECT seq FROM sqlite_sequence WHERE name = ?";
+            const tableName = o.getTableName();
+            const result = await super.select(sql, [tableName]);
+            return new Promise<number>((resolve, reject) => {
+                if (result.length > 0) {
+                    const seqId = Number(result[0].seq);
+                    resolve(seqId);
+                } else {
+                    reject(new Error("cannot find seqId"));
+                }
+            });
+        } catch (e) {
+            return new Promise<number>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async getEffectCountForSqlite(): Promise<number> {
+        try {
+            const entityClass = this.getEntityClass();
+            const tableName = new entityClass().getTableName();
+            const sql = `SELECT changes() as change FROM ${tableName}`;
+            const result = await super.select(sql, []);
+            return new Promise<number>((resolve, reject) => {
+                const change = Number(result[0].change);
+                resolve(change);
+            });
+        } catch (e) {
+            return new Promise<number>((resolve, reject) => reject(e));
+        }
     }
 }
