@@ -18,32 +18,35 @@ export class TansTest {
         this.connectionFactory = connectionFactory;
     }
 
-    public async insertSuccess(): Promise<void> {
+    public async insertSuccess(): Promise<number> {
         try {
             const connection = await this.connectionFactory.getConnection();
             try {
                 await connection.beginTransaction();
                 try {
-                    const transMapper = new StudentMapper(connection);
-                    const newStudent = new Student();
-                    newStudent.name = "frankTest";
-                    newStudent.age = 20;
-                    newStudent.createTime = new Date();
-                    newStudent.updateTime = new Date();
-                    await transMapper.insert(newStudent);
+                    let effectCount = 0;
+                    for (let i = 0; i < 10; i++) {
+                        const transMapper = new StudentMapper(connection);
+                        const newStudent = new Student();
+                        newStudent.name = "frankTest";
+                        newStudent.age = 20;
+                        newStudent.createTime = new Date();
+                        newStudent.updateTime = new Date();
+                        effectCount += await transMapper.insert(newStudent);
+                    }
                     await connection.commit();
-                    return new Promise<void>((resolve, reject) => resolve());
+                    return new Promise<number>((resolve, reject) => resolve(effectCount));
                 } catch (e) {
                     await connection.rollback();
-                    return new Promise<void>((resolve, reject) => reject(e));
+                    return new Promise<number>((resolve, reject) => reject(e));
                 }
             } catch (beginTransError) {
-                return new Promise<void>((resolve, reject) => reject(beginTransError));
+                return new Promise<number>((resolve, reject) => reject(beginTransError));
             } finally {
                 await connection.release();
             }
         } catch (getConnError) {
-            return new Promise<void>((resolve, reject) => reject(getConnError));
+            return new Promise<number>((resolve, reject) => reject(getConnError));
         }
     }
 
@@ -77,6 +80,33 @@ export class TansTest {
             }
         } catch (getConnError) {
             return new Promise<void>((resolve, reject) => reject(getConnError));
+        }
+    }
+
+    public async deleteSuccess(): Promise<number> {
+        try {
+            const connection = await this.connectionFactory.getConnection();
+            try {
+                await connection.beginTransaction();
+                try {
+                    const transMapper = new StudentMapper(connection);
+                    const deleteStudent = new Student();
+                    deleteStudent.name = "frankTest";
+                    deleteStudent.age = 20;
+                    const effectCount = await transMapper.deleteByExample(deleteStudent);
+                    await connection.commit();
+                    return new Promise<number>((resolve, reject) => resolve(effectCount));
+                } catch (e) {
+                    await connection.rollback();
+                    return new Promise<number>((resolve, reject) => reject(e));
+                }
+            } catch (beginTransError) {
+                return new Promise<number>((resolve, reject) => reject(beginTransError));
+            } finally {
+                await connection.release();
+            }
+        } catch (getConnError) {
+            return new Promise<number>((resolve, reject) => reject(getConnError));
         }
     }
 }
