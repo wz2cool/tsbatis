@@ -1,5 +1,4 @@
 import * as lodash from "lodash";
-import * as sqlite3 from "sqlite3";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds } from "../model";
 import { MappingProvider } from "../provider";
@@ -8,7 +7,7 @@ import { IConnection } from "./iConnection";
 // https://github.com/mapbox/node-sqlite3/issues/304
 // create new db if start a transaction.
 export class SqliteConnection implements IConnection {
-    private readonly db: sqlite3.Database;
+    private readonly db: any;
     private readonly enableLog: boolean;
     constructor(filepath: string, enableLog: boolean = false) {
         this.enableLog = enableLog;
@@ -31,7 +30,6 @@ export class SqliteConnection implements IConnection {
         return new Promise<any>((resolve, reject) => {
             this.db.run(sql, params, (err, row) => {
                 if (CommonHelper.isNullOrUndefined(err)) {
-                    console.log("xxxxxxxxxxxxxxxxxx: ", row);
                     resolve(row);
                 } else {
                     reject(err);
