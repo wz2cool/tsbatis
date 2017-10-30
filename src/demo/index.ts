@@ -1,7 +1,7 @@
 import { TansTest } from "./test/tansTest";
 
 const tansTest = new TansTest();
-tansTest.deleteSuccess()
+tansTest.updateSuccess()
     .then((effectCount) => {
         console.log("effectCount: ", effectCount);
     })

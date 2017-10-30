@@ -38,6 +38,7 @@ export class TansTest {
                 await connection.beginTransaction();
                 try {
                     let effectCount = 0;
+                    const students: Student[] = [];
                     for (let i = 0; i < 10; i++) {
                         const transMapper = new StudentMapper(connection);
                         const newStudent = new Student();
@@ -45,8 +46,11 @@ export class TansTest {
                         newStudent.age = 20;
                         newStudent.createTime = new Date();
                         newStudent.updateTime = new Date();
+                        students.push(newStudent);
                         effectCount += await transMapper.insert(newStudent);
                     }
+
+                    console.log("insert succss: ", students[0].id);
                     await connection.commit();
                     return new Promise<number>((resolve, reject) => resolve(effectCount));
                 } catch (e) {
@@ -107,6 +111,34 @@ export class TansTest {
                     deleteStudent.name = "frankTest";
                     deleteStudent.age = 20;
                     const effectCount = await transMapper.deleteByExample(deleteStudent);
+                    await connection.commit();
+                    return new Promise<number>((resolve, reject) => resolve(effectCount));
+                } catch (e) {
+                    await connection.rollback();
+                    return new Promise<number>((resolve, reject) => reject(e));
+                }
+            } catch (beginTransError) {
+                return new Promise<number>((resolve, reject) => reject(beginTransError));
+            } finally {
+                await connection.release();
+            }
+        } catch (getConnError) {
+            return new Promise<number>((resolve, reject) => reject(getConnError));
+        }
+    }
+
+    public async updateSuccess(): Promise<number> {
+        try {
+            const connection = await this.connectionFactory.getConnection();
+            try {
+                await connection.beginTransaction();
+                try {
+                    const transMapper = new StudentMapper(connection);
+                    const updateStudent = new Student();
+                    updateStudent.id = 1221;
+                    updateStudent.name = "1111111111111";
+                    updateStudent.age = 200;
+                    const effectCount = await transMapper.updateByPrimaryKeySelective(updateStudent);
                     await connection.commit();
                     return new Promise<number>((resolve, reject) => resolve(effectCount));
                 } catch (e) {
