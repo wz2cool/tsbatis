@@ -121,6 +121,26 @@ export class SqliteConnection implements IConnection {
         });
     }
 
+    public async rollbackAndRelease(): Promise<void> {
+        try {
+            await this.rollback();
+            await this.release();
+            return new Promise<void>((resolve, reject) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    public async commitAndRelease(): Promise<void> {
+        try {
+            await this.commit();
+            await this.release();
+            return new Promise<void>((resolve, reject) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
     private serialize(): Promise<void> {
         this.log(`serialize...`);
         return new Promise<void>((resolve, reject) => {
