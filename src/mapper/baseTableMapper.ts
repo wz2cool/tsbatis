@@ -118,11 +118,11 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         try {
             const sqlParam = SqlTemplateProvider.getInsert<T>(o, selective);
             const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
-
             let insertId: number;
             let effectCount: number;
             if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
                 insertId = Number(result.insertId);
+                effectCount = Number(result.affectedRows);
             } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE3) {
                 insertId = await this.getSeqIdForSqlite(o);
                 effectCount = await this.getEffectCountForSqlite();
@@ -142,10 +142,10 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     private async updateByPrimaryKeyInternal(o: T, selective: boolean): Promise<number> {
         try {
             const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, selective);
-            await super.run(sqlParam.sqlExpression, sqlParam.params);
+            const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
             let effectCount: number;
             if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
-                // TODO:
+                effectCount = Number(result.affectedRows);
             } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE3) {
                 effectCount = await this.getEffectCountForSqlite();
             } else {
@@ -159,10 +159,10 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
 
     private async deleteInternal(plainSql: string, params: any[]): Promise<number> {
         try {
-            await super.select(plainSql, params);
+            const result = await super.run(plainSql, params);
             let effectCount: number;
             if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
-                // TODO:
+                effectCount = Number(result.affectedRows);
             } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE3) {
                 effectCount = await this.getEffectCountForSqlite();
             } else {
