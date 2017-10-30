@@ -160,7 +160,14 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     private async deleteInternal(plainSql: string, params: any[]): Promise<number> {
         try {
             await super.select(plainSql, params);
-            const effectCount = this.getEffectCountForSqlite();
+            let effectCount: number;
+            if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
+                // TODO:
+            } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE3) {
+                effectCount = await this.getEffectCountForSqlite();
+            } else {
+                effectCount = 0;
+            }
             return new Promise<number>((resolve, reject) => resolve(effectCount));
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
