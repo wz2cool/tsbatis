@@ -16,7 +16,7 @@ describe(".column", () => {
         it("id is key", () => {
             const result = cache.getColumnInfo("Student", "id");
             expect("id").to.be.eq(result.columnName);
-            expect(true).to.be.eq(result.isKey);
+            expect(true).to.be.eq(result.isPK);
             expect(false).to.be.eq(result.insertable);
             expect(true).to.be.eq(CommonHelper.isBlank(result.table));
         });
@@ -37,7 +37,7 @@ describe(".column", () => {
         it("id column has table", () => {
             const result = cache.getColumnInfo("ProductView", "id");
             expect("product_id").to.be.eq(result.columnName);
-            expect(false).to.be.eq(result.isKey);
+            expect(false).to.be.eq(result.isPK);
             expect(true).to.be.eq(result.insertable);
             expect("product").to.be.eq(result.table);
             expect("Number").to.be.eq(result.propertyType);

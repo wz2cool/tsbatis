@@ -33,7 +33,7 @@ export function column(name: string, a2?, a3?) {
         const entity = target.constructor.name;
         const propertyType = Reflect.getMetadata("design:type", target, propertyKey);
         const columnInfo = new ColumnInfo();
-        columnInfo.isKey = isKey;
+        columnInfo.isPK = isKey;
         columnInfo.insertable = insertable;
         columnInfo.entity = entity;
         columnInfo.columnName = name;

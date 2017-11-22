@@ -19,9 +19,9 @@ import {
 } from "../model";
 
 export class SqlTemplateProvider {
-    public static getKeyColumn<T extends TableEntity>(o: T): ColumnInfo {
+    public static getPkColumn<T extends TableEntity>(o: T): ColumnInfo {
         const columnInfos = SqlTemplateProvider.getColumnInfos(o);
-        return lodash.find(columnInfos, (s) => s.isKey);
+        return lodash.find(columnInfos, (s) => s.isPK);
     }
 
     public static getInsert<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
@@ -55,9 +55,9 @@ export class SqlTemplateProvider {
         return sqlParam;
     }
 
-    public static getDeleteByKey<T extends TableEntity>(entityClass: { new(): T }, key: any): SqlTemplate {
+    public static getDeleteByPk<T extends TableEntity>(entityClass: { new(): T }, key: any): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-        const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
+        const keyColumn = lodash.find(columnInfos, (s) => s.isPK);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
         }
@@ -85,9 +85,9 @@ export class SqlTemplateProvider {
         return this.getSqlByDynamicQuery<T>(entityClass, deleteSql, query);
     }
 
-    public static getUpdateByKey<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
+    public static getUpdateByPk<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(o);
-        const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
+        const keyColumn = lodash.find(columnInfos, (s) => s.isPK);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
         }
@@ -121,9 +121,9 @@ export class SqlTemplateProvider {
         return sqlParam;
     }
 
-    public static getSelectByKey<T extends TableEntity>(entityClass: { new(): T }, key: any): SqlTemplate {
+    public static getSelectByPk<T extends TableEntity>(entityClass: { new(): T }, key: any): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-        const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
+        const keyColumn = lodash.find(columnInfos, (s) => s.isPK);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
         }
@@ -147,10 +147,10 @@ export class SqlTemplateProvider {
         return this.getSelectByDynamicQuery<T>(entityClass, query);
     }
 
-    public static getSelectCountByKey<T extends TableEntity>(
-        entityClass: { new(): T }, key: any): SqlTemplate {
+    public static getSelectCountByPk<T extends TableEntity>(
+        entityClass: { new(): T }, pk: any): SqlTemplate {
         const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-        const keyColumn = lodash.find(columnInfos, (s) => s.isKey);
+        const keyColumn = lodash.find(columnInfos, (s) => s.isPK);
         if (CommonHelper.isNullOrUndefined(keyColumn)) {
             throw new Error("cannot find key, please set iskey property in @column.");
         }
@@ -159,7 +159,7 @@ export class SqlTemplateProvider {
         const whereStr = keyColumn.columnName + " = ?";
         const sqlExpression = `SELECT COUNT(0) FROM ${tableName} WHERE ${whereStr}`;
         const params: any[] = [];
-        params.push(key);
+        params.push(pk);
 
         const sqlParam = new SqlTemplate();
         sqlParam.sqlExpression = sqlExpression;

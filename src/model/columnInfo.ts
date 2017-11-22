@@ -1,7 +1,7 @@
 import { CommonHelper } from "../helper";
 
 export class ColumnInfo {
-    public isKey: boolean;
+    public isPK: boolean;
     public insertable: boolean;
     public property: string;
     public underscoreProperty: string;

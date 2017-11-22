@@ -39,7 +39,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     public selectByPrimaryKey(key: any, relations: RelationBase[] = []): Promise<T[]> {
         try {
             const entityClass = this.getEntityClass();
-            const sqlParam = SqlTemplateProvider.getSelectByKey<T>(entityClass, key);
+            const sqlParam = SqlTemplateProvider.getSelectByPk<T>(entityClass, key);
             return super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
@@ -68,7 +68,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     public selectCountByPrimaryKey(key: any): Promise<number> {
         try {
             const entityClass = this.getEntityClass();
-            const sqlParam = SqlTemplateProvider.getSelectCountByKey<T>(entityClass, key);
+            const sqlParam = SqlTemplateProvider.getSelectCountByPk<T>(entityClass, key);
             return super.selectCount(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
@@ -97,7 +97,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     public deleteByPrimaryKey(key: any): Promise<number> {
         try {
             const entityClass = this.getEntityClass();
-            const sqlParam = SqlTemplateProvider.getDeleteByKey<T>(entityClass, key);
+            const sqlParam = SqlTemplateProvider.getDeleteByPk<T>(entityClass, key);
             return this.deleteInternal(sqlParam.sqlExpression, sqlParam.params);
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));
@@ -131,7 +131,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
                 effectCount = 0;
             }
             // assgin id;
-            const keyColumn = SqlTemplateProvider.getKeyColumn<T>(o);
+            const keyColumn = SqlTemplateProvider.getPkColumn<T>(o);
             o[keyColumn.property] = insertId;
             return new Promise<number>((resolve, reject) => resolve(effectCount));
         } catch (e) {
@@ -141,7 +141,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
 
     private async updateByPrimaryKeyInternal(o: T, selective: boolean): Promise<number> {
         try {
-            const sqlParam = SqlTemplateProvider.getUpdateByKey<T>(o, selective);
+            const sqlParam = SqlTemplateProvider.getUpdateByPk<T>(o, selective);
             const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
             let effectCount: number;
             if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
