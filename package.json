@@ -11,8 +11,7 @@
     "prepublish": "tsc",
     "cover": "tsc -p tsconfig.test.json && istanbul cover ./node_modules/mocha/bin/_mocha dist/test/**/*Test.js --recursive",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && del-cli ./coverage",
-    "copydb": "npm run copysqlitedb && npm run copynothwinddb",
-    "copysqlitedb": "copyfiles -f ./test/sqlite.db ./dist/test/",
+    "copydb": "npm run copynothwinddb",
     "copynothwinddb": "copyfiles -f ./test/northwind.db ./dist/test/",
     "removenyc": "del-cli .nyc_output",
     "deletedist": "del-cli dist"
