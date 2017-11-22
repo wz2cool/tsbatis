@@ -1,8 +1,8 @@
 import { column, TableEntity } from "../../../src/";
 
-export class Customer extends TableEntity {
+export class Supplier extends TableEntity {
     @column("Id", true, true)
-    public id: string;
+    public id: number;
     @column("CompanyName", false, true)
     public companyName: string;
     @column("ContactName", false, true)
@@ -23,8 +23,10 @@ export class Customer extends TableEntity {
     public phone: string;
     @column("Fax", false, true)
     public fax: string;
+    @column("HomePage", false, true)
+    public homePage: string;
 
     public getTableName(): string {
-        return "Customer";
+        return "Supplier";
     }
 }
