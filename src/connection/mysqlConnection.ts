@@ -64,6 +64,7 @@ export class MysqlConnection implements IConnection {
             });
         });
     }
+
     public selectEntities<T extends Entity>(
         entityClass: new () => T, sql: string, params: any[]): Promise<T[]> {
         this.log(`selectEntities:\r\nsql: ${sql}\r\nparams: ${params}`);
