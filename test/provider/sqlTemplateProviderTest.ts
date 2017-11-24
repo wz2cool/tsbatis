@@ -151,6 +151,45 @@ describe(".SqlTemplateProvider", () => {
         });
     });
 
+    describe("#getSelectSql", () => {
+        it("should getSelectSql sql template", () => {
+            const result = SqlTemplateProvider.getSelectSql<Customer>(Customer);
+            // tslint:disable-next-line:max-line-length
+            const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer`;
+            expect(expectValue).to.be.eq(result);
+        });
+    });
+
+    describe("#getSelectCountSql", () => {
+        it("should getSelectCountSql sql template", () => {
+            const result = SqlTemplateProvider.getSelectCountSql<Customer>(Customer);
+            const expectValue = `SELECT COUNT(0) FROM Customer`;
+            expect(expectValue).to.be.eq(result);
+        });
+    });
+
+    describe("#getSqlByDynamicQuery", () => {
+        it("should return sql if dynamic query is null", () => {
+            const result = SqlTemplateProvider.getSqlByDynamicQuery<Customer>(Customer, "SELECT * FROM Customer", null);
+            const expectValue = `SELECT * FROM Customer`;
+            expect(expectValue).to.be.eq(result.sqlExpression);
+        });
+
+        it("should return sql with filter and order if dynamic query has filter and sort", () => {
+            const addressFilter = new FilterDescriptor<Customer>((u) => u.address, FilterOperator.START_WITH, "test");
+            const idSort = new SortDescriptor<Customer>((u) => u.id, SortDirection.DESC);
+            const query = DynamicQuery.createIntance<Customer>();
+            query.addFilters(addressFilter);
+            query.addSorts(idSort);
+
+            // tslint:disable-next-line:max-line-length
+            const result = SqlTemplateProvider.getSqlByDynamicQuery<Customer>(Customer, "SELECT * FROM Customer", query);
+            const expectValue = `SELECT * FROM Customer WHERE Address LIKE ? ORDER BY Id DESC`;
+            expect(expectValue).to.be.eq(result.sqlExpression);
+            expect("test%").to.be.eq(result.params[0]);
+        });
+    });
+
     // sort
     describe("#getSortExpressionBySortBase", () => {
         it("should getSortExpressionBySortDescriptor sql template", () => {
@@ -193,7 +232,6 @@ describe(".SqlTemplateProvider", () => {
             const expectValue = "CASE Id = ? THEN ? ELSE ? END";
             expect(3).to.be.eq(result.params[0]);
             expect(expectValue).to.be.eq(result.sqlExpression);
-
         });
     });
 });

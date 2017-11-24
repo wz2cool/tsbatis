@@ -201,13 +201,11 @@ export class SqlTemplateProvider {
 
     public static getSqlByDynamicQuery<T extends Entity>(
         entityClass: { new(): T }, sql: string, dynamicQuery: DynamicQuery<T>): SqlTemplate {
-        if (CommonHelper.isNullOrUndefined(dynamicQuery)) {
-            return new SqlTemplate();
-        }
-
-        const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, dynamicQuery.filters);
-        const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, dynamicQuery.sorts);
+        const useQuery = CommonHelper.isNullOrUndefined(dynamicQuery) ? new DynamicQuery() : dynamicQuery;
         let expression = sql;
+        const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, useQuery.filters);
+        const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, useQuery.sorts);
+
         expression = CommonHelper.isBlank(filterSqlParam.sqlExpression)
             ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
         expression = CommonHelper.isBlank(sortSqlParam.sqlExpression)
