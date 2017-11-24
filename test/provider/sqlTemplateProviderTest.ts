@@ -1,14 +1,15 @@
 import { CustomSortDescriptor } from '../../src/model/customSortDescriptor';
 import { expect } from "chai";
 import * as path from "path";
-import { DynamicQuery, FilterDescriptor, SqlTemplateProvider } from "../../src";
+import { DynamicQuery, FilterDescriptor, SqlTemplateProvider, CustomFilterDescriptor } from "../../src";
 import { MysqlConnection, SqliteConnection } from "../../src/connection";
-import { DatabaseType, SqliteConnectionConfig, SortDescriptor } from "../../src/model";
+import { DatabaseType, SqliteConnectionConfig, SortDescriptor, FilterCondition } from "../../src/model";
 import { RowBounds } from "../../src/model/rowBounds";
 import { Customer } from "../db/entity/customer";
 import { SqlTemplate } from "../../src/model/sqlTemplate";
 import { FilterOperator } from "../../src/model/filterOperator";
 import { SortDirection } from "../../src/model/sortDirection";
+import { FilterGroupDescriptor } from '../../src/model/filterGroupDescriptor';
 
 describe(".SqlTemplateProvider", () => {
     describe("#getPkColumn", () => {
@@ -187,6 +188,88 @@ describe(".SqlTemplateProvider", () => {
             const expectValue = `SELECT * FROM Customer WHERE Address LIKE ? ORDER BY Id DESC`;
             expect(expectValue).to.be.eq(result.sqlExpression);
             expect("test%").to.be.eq(result.params[0]);
+        });
+    });
+
+    describe("#getColumnInfos", () => {
+        it("should get columnInfos", () => {
+            const columnInfos = SqlTemplateProvider.getColumnInfos<Customer>(Customer);
+            expect(true).to.be.eq(columnInfos.length > 0);
+            expect("Id").to.be.eq(columnInfos[0].columnName);
+        });
+
+        it("should has error if entity is null", () => {
+            // tslint:disable-next-line:max-line-length
+            //  expect(SqlTemplateProvider.getColumnInfos<Customer>(null)).to.throw(new Error("cannot find entity, please set @column to entity!"));
+        });
+    });
+
+    // filter
+    describe("#getFilterExpressionByFilterDescriptor", () => {
+        it("should getFilterExpressionByFilterDescriptor sql template", () => {
+            const idFilter = new FilterDescriptor<Customer>((u) => u.id, FilterOperator.EQUAL, "1");
+            // tslint:disable-next-line:max-line-length
+            const result = SqlTemplateProvider.getFilterExpressionByFilterDescriptor(Customer, idFilter);
+            const expectValue = "Id = ?";
+            expect(expectValue).to.be.eq(result.sqlExpression);
+            expect("1").to.be.eq(result.params[0]);
+        });
+    });
+
+    describe("#getFilterExpressionByCustomFilterDescriptor", () => {
+        it("should getFilterExpressionByCustomFilterDescriptor sql template", () => {
+            const customFilter = new CustomFilterDescriptor();
+            customFilter.expression = `CASE {0} THEN {1} ELSE {2} END`;
+            customFilter.params = [3, 1, 0];
+            const result = SqlTemplateProvider
+                .getFilterExpressionByCustomFilterDescriptor<Customer>(Customer, customFilter);
+            const expectValue = `CASE ? THEN ? ELSE ? END`;
+            expect(expectValue).to.be.eq(result.sqlExpression);
+            expect(3).to.be.eq(result.params[0]);
+            expect(1).to.be.eq(result.params[1]);
+            expect(0).to.be.eq(result.params[2]);
+        });
+    });
+
+    describe("#getFilterExpressionByFilterBase", () => {
+        it("should getFilterExpressionByFilterDescriptor sql template", () => {
+            const idFilter = new FilterDescriptor<Customer>((u) => u.id, FilterOperator.EQUAL, "1");
+            // tslint:disable-next-line:max-line-length
+            const result = SqlTemplateProvider.getFilterExpressionByFilterBase(Customer, idFilter);
+            const expectValue = "Id = ?";
+            expect(expectValue).to.be.eq(result.sqlExpression);
+            expect("1").to.be.eq(result.params[0]);
+        });
+
+        it("should getFilterExpressionByCustomFilterDescriptor sql template", () => {
+            const customFilter = new CustomFilterDescriptor();
+            customFilter.expression = `CASE {0} THEN {1} ELSE {2} END`;
+            customFilter.params = [3, 1, 0];
+            const result = SqlTemplateProvider
+                .getFilterExpressionByFilterBase<Customer>(Customer, customFilter);
+            const expectValue = `CASE ? THEN ? ELSE ? END`;
+            expect(expectValue).to.be.eq(result.sqlExpression);
+            expect(3).to.be.eq(result.params[0]);
+            expect(1).to.be.eq(result.params[1]);
+            expect(0).to.be.eq(result.params[2]);
+        });
+
+        it("should getFilterGroupDescriptor sql template", () => {
+            const idFilter = new FilterDescriptor<Customer>((u) => u.id, FilterOperator.EQUAL, "1");
+            // tslint:disable-next-line:max-line-length
+            const addressFilter = new FilterDescriptor<Customer>(FilterCondition.OR, (u) => u.address, FilterOperator.START_WITH, "test");
+            const groupFilter = new FilterGroupDescriptor();
+            groupFilter.filters = [idFilter, addressFilter];
+            const result = SqlTemplateProvider.getFilterExpressionByFilterBase<Customer>(Customer, groupFilter);
+            const expectValue = `Id = ? OR Address LIKE ?`;
+            expect(expectValue).to.be.eq(result.sqlExpression);
+            expect("1").to.be.eq(result.params[0]);
+            expect("test%").to.be.eq(result.params[1]);
+        });
+
+        it("should return empty sql template if filter is null", () => {
+            const result = SqlTemplateProvider.getFilterExpressionByFilterBase<Customer>(Customer, null);
+            expect("").to.be.eq(result.sqlExpression);
         });
     });
 

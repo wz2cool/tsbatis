@@ -330,6 +330,7 @@ export class SqlTemplateProvider {
             expression = expression.replace(`{${i}}`, "?");
         }
         sqlParam.params = sqlParam.params.concat(filter.params);
+        sqlParam.sqlExpression = expression;
         return sqlParam;
     }
 
