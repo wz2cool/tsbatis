@@ -45,7 +45,7 @@ export class SqlTemplateProvider {
         });
 
         const tableName = o.getTableName();
-        const columnNamesStr = columnNames.join(",");
+        const columnNamesStr = columnNames.join(", ");
         const placeholderStr = placeholders.join(", ");
         const sqlExpression = `INSERT INTO ${tableName} (${columnNamesStr}) VALUES (${placeholderStr})`;
 
