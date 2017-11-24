@@ -286,7 +286,7 @@ export class SqlTemplateProvider {
         return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
     }
 
-    private static getColumnInfos<T extends Entity>(o: T | { new(): T }): ColumnInfo[] {
+    public static getColumnInfos<T extends Entity>(o: T | { new(): T }): ColumnInfo[] {
         const entityName = EntityHelper.getEntityName(o);
         if (CommonHelper.isNullOrUndefined(entityName)) {
             throw new Error("cannot find entity, please set @column to entity!");
@@ -301,7 +301,7 @@ export class SqlTemplateProvider {
     }
 
     //#region filter
-    private static getFilterExpressionByFilterBase<T extends Entity>(
+    public static getFilterExpressionByFilterBase<T extends Entity>(
         entityClass: { new(): T }, filter: FilterDescriptorBase): SqlTemplate {
         if (filter instanceof FilterDescriptor) {
             return SqlTemplateProvider.getFilterExpressionByFilterDescriptor(entityClass, filter);
@@ -314,7 +314,7 @@ export class SqlTemplateProvider {
         }
     }
 
-    private static getFilterExpressionByFilterDescriptor<T extends Entity>(
+    public static getFilterExpressionByFilterDescriptor<T extends Entity>(
         entityClass: { new(): T }, filter: FilterDescriptor<T>): SqlTemplate {
         const value = filter.value;
         const operator = filter.operator;
@@ -324,7 +324,7 @@ export class SqlTemplateProvider {
         return FilterHelper.getFilterExpression(operator, columnInfo, value);
     }
 
-    private static getFilterExpressionByCustomFilterDescriptor<T extends Entity>(
+    public static getFilterExpressionByCustomFilterDescriptor<T extends Entity>(
         entityClass: { new(): T }, filter: CustomFilterDescriptor): SqlTemplate {
         const sqlParam = new SqlTemplate();
         let expression = CommonHelper.isBlank(filter.expression) ? "" : filter.expression;
@@ -338,7 +338,7 @@ export class SqlTemplateProvider {
     //#endregion
 
     //#region sort
-    private static getSortExpressionBySortBase<T extends Entity>(
+    public static getSortExpressionBySortBase<T extends Entity>(
         entityClass: { new(): T }, sort: SortDescriptorBase): SqlTemplate {
         if (sort instanceof SortDescriptor) {
             return SqlTemplateProvider.getSortExpressionBySortDescriptor(entityClass, sort);
@@ -349,7 +349,7 @@ export class SqlTemplateProvider {
         }
     }
 
-    private static getSortExpressionBySortDescriptor<T extends Entity>(
+    public static getSortExpressionBySortDescriptor<T extends Entity>(
         entityClass: { new(): T }, sort: SortDescriptor<T>): SqlTemplate {
         const entity = EntityHelper.getEntityName(entityClass);
         const columnInfo = EntityCache.getInstance().getColumnInfo(entity, sort.propertyPath);
@@ -361,7 +361,7 @@ export class SqlTemplateProvider {
         return sqlParam;
     }
 
-    private static getSortExpressionByCustomSortDescriptor<T extends Entity>(
+    public static getSortExpressionByCustomSortDescriptor<T extends Entity>(
         entityClass: { new(): T }, sort: CustomSortDescriptor): SqlTemplate {
         const sqlParam = new SqlTemplate();
         let expression = CommonHelper.isBlank(sort.expression) ? "" : sort.expression;
@@ -369,16 +369,17 @@ export class SqlTemplateProvider {
             expression = expression.replace(`{${i}}`, "?");
         }
         sqlParam.params = sqlParam.params.concat(sort.params);
+        sqlParam.sqlExpression = expression;
         return sqlParam;
     }
 
     //#endregion
 
-    private static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
+    public static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
         return lodash.map(columnInfos, (s) => s.getQueryColumn() + " AS " + s.underscoreProperty).join(", ");
     }
 
-    private static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {
+    public static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {
         const dynamicQuery = DynamicQuery.createIntance<T>();
         for (const prop in example) {
             if (example.hasOwnProperty(prop)
@@ -392,7 +393,7 @@ export class SqlTemplateProvider {
         return dynamicQuery;
     }
 
-    private constructor() {
+    public constructor() {
         // hide constructor
     }
 }
