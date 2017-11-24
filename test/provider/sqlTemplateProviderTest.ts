@@ -152,6 +152,28 @@ describe(".SqlTemplateProvider", () => {
     });
 
     // sort
+    describe("#getSortExpressionBySortBase", () => {
+        it("should getSortExpressionBySortDescriptor sql template", () => {
+            const idSort = new SortDescriptor<Customer>((u) => u.id, SortDirection.DESC);
+            const result = SqlTemplateProvider.getSortExpressionBySortBase<Customer>(Customer, idSort);
+            const expectValue = `Id DESC`;
+            expect(expectValue).to.be.eq(result.sqlExpression);
+        });
+
+        it("should getSortExpressionByCustomSortDescriptor sql template", () => {
+            const customSort = new CustomSortDescriptor();
+            customSort.expression = "CASE Id = {0} THEN {1} ELSE {2} END";
+            customSort.direction = SortDirection.DESC;
+            customSort.params = [3, 1, 0];
+            const result = SqlTemplateProvider.getSortExpressionBySortBase<Customer>(Customer, customSort);
+            const expectValue = "CASE Id = ? THEN ? ELSE ? END";
+            expect(expectValue).to.be.eq(result.sqlExpression);
+            expect(3).to.be.eq(result.params[0]);
+            expect(1).to.be.eq(result.params[1]);
+            expect(0).to.be.eq(result.params[2]);
+        });
+    });
+
     describe("#getSortExpressionBySortDescriptor", () => {
         it("should getSortExpressionBySortDescriptor sql template", () => {
             const idSort = new SortDescriptor<Customer>((u) => u.id, SortDirection.DESC);
@@ -167,7 +189,7 @@ describe(".SqlTemplateProvider", () => {
             customSort.expression = "CASE Id = {0} THEN {1} ELSE {2} END";
             customSort.direction = SortDirection.DESC;
             customSort.params = [3, 1, 0];
-            const result = SqlTemplateProvider.getSortExpressionByCustomSortDescriptor(Customer, customSort);
+            const result = SqlTemplateProvider.getSortExpressionByCustomSortDescriptor<Customer>(Customer, customSort);
             const expectValue = "CASE Id = ? THEN ? ELSE ? END";
             expect(3).to.be.eq(result.params[0]);
             expect(expectValue).to.be.eq(result.sqlExpression);
