@@ -1,7 +1,7 @@
 import { column, TableEntity } from "../../../src/";
 
 export class Customer extends TableEntity {
-    @column("Id", true, true)
+    @column("Id", true, false)
     public id: string;
     @column("CompanyName", false, true)
     public companyName: string;

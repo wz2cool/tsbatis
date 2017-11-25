@@ -11,6 +11,7 @@ import { FilterOperator } from "../../src/model/filterOperator";
 import { SortDirection } from "../../src/model/sortDirection";
 import { FilterGroupDescriptor } from '../../src/model/filterGroupDescriptor';
 import { Student } from '../model/student';
+import { ErrorModel } from '../model/ErrorModel';
 
 describe(".SqlTemplateProvider", () => {
     describe("#getPkColumn", () => {
@@ -28,9 +29,9 @@ describe(".SqlTemplateProvider", () => {
             newCustomer.contactName = "test";
             newCustomer.contactTitle = "test";
             const result = SqlTemplateProvider.getInsert(newCustomer, false);
-            expect("INSERT INTO Customer (Id, CompanyName, ContactName, ContactTitle, " +
+            expect("INSERT INTO Customer (CompanyName, ContactName, ContactTitle, " +
                 "Address, City, Region, PostalCode, Country, Phone, Fax) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").to.be.eq(result.sqlExpression);
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").to.be.eq(result.sqlExpression);
         });
 
         it("should insertSelective sql template", () => {
@@ -40,8 +41,8 @@ describe(".SqlTemplateProvider", () => {
             newCustomer.contactName = "test";
             newCustomer.contactTitle = "test";
             const result = SqlTemplateProvider.getInsert(newCustomer, true);
-            expect("INSERT INTO Customer (Id, CompanyName, ContactName, ContactTitle) " +
-                "VALUES (?, ?, ?, ?)").to.be.eq(result.sqlExpression);
+            expect("INSERT INTO Customer (CompanyName, ContactName, ContactTitle) " +
+                "VALUES (?, ?, ?)").to.be.eq(result.sqlExpression);
         });
     });
 
@@ -50,6 +51,14 @@ describe(".SqlTemplateProvider", () => {
             const result = SqlTemplateProvider.getDeleteByPk<Customer>(Customer, "2");
             const expectValue = `DELETE FROM Customer WHERE Id = ?`;
             expect(expectValue).to.be.eq(result.sqlExpression);
+        });
+
+        it("should throw error if don't have key column", () => {
+            const test = () => {
+                SqlTemplateProvider.getDeleteByPk<ErrorModel>(ErrorModel, "1");
+            };
+
+            expect(test).to.throw(Error);
         });
     });
 
@@ -87,6 +96,14 @@ describe(".SqlTemplateProvider", () => {
             const expectValue = `UPDATE Customer SET Address = ? WHERE Id = ?`;
             expect(expectValue).to.be.eq(result.sqlExpression);
         });
+
+        it("should throw error if don't have key column", () => {
+            const test = () => {
+                SqlTemplateProvider.getUpdateByPk<ErrorModel>(new ErrorModel(), true);
+            };
+
+            expect(test).to.throw(Error);
+        });
     });
 
     describe("#getSelectByPk", () => {
@@ -95,6 +112,14 @@ describe(".SqlTemplateProvider", () => {
             // tslint:disable-next-line:max-line-length
             const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE Id = ?`;
             expect(expectValue).to.be.eq(result.sqlExpression);
+        });
+
+        it("should throw error if don't have key column", () => {
+            const test = () => {
+                SqlTemplateProvider.getSelectByPk<ErrorModel>(ErrorModel, "1");
+            };
+
+            expect(test).to.throw(Error);
         });
     });
 
@@ -115,6 +140,13 @@ describe(".SqlTemplateProvider", () => {
             const result = SqlTemplateProvider.getSelectCountByPk<Customer>(Customer, "1");
             const expectValue = `SELECT COUNT(0) FROM Customer WHERE Id = ?`;
             expect(expectValue).to.be.eq(result.sqlExpression);
+        });
+
+        it("should throw error is empty don't have key column", () => {
+            const test = () => {
+                SqlTemplateProvider.getSelectCountByPk<ErrorModel>(ErrorModel, "1");
+            };
+            expect(test).to.throw(Error);
         });
     });
 
