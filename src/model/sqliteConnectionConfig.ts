@@ -5,6 +5,6 @@ export class SqliteConnectionConfig implements IConnectionConfig {
     public filepath: string;
 
     public getDatabaseType(): DatabaseType {
-        return DatabaseType.MYSQL;
+        return DatabaseType.SQLITE3;
     }
 }
