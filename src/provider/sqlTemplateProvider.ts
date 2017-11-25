@@ -272,29 +272,21 @@ export class SqlTemplateProvider {
 
     public static getColumnsExpression<T extends Entity>(entityClass: { new(): T }): string {
         const entityName = EntityHelper.getEntityName(entityClass);
-        if (CommonHelper.isNullOrUndefined(entityName)) {
+        if (CommonHelper.isBlank(entityName)) {
             throw new Error("cannot find entity, please set @column to entity!");
         }
 
         const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
-        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
         return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
     }
 
     public static getColumnInfos<T extends Entity>(o: T | { new(): T }): ColumnInfo[] {
         const entityName = EntityHelper.getEntityName(o);
-        if (CommonHelper.isNullOrUndefined(entityName)) {
+        if (CommonHelper.isBlank(entityName)) {
             throw new Error("cannot find entity, please set @column to entity!");
         }
 
         const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
-        if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
-            throw new Error("cannot find entity, please set @column to entity!");
-        }
-
         return columnInfos;
     }
 

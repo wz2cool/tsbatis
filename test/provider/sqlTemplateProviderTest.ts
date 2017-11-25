@@ -10,6 +10,7 @@ import { SqlTemplate } from "../../src/model/sqlTemplate";
 import { FilterOperator } from "../../src/model/filterOperator";
 import { SortDirection } from "../../src/model/sortDirection";
 import { FilterGroupDescriptor } from '../../src/model/filterGroupDescriptor';
+import { Student } from '../model/student';
 
 describe(".SqlTemplateProvider", () => {
     describe("#getPkColumn", () => {
@@ -191,6 +192,22 @@ describe(".SqlTemplateProvider", () => {
         });
     });
 
+    describe("#getColumnsExpression", () => {
+        it("shoud getColumnExpression sql template", () => {
+            const result = SqlTemplateProvider.getColumnsExpression<Customer>(Customer);
+            // tslint:disable-next-line:max-line-length
+            const expectValue = `Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax`;
+            expect(expectValue).to.be.eq(result);
+        });
+
+        it("should has error if entity is null", () => {
+            const test = () => {
+                SqlTemplateProvider.getColumnsExpression<Customer>(null);
+            };
+            expect(test).to.throw(Error);
+        });
+    });
+
     describe("#getColumnInfos", () => {
         it("should get columnInfos", () => {
             const columnInfos = SqlTemplateProvider.getColumnInfos<Customer>(Customer);
@@ -199,8 +216,10 @@ describe(".SqlTemplateProvider", () => {
         });
 
         it("should has error if entity is null", () => {
-            // tslint:disable-next-line:max-line-length
-            //  expect(SqlTemplateProvider.getColumnInfos<Customer>(null)).to.throw(new Error("cannot find entity, please set @column to entity!"));
+            const test = () => {
+                SqlTemplateProvider.getColumnInfos<Customer>(null);
+            };
+            expect(test).to.throw(Error);
         });
     });
 
@@ -293,6 +312,11 @@ describe(".SqlTemplateProvider", () => {
             expect(3).to.be.eq(result.params[0]);
             expect(1).to.be.eq(result.params[1]);
             expect(0).to.be.eq(result.params[2]);
+        });
+
+        it("should get empty sql template", () => {
+            const result = SqlTemplateProvider.getSortExpressionBySortBase<Customer>(Customer, null);
+            expect("").to.be.eq(result.sqlExpression);
         });
     });
 
