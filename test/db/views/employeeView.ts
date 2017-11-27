@@ -1,5 +1,5 @@
-import { CustomerView } from "./customerView";
 import { column, Entity } from "../../../src/index";
+import { CustomerView } from "./customerView";
 
 export class EmployeeView extends Entity {
     @column("name", "exmployee")
