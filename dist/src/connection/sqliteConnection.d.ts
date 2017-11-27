@@ -14,8 +14,6 @@ export declare class SqliteConnection implements IConnection {
     rollback(): Promise<void>;
     commit(): Promise<void>;
     release(): Promise<void>;
-    rollbackAndRelease(): Promise<void>;
-    commitAndRelease(): Promise<void>;
     private serialize();
     private exec(sql);
     private getDriver();

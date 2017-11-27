@@ -169,50 +169,24 @@ var SqliteConnection = (function () {
             });
         });
     };
-    SqliteConnection.prototype.rollbackAndRelease = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var e_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.rollback()];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.release()];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/, new Promise(function (resolve, reject) { return resolve(); })];
-                    case 3:
-                        e_2 = _a.sent();
-                        return [2 /*return*/, new Promise(function (resolve, reject) { return reject(e_2); })];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    SqliteConnection.prototype.commitAndRelease = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var e_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.commit()];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.release()];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/, new Promise(function (resolve, reject) { return resolve(); })];
-                    case 3:
-                        e_3 = _a.sent();
-                        return [2 /*return*/, new Promise(function (resolve, reject) { return reject(e_3); })];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
+    // public async rollbackAndRelease(): Promise<void> {
+    //     try {
+    //         await this.rollback();
+    //         await this.release();
+    //         return new Promise<void>((resolve, reject) => resolve());
+    //     } catch (e) {
+    //         return new Promise<void>((resolve, reject) => reject(e));
+    //     }
+    // }
+    // public async commitAndRelease(): Promise<void> {
+    //     try {
+    //         await this.commit();
+    //         await this.release();
+    //         return new Promise<void>((resolve, reject) => resolve());
+    //     } catch (e) {
+    //         return new Promise<void>((resolve, reject) => reject(e));
+    //     }
+    // }
     SqliteConnection.prototype.serialize = function () {
         var _this = this;
         this.log("serialize...");

@@ -11,7 +11,5 @@ export interface IConnection {
     beginTransaction(): Promise<void>;
     rollback(): Promise<void>;
     commit(): Promise<void>;
-    rollbackAndRelease(): Promise<void>;
-    commitAndRelease(): Promise<void>;
     release(): Promise<void>;
 }

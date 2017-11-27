@@ -40,33 +40,36 @@ var sqliteConnection_1 = require("../../src/connection/sqliteConnection");
 var student_1 = require("../db/entity/student");
 var SqliteConnectionTestHelper = (function () {
     function SqliteConnectionTestHelper() {
-        var filepath = path.join(__dirname, "../../", "test", "northwind.db");
-        this.sqliteConnection = new sqliteConnection_1.SqliteConnection(filepath, true);
     }
     SqliteConnectionTestHelper.prototype.testTransactionInsert = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var newStudent, insertSqlTemplate, selectMatchStudentTemplate, matchStudent_1, e_1;
+            var filepath, sqliteConnection, newStudent, insertSqlTemplate, selectMatchStudentTemplate, matchStudent_1, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 5, , 6]);
+                        _a.trys.push([0, 6, , 7]);
+                        filepath = path.join(__dirname, "../../", "test", "northwind.db");
+                        sqliteConnection = new sqliteConnection_1.SqliteConnection(filepath, true);
                         newStudent = new student_1.Student();
                         newStudent.name = new Date().toString();
                         newStudent.age = 30;
-                        return [4 /*yield*/, this.sqliteConnection.beginTransaction()];
+                        return [4 /*yield*/, sqliteConnection.beginTransaction()];
                     case 1:
                         _a.sent();
                         insertSqlTemplate = "INSERT INTO student values(?, ?)";
-                        return [4 /*yield*/, this.sqliteConnection.run(insertSqlTemplate, [newStudent.name, newStudent.age])];
+                        return [4 /*yield*/, sqliteConnection.run(insertSqlTemplate, [newStudent.name, newStudent.age])];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.sqliteConnection.commit()];
+                        return [4 /*yield*/, sqliteConnection.commit()];
                     case 3:
                         _a.sent();
                         selectMatchStudentTemplate = "SELECT * FROM student where name = ?";
-                        return [4 /*yield*/, this.sqliteConnection.selectEntities(student_1.Student, selectMatchStudentTemplate, [newStudent.name])];
+                        return [4 /*yield*/, sqliteConnection.selectEntities(student_1.Student, selectMatchStudentTemplate, [newStudent.name])];
                     case 4:
                         matchStudent_1 = _a.sent();
+                        return [4 /*yield*/, sqliteConnection.release()];
+                    case 5:
+                        _a.sent();
                         return [2 /*return*/, new Promise(function (resolve, reject) {
                                 if (matchStudent_1.length === 1) {
                                     resolve();
@@ -75,38 +78,43 @@ var SqliteConnectionTestHelper = (function () {
                                     reject("could not find insert student");
                                 }
                             })];
-                    case 5:
+                    case 6:
                         e_1 = _a.sent();
                         return [2 /*return*/, new Promise(function (resolve, reject) { return reject(e_1); })];
-                    case 6: return [2 /*return*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         });
     };
     SqliteConnectionTestHelper.prototype.testTransactionInsertThenRollback = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var newStudent, insertSqlTemplate, selectMatchStudentTemplate, matchStudent_2, e_2;
+            var filepath, sqliteConnection, newStudent, insertSqlTemplate, selectMatchStudentTemplate, matchStudent_2, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 5, , 6]);
+                        _a.trys.push([0, 6, , 7]);
+                        filepath = path.join(__dirname, "../../", "test", "northwind.db");
+                        sqliteConnection = new sqliteConnection_1.SqliteConnection(filepath, true);
                         newStudent = new student_1.Student();
                         newStudent.name = "rollback" + new Date().toString();
                         newStudent.age = 30;
-                        return [4 /*yield*/, this.sqliteConnection.beginTransaction()];
+                        return [4 /*yield*/, sqliteConnection.beginTransaction()];
                     case 1:
                         _a.sent();
                         insertSqlTemplate = "INSERT INTO student values(?, ?)";
-                        return [4 /*yield*/, this.sqliteConnection.run(insertSqlTemplate, [newStudent.name, newStudent.age])];
+                        return [4 /*yield*/, sqliteConnection.run(insertSqlTemplate, [newStudent.name, newStudent.age])];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.sqliteConnection.rollback()];
+                        return [4 /*yield*/, sqliteConnection.rollback()];
                     case 3:
                         _a.sent();
                         selectMatchStudentTemplate = "SELECT * FROM student where name = ?";
-                        return [4 /*yield*/, this.sqliteConnection.selectEntities(student_1.Student, selectMatchStudentTemplate, [newStudent.name])];
+                        return [4 /*yield*/, sqliteConnection.selectEntities(student_1.Student, selectMatchStudentTemplate, [newStudent.name])];
                     case 4:
                         matchStudent_2 = _a.sent();
+                        return [4 /*yield*/, sqliteConnection.release()];
+                    case 5:
+                        _a.sent();
                         return [2 /*return*/, new Promise(function (resolve, reject) {
                                 if (matchStudent_2.length === 0) {
                                     resolve();
@@ -115,10 +123,10 @@ var SqliteConnectionTestHelper = (function () {
                                     reject("should not find insert item since rollback");
                                 }
                             })];
-                    case 5:
+                    case 6:
                         e_2 = _a.sent();
                         return [2 /*return*/, new Promise(function (resolve, reject) { return reject(e_2); })];
-                    case 6: return [2 /*return*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         });

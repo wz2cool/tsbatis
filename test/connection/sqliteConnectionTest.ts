@@ -148,6 +148,6 @@ describe(".mysqlConnection", () => {
                 .catch((err) => {
                     done(err);
                 });
-        })
+        });
     });
 });
