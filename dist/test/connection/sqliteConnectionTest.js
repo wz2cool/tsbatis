@@ -10,16 +10,16 @@ var sqliteConnectionTestHelper_1 = require("./sqliteConnectionTestHelper");
 describe(".mysqlConnection", function () {
     describe("#getDataBaseType", function () {
         it("should return mysql", function () {
-            var mysqlConnection = new connection_1.MysqlConnection(null);
-            var result = mysqlConnection.getDataBaseType();
+            var sqliteConnection = new connection_1.SqliteConnection(null);
+            var result = sqliteConnection.getDataBaseType();
             chai_1.expect(model_1.DatabaseType.MYSQL).to.be.eq(result);
         });
     });
     describe("#getRowBoundsExpression", function () {
         it("should return `limit 20, 10` if rowbounds.offset is 20, rowbounds.limit 10", function () {
-            var mysqlConnection = new connection_1.MysqlConnection(null);
+            var sqliteConnection = new connection_1.SqliteConnection(null);
             var rowbounds = new rowBounds_1.RowBounds(20, 10);
-            var result = mysqlConnection.getRowBoundsExpression(rowbounds);
+            var result = sqliteConnection.getRowBoundsExpression(rowbounds);
             chai_1.expect("limit 20, 10").to.be.eq(result);
         });
     });

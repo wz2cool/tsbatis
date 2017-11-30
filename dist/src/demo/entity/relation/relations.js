@@ -7,7 +7,7 @@ var orderDetail_1 = require("../table/orderDetail");
 var orderDetailStatus_1 = require("../table/orderDetailStatus");
 var orderStatus_1 = require("../table/orderStatus");
 var product_1 = require("../table/product");
-var Relations = (function () {
+var Relations = /** @class */ (function () {
     function Relations() {
     }
     Relations.getOrderDetail_OrderDetailStatusRelation = function () {

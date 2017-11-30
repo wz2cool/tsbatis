@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var model_1 = require("../model");
 var mysqlConnectionPool_1 = require("./mysqlConnectionPool");
 var sqliteConnectionPool_1 = require("./sqliteConnectionPool");
-var ConnectionFactory = (function () {
+var ConnectionFactory = /** @class */ (function () {
     function ConnectionFactory(config, enableLog) {
         if (enableLog === void 0) { enableLog = false; }
         if (config instanceof model_1.MysqlConnectionConfig) {

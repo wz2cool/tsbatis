@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var RelationBase = (function () {
+var RelationBase = /** @class */ (function () {
     function RelationBase() {
         this.relations = [];
     }

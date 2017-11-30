@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var helper_1 = require("../helper");
-var ColumnInfo = (function () {
+var ColumnInfo = /** @class */ (function () {
     function ColumnInfo() {
     }
     ColumnInfo.prototype.getQueryColumn = function () {

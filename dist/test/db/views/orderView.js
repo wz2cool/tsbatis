@@ -20,24 +20,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var src_1 = require("../../../src");
-var OrderView = (function (_super) {
+var OrderView = /** @class */ (function (_super) {
     __extends(OrderView, _super);
     function OrderView() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    __decorate([
+        src_1.column("shipName", "order"),
+        __metadata("design:type", String)
+    ], OrderView.prototype, "shipName", void 0);
+    __decorate([
+        src_1.column("shipAddress", "order"),
+        __metadata("design:type", String)
+    ], OrderView.prototype, "shipAddress", void 0);
+    __decorate([
+        src_1.column("customerId", "order"),
+        __metadata("design:type", String)
+    ], OrderView.prototype, "customerId", void 0);
     return OrderView;
 }(src_1.Entity));
-__decorate([
-    src_1.column("shipName", "order"),
-    __metadata("design:type", String)
-], OrderView.prototype, "shipName", void 0);
-__decorate([
-    src_1.column("shipAddress", "order"),
-    __metadata("design:type", String)
-], OrderView.prototype, "shipAddress", void 0);
-__decorate([
-    src_1.column("customerId", "order"),
-    __metadata("design:type", String)
-], OrderView.prototype, "customerId", void 0);
 exports.OrderView = OrderView;
 //# sourceMappingURL=orderView.js.map

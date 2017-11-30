@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var helper_1 = require("../helper");
 var relationBase_1 = require("./relationBase");
 // one to many
-var CollectionRelation = (function (_super) {
+var CollectionRelation = /** @class */ (function (_super) {
     __extends(CollectionRelation, _super);
     function CollectionRelation(
         // one to many.

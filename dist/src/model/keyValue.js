@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var KeyValue = (function () {
+var KeyValue = /** @class */ (function () {
     function KeyValue(key, value) {
         this.key = key;
         this.value = value;

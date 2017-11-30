@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var DynamicQuery = (function () {
+var DynamicQuery = /** @class */ (function () {
     function DynamicQuery() {
         this.filters = [];
         this.sorts = [];

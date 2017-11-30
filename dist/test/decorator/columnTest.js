@@ -15,19 +15,19 @@ var decorator_1 = require("../../src/decorator");
 var helper_1 = require("../../src/helper");
 describe(".column", function () {
     describe("#tableColumn", function () {
-        var Student = (function () {
+        var Student = /** @class */ (function () {
             function Student() {
             }
+            __decorate([
+                decorator_1.column("id", true, false),
+                __metadata("design:type", Number)
+            ], Student.prototype, "id", void 0);
+            __decorate([
+                decorator_1.column("name"),
+                __metadata("design:type", String)
+            ], Student.prototype, "name", void 0);
             return Student;
         }());
-        __decorate([
-            decorator_1.column("id", true, false),
-            __metadata("design:type", Number)
-        ], Student.prototype, "id", void 0);
-        __decorate([
-            decorator_1.column("name"),
-            __metadata("design:type", String)
-        ], Student.prototype, "name", void 0);
         var cache = cache_1.EntityCache.getInstance();
         it("id is key", function () {
             var result = cache.getColumnInfo("Student", "id");
@@ -38,27 +38,27 @@ describe(".column", function () {
         });
     });
     describe("#viewColumn", function () {
-        var ProductView = (function () {
+        var ProductView = /** @class */ (function () {
             function ProductView() {
             }
+            __decorate([
+                decorator_1.column("product_id", "product"),
+                __metadata("design:type", Number)
+            ], ProductView.prototype, "id", void 0);
+            __decorate([
+                decorator_1.column("product_name", "product"),
+                __metadata("design:type", String)
+            ], ProductView.prototype, "productName", void 0);
+            __decorate([
+                decorator_1.column("category_name", "category"),
+                __metadata("design:type", String)
+            ], ProductView.prototype, "categoryName", void 0);
+            __decorate([
+                decorator_1.column("create_time", "product"),
+                __metadata("design:type", Date)
+            ], ProductView.prototype, "createTime", void 0);
             return ProductView;
         }());
-        __decorate([
-            decorator_1.column("product_id", "product"),
-            __metadata("design:type", Number)
-        ], ProductView.prototype, "id", void 0);
-        __decorate([
-            decorator_1.column("product_name", "product"),
-            __metadata("design:type", String)
-        ], ProductView.prototype, "productName", void 0);
-        __decorate([
-            decorator_1.column("category_name", "category"),
-            __metadata("design:type", String)
-        ], ProductView.prototype, "categoryName", void 0);
-        __decorate([
-            decorator_1.column("create_time", "product"),
-            __metadata("design:type", Date)
-        ], ProductView.prototype, "createTime", void 0);
         var cache = cache_1.EntityCache.getInstance();
         it("id column has table", function () {
             var result = cache.getColumnInfo("ProductView", "id");

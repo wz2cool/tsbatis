@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var Supplier = (function (_super) {
+var Supplier = /** @class */ (function (_super) {
     __extends(Supplier, _super);
     function Supplier() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,55 +28,55 @@ var Supplier = (function (_super) {
     Supplier.prototype.getTableName = function () {
         return "Supplier";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", Number)
+    ], Supplier.prototype, "id", void 0);
+    __decorate([
+        _1.column("CompanyName", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "companyName", void 0);
+    __decorate([
+        _1.column("ContactName", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "contactName", void 0);
+    __decorate([
+        _1.column("ContactTitle", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "contactTitle", void 0);
+    __decorate([
+        _1.column("Address", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "address", void 0);
+    __decorate([
+        _1.column("City", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "city", void 0);
+    __decorate([
+        _1.column("Region", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "region", void 0);
+    __decorate([
+        _1.column("PostalCode", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "postalCode", void 0);
+    __decorate([
+        _1.column("Country", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "country", void 0);
+    __decorate([
+        _1.column("Phone", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "phone", void 0);
+    __decorate([
+        _1.column("Fax", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "fax", void 0);
+    __decorate([
+        _1.column("HomePage", false, true),
+        __metadata("design:type", String)
+    ], Supplier.prototype, "homePage", void 0);
     return Supplier;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", Number)
-], Supplier.prototype, "id", void 0);
-__decorate([
-    _1.column("CompanyName", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "companyName", void 0);
-__decorate([
-    _1.column("ContactName", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "contactName", void 0);
-__decorate([
-    _1.column("ContactTitle", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "contactTitle", void 0);
-__decorate([
-    _1.column("Address", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "address", void 0);
-__decorate([
-    _1.column("City", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "city", void 0);
-__decorate([
-    _1.column("Region", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "region", void 0);
-__decorate([
-    _1.column("PostalCode", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "postalCode", void 0);
-__decorate([
-    _1.column("Country", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "country", void 0);
-__decorate([
-    _1.column("Phone", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "phone", void 0);
-__decorate([
-    _1.column("Fax", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "fax", void 0);
-__decorate([
-    _1.column("HomePage", false, true),
-    __metadata("design:type", String)
-], Supplier.prototype, "homePage", void 0);
 exports.Supplier = Supplier;
 //# sourceMappingURL=supplier.js.map

@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var decorator_1 = require("../../../decorator");
 var model_1 = require("../../../model");
-var Student = (function (_super) {
+var Student = /** @class */ (function (_super) {
     __extends(Student, _super);
     function Student() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -29,27 +29,27 @@ var Student = (function (_super) {
     Student.prototype.getTableName = function () {
         return "students";
     };
+    __decorate([
+        decorator_1.column("id", true, false),
+        __metadata("design:type", Number)
+    ], Student.prototype, "id", void 0);
+    __decorate([
+        decorator_1.column("name"),
+        __metadata("design:type", String)
+    ], Student.prototype, "name", void 0);
+    __decorate([
+        decorator_1.column("age"),
+        __metadata("design:type", Number)
+    ], Student.prototype, "age", void 0);
+    __decorate([
+        decorator_1.column("create_time"),
+        __metadata("design:type", Date)
+    ], Student.prototype, "createTime", void 0);
+    __decorate([
+        decorator_1.column("update_time"),
+        __metadata("design:type", Date)
+    ], Student.prototype, "updateTime", void 0);
     return Student;
 }(model_1.TableEntity));
-__decorate([
-    decorator_1.column("id", true, false),
-    __metadata("design:type", Number)
-], Student.prototype, "id", void 0);
-__decorate([
-    decorator_1.column("name"),
-    __metadata("design:type", String)
-], Student.prototype, "name", void 0);
-__decorate([
-    decorator_1.column("age"),
-    __metadata("design:type", Number)
-], Student.prototype, "age", void 0);
-__decorate([
-    decorator_1.column("create_time"),
-    __metadata("design:type", Date)
-], Student.prototype, "createTime", void 0);
-__decorate([
-    decorator_1.column("update_time"),
-    __metadata("design:type", Date)
-], Student.prototype, "updateTime", void 0);
 exports.Student = Student;
 //# sourceMappingURL=student.js.map

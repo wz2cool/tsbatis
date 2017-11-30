@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("../../src/index");
-var ErrorModel = (function (_super) {
+var ErrorModel = /** @class */ (function (_super) {
     __extends(ErrorModel, _super);
     function ErrorModel() {
         return _super !== null && _super.apply(this, arguments) || this;

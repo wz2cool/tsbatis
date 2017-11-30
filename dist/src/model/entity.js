@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Entity = (function () {
+var Entity = /** @class */ (function () {
     function Entity() {
         // must have empty construstor
     }

@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var helper_1 = require("../helper");
 var sortDescritporBase_1 = require("./sortDescritporBase");
 var sortDirection_1 = require("./sortDirection");
-var SortDescriptor = (function (_super) {
+var SortDescriptor = /** @class */ (function (_super) {
     __extends(SortDescriptor, _super);
     function SortDescriptor(getPropFun, direction) {
         if (direction === void 0) { direction = sortDirection_1.SortDirection.ASC; }

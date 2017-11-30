@@ -20,24 +20,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("../../../src/index");
-var EmployeeView = (function (_super) {
+var EmployeeView = /** @class */ (function (_super) {
     __extends(EmployeeView, _super);
     function EmployeeView() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    __decorate([
+        index_1.column("name", "exmployee"),
+        __metadata("design:type", String)
+    ], EmployeeView.prototype, "name", void 0);
+    __decorate([
+        index_1.column("name", "exmployee"),
+        __metadata("design:type", Number)
+    ], EmployeeView.prototype, "age", void 0);
+    __decorate([
+        index_1.column("customerId", "exmployee"),
+        __metadata("design:type", String)
+    ], EmployeeView.prototype, "customerId", void 0);
     return EmployeeView;
 }(index_1.Entity));
-__decorate([
-    index_1.column("name", "exmployee"),
-    __metadata("design:type", String)
-], EmployeeView.prototype, "name", void 0);
-__decorate([
-    index_1.column("name", "exmployee"),
-    __metadata("design:type", Number)
-], EmployeeView.prototype, "age", void 0);
-__decorate([
-    index_1.column("customerId", "exmployee"),
-    __metadata("design:type", String)
-], EmployeeView.prototype, "customerId", void 0);
 exports.EmployeeView = EmployeeView;
 //# sourceMappingURL=employeeView.js.map

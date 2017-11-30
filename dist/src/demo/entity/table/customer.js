@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var decorator_1 = require("../../../decorator");
 var model_1 = require("../../../model");
-var Customer = (function (_super) {
+var Customer = /** @class */ (function (_super) {
     __extends(Customer, _super);
     function Customer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -29,19 +29,19 @@ var Customer = (function (_super) {
     Customer.prototype.getTableName = function () {
         return "customers";
     };
+    __decorate([
+        decorator_1.column("id", true, false),
+        __metadata("design:type", Number)
+    ], Customer.prototype, "id", void 0);
+    __decorate([
+        decorator_1.column("last_name"),
+        __metadata("design:type", String)
+    ], Customer.prototype, "lastName", void 0);
+    __decorate([
+        decorator_1.column("first_name"),
+        __metadata("design:type", String)
+    ], Customer.prototype, "firstName", void 0);
     return Customer;
 }(model_1.TableEntity));
-__decorate([
-    decorator_1.column("id", true, false),
-    __metadata("design:type", Number)
-], Customer.prototype, "id", void 0);
-__decorate([
-    decorator_1.column("last_name"),
-    __metadata("design:type", String)
-], Customer.prototype, "lastName", void 0);
-__decorate([
-    decorator_1.column("first_name"),
-    __metadata("design:type", String)
-], Customer.prototype, "firstName", void 0);
 exports.Customer = Customer;
 //# sourceMappingURL=customer.js.map

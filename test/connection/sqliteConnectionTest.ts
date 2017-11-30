@@ -9,17 +9,17 @@ import { SqliteConnectionTestHelper } from "./sqliteConnectionTestHelper";
 describe(".mysqlConnection", () => {
     describe("#getDataBaseType", () => {
         it("should return mysql", () => {
-            const mysqlConnection = new MysqlConnection(null);
-            const result = mysqlConnection.getDataBaseType();
+            const sqliteConnection = new SqliteConnection(null);
+            const result = sqliteConnection.getDataBaseType();
             expect(DatabaseType.MYSQL).to.be.eq(result);
         });
     });
 
     describe("#getRowBoundsExpression", () => {
         it("should return `limit 20, 10` if rowbounds.offset is 20, rowbounds.limit 10", () => {
-            const mysqlConnection = new MysqlConnection(null);
+            const sqliteConnection = new SqliteConnection(null);
             const rowbounds = new RowBounds(20, 10);
-            const result = mysqlConnection.getRowBoundsExpression(rowbounds);
+            const result = sqliteConnection.getRowBoundsExpression(rowbounds);
             expect("limit 20, 10").to.be.eq(result);
         });
     });

@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var CustomerDemographic = (function (_super) {
+var CustomerDemographic = /** @class */ (function (_super) {
     __extends(CustomerDemographic, _super);
     function CustomerDemographic() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,15 +28,15 @@ var CustomerDemographic = (function (_super) {
     CustomerDemographic.prototype.getTableName = function () {
         return "CustomerDemographic";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", String)
+    ], CustomerDemographic.prototype, "id", void 0);
+    __decorate([
+        _1.column("CustomerDesc", false, true),
+        __metadata("design:type", String)
+    ], CustomerDemographic.prototype, "customerDesc", void 0);
     return CustomerDemographic;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", String)
-], CustomerDemographic.prototype, "id", void 0);
-__decorate([
-    _1.column("CustomerDesc", false, true),
-    __metadata("design:type", String)
-], CustomerDemographic.prototype, "customerDesc", void 0);
 exports.CustomerDemographic = CustomerDemographic;
 //# sourceMappingURL=customerDemographic.js.map

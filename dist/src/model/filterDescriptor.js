@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var helper_1 = require("./../helper");
 var filterDescriptorBase_1 = require("./filterDescriptorBase");
 var filterOperator_1 = require("./filterOperator");
-var FilterDescriptor = (function (_super) {
+var FilterDescriptor = /** @class */ (function (_super) {
     __extends(FilterDescriptor, _super);
     function FilterDescriptor(a1, a2, a3, a4) {
         var _this = _super.call(this) || this;

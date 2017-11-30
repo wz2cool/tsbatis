@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var CustomerCustomerDemo = (function (_super) {
+var CustomerCustomerDemo = /** @class */ (function (_super) {
     __extends(CustomerCustomerDemo, _super);
     function CustomerCustomerDemo() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,15 +28,15 @@ var CustomerCustomerDemo = (function (_super) {
     CustomerCustomerDemo.prototype.getTableName = function () {
         return "CustomerCustomerDemo";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", String)
+    ], CustomerCustomerDemo.prototype, "id", void 0);
+    __decorate([
+        _1.column("CustomerTypeId", false, true),
+        __metadata("design:type", String)
+    ], CustomerCustomerDemo.prototype, "customerTypeId", void 0);
     return CustomerCustomerDemo;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", String)
-], CustomerCustomerDemo.prototype, "id", void 0);
-__decorate([
-    _1.column("CustomerTypeId", false, true),
-    __metadata("design:type", String)
-], CustomerCustomerDemo.prototype, "customerTypeId", void 0);
 exports.CustomerCustomerDemo = CustomerCustomerDemo;
 //# sourceMappingURL=customerCustomerDemo.js.map
