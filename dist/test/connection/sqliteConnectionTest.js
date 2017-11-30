@@ -7,17 +7,19 @@ var model_1 = require("../../src/model");
 var rowBounds_1 = require("../../src/model/rowBounds");
 var customer_1 = require("../db/entity/customer");
 var sqliteConnectionTestHelper_1 = require("./sqliteConnectionTestHelper");
-describe(".mysqlConnection", function () {
+describe(".SqliteConnection", function () {
     describe("#getDataBaseType", function () {
-        it("should return mysql", function () {
-            var sqliteConnection = new connection_1.SqliteConnection(null);
+        it("should return sqlite", function () {
+            var filepath = path.join(__dirname, "../../", "test", "northwind.db");
+            var sqliteConnection = new connection_1.SqliteConnection(filepath);
             var result = sqliteConnection.getDataBaseType();
-            chai_1.expect(model_1.DatabaseType.MYSQL).to.be.eq(result);
+            chai_1.expect(model_1.DatabaseType.SQLITE3).to.be.eq(result);
         });
     });
     describe("#getRowBoundsExpression", function () {
         it("should return `limit 20, 10` if rowbounds.offset is 20, rowbounds.limit 10", function () {
-            var sqliteConnection = new connection_1.SqliteConnection(null);
+            var filepath = path.join(__dirname, "../../", "test", "northwind.db");
+            var sqliteConnection = new connection_1.SqliteConnection(filepath);
             var rowbounds = new rowBounds_1.RowBounds(20, 10);
             var result = sqliteConnection.getRowBoundsExpression(rowbounds);
             chai_1.expect("limit 20, 10").to.be.eq(result);
