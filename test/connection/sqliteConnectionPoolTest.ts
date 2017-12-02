@@ -3,7 +3,6 @@ import * as path from "path";
 import { SqliteConnectionPool } from "../../src/connection/sqliteConnectionPool";
 import { SqliteConnectionConfig } from "../../src/model/index";
 
-
 describe(".SqliteConnectionPool", () => {
     describe("#constructor", () => {
         it("init", (done) => {
