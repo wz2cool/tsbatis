@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var sortDescritporBase_1 = require("./sortDescritporBase");
-var CustomSortDescriptor = (function (_super) {
+var CustomSortDescriptor = /** @class */ (function (_super) {
     __extends(CustomSortDescriptor, _super);
     function CustomSortDescriptor() {
         var _this = _super.call(this) || this;

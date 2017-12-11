@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var OrderDetail = (function (_super) {
+var OrderDetail = /** @class */ (function (_super) {
     __extends(OrderDetail, _super);
     function OrderDetail() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,31 +28,31 @@ var OrderDetail = (function (_super) {
     OrderDetail.prototype.getTableName = function () {
         return "OrderDetail";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", String)
+    ], OrderDetail.prototype, "id", void 0);
+    __decorate([
+        _1.column("OrderId", false, true),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "orderId", void 0);
+    __decorate([
+        _1.column("ProductId", false, true),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "productId", void 0);
+    __decorate([
+        _1.column("UnitPrice", false, true),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "unitPrice", void 0);
+    __decorate([
+        _1.column("Quantity", false, true),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "quantity", void 0);
+    __decorate([
+        _1.column("Discount", false, true),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "discount", void 0);
     return OrderDetail;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", String)
-], OrderDetail.prototype, "id", void 0);
-__decorate([
-    _1.column("OrderId", false, true),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "orderId", void 0);
-__decorate([
-    _1.column("ProductId", false, true),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "productId", void 0);
-__decorate([
-    _1.column("UnitPrice", false, true),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "unitPrice", void 0);
-__decorate([
-    _1.column("Quantity", false, true),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "quantity", void 0);
-__decorate([
-    _1.column("Discount", false, true),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "discount", void 0);
 exports.OrderDetail = OrderDetail;
 //# sourceMappingURL=orderDetail.js.map

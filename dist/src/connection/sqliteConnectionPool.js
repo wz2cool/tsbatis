@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var sqliteConnection_1 = require("./sqliteConnection");
-var SqliteConnectionPool = (function () {
+var SqliteConnectionPool = /** @class */ (function () {
     function SqliteConnectionPool(config, enableLog) {
         if (enableLog === void 0) { enableLog = false; }
         this.config = config;

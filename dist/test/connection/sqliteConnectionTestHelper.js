@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-    return { next: verb(0), "throw": verb(1), "return": verb(2) };
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path = require("path");
 var sqliteConnection_1 = require("../../src/connection/sqliteConnection");
 var student_1 = require("../db/entity/student");
-var SqliteConnectionTestHelper = (function () {
+var SqliteConnectionTestHelper = /** @class */ (function () {
     function SqliteConnectionTestHelper() {
     }
     SqliteConnectionTestHelper.prototype.testTransactionInsert = function () {

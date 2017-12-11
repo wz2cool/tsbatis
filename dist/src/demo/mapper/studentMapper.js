@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var mapper_1 = require("../../mapper");
 var student_1 = require("../entity/table/student");
-var StudentMapper = (function (_super) {
+var StudentMapper = /** @class */ (function (_super) {
     __extends(StudentMapper, _super);
     function StudentMapper() {
         return _super !== null && _super.apply(this, arguments) || this;

@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var entity_1 = require("./entity");
-var TableEntity = (function (_super) {
+var TableEntity = /** @class */ (function (_super) {
     __extends(TableEntity, _super);
     function TableEntity() {
         return _super !== null && _super.apply(this, arguments) || this;

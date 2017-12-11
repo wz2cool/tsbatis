@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var chai_1 = require("chai");
 var helper_1 = require("../../src/helper");
-var Student = (function () {
+var Student = /** @class */ (function () {
     function Student() {
     }
     return Student;

@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var rowBounds_1 = require("./rowBounds");
-var PageRowBounds = (function (_super) {
+var PageRowBounds = /** @class */ (function (_super) {
     __extends(PageRowBounds, _super);
     // (pageNum = 1) is first page.
     function PageRowBounds(pageNum, pageSize) {

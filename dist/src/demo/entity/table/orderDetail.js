@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var decorator_1 = require("../../../decorator");
 var model_1 = require("../../../model");
-var OrderDetail = (function (_super) {
+var OrderDetail = /** @class */ (function (_super) {
     __extends(OrderDetail, _super);
     function OrderDetail() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -29,35 +29,35 @@ var OrderDetail = (function (_super) {
     OrderDetail.prototype.getTableName = function () {
         return "order_details";
     };
+    __decorate([
+        decorator_1.column("id"),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "id", void 0);
+    __decorate([
+        decorator_1.column("order_id"),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "orderId", void 0);
+    __decorate([
+        decorator_1.column("quantity"),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "quantity", void 0);
+    __decorate([
+        decorator_1.column("unit_price"),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "unitPrice", void 0);
+    __decorate([
+        decorator_1.column("discount"),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "discount", void 0);
+    __decorate([
+        decorator_1.column("product_id"),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "productId", void 0);
+    __decorate([
+        decorator_1.column("status_id"),
+        __metadata("design:type", Number)
+    ], OrderDetail.prototype, "statusId", void 0);
     return OrderDetail;
 }(model_1.TableEntity));
-__decorate([
-    decorator_1.column("id"),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "id", void 0);
-__decorate([
-    decorator_1.column("order_id"),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "orderId", void 0);
-__decorate([
-    decorator_1.column("quantity"),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "quantity", void 0);
-__decorate([
-    decorator_1.column("unit_price"),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "unitPrice", void 0);
-__decorate([
-    decorator_1.column("discount"),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "discount", void 0);
-__decorate([
-    decorator_1.column("product_id"),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "productId", void 0);
-__decorate([
-    decorator_1.column("status_id"),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "statusId", void 0);
 exports.OrderDetail = OrderDetail;
 //# sourceMappingURL=orderDetail.js.map

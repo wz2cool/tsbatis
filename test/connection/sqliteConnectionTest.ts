@@ -6,20 +6,22 @@ import { RowBounds } from "../../src/model/rowBounds";
 import { Customer } from "../db/entity/customer";
 import { SqliteConnectionTestHelper } from "./sqliteConnectionTestHelper";
 
-describe(".mysqlConnection", () => {
+describe(".SqliteConnection", () => {
     describe("#getDataBaseType", () => {
-        it("should return mysql", () => {
-            const mysqlConnection = new SqliteConnection(null);
-            const result = mysqlConnection.getDataBaseType();
-            expect(DatabaseType.MYSQL).to.be.eq(result);
+        it("should return sqlite", () => {
+            const filepath = path.join(__dirname, "../../", "test", "northwind.db");
+            const sqliteConnection = new SqliteConnection(filepath);
+            const result = sqliteConnection.getDataBaseType();
+            expect(DatabaseType.SQLITE3).to.be.eq(result);
         });
     });
 
     describe("#getRowBoundsExpression", () => {
         it("should return `limit 20, 10` if rowbounds.offset is 20, rowbounds.limit 10", () => {
-            const mysqlConnection = new SqliteConnection(null);
+            const filepath = path.join(__dirname, "../../", "test", "northwind.db");
+            const sqliteConnection = new SqliteConnection(filepath);
             const rowbounds = new RowBounds(20, 10);
-            const result = mysqlConnection.getRowBoundsExpression(rowbounds);
+            const result = sqliteConnection.getRowBoundsExpression(rowbounds);
             expect("limit 20, 10").to.be.eq(result);
         });
     });

@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var decorator_1 = require("../../../decorator");
 var model_1 = require("../../../model");
-var Order = (function (_super) {
+var Order = /** @class */ (function (_super) {
     __extends(Order, _super);
     function Order() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -29,35 +29,35 @@ var Order = (function (_super) {
     Order.prototype.getTableName = function () {
         return "orders";
     };
+    __decorate([
+        decorator_1.column("id", true, false),
+        __metadata("design:type", Number)
+    ], Order.prototype, "id", void 0);
+    __decorate([
+        decorator_1.column("ship_name"),
+        __metadata("design:type", String)
+    ], Order.prototype, "shipName", void 0);
+    __decorate([
+        decorator_1.column("ship_address"),
+        __metadata("design:type", String)
+    ], Order.prototype, "shipAddress", void 0);
+    __decorate([
+        decorator_1.column("ship_city"),
+        __metadata("design:type", String)
+    ], Order.prototype, "shipCity", void 0);
+    __decorate([
+        decorator_1.column("ship_state_province"),
+        __metadata("design:type", String)
+    ], Order.prototype, "shipStateProvince", void 0);
+    __decorate([
+        decorator_1.column("status_id"),
+        __metadata("design:type", Number)
+    ], Order.prototype, "statusId", void 0);
+    __decorate([
+        decorator_1.column("customer_id"),
+        __metadata("design:type", Number)
+    ], Order.prototype, "customerId", void 0);
     return Order;
 }(model_1.TableEntity));
-__decorate([
-    decorator_1.column("id", true, false),
-    __metadata("design:type", Number)
-], Order.prototype, "id", void 0);
-__decorate([
-    decorator_1.column("ship_name"),
-    __metadata("design:type", String)
-], Order.prototype, "shipName", void 0);
-__decorate([
-    decorator_1.column("ship_address"),
-    __metadata("design:type", String)
-], Order.prototype, "shipAddress", void 0);
-__decorate([
-    decorator_1.column("ship_city"),
-    __metadata("design:type", String)
-], Order.prototype, "shipCity", void 0);
-__decorate([
-    decorator_1.column("ship_state_province"),
-    __metadata("design:type", String)
-], Order.prototype, "shipStateProvince", void 0);
-__decorate([
-    decorator_1.column("status_id"),
-    __metadata("design:type", Number)
-], Order.prototype, "statusId", void 0);
-__decorate([
-    decorator_1.column("customer_id"),
-    __metadata("design:type", Number)
-], Order.prototype, "customerId", void 0);
 exports.Order = Order;
 //# sourceMappingURL=order.js.map

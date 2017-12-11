@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Page = (function () {
+var Page = /** @class */ (function () {
     function Page(pageNum, pageSize, total, entities) {
         this.pageNum = pageNum;
         this.pageSize = pageSize;

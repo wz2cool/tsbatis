@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var decorator_1 = require("../../../decorator");
 var model_1 = require("../../../model");
-var OrderStatus = (function (_super) {
+var OrderStatus = /** @class */ (function (_super) {
     __extends(OrderStatus, _super);
     function OrderStatus() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -29,15 +29,15 @@ var OrderStatus = (function (_super) {
     OrderStatus.prototype.getTableName = function () {
         return "orders_status";
     };
+    __decorate([
+        decorator_1.column("id", true, false),
+        __metadata("design:type", Number)
+    ], OrderStatus.prototype, "id", void 0);
+    __decorate([
+        decorator_1.column("status_name"),
+        __metadata("design:type", String)
+    ], OrderStatus.prototype, "statusName", void 0);
     return OrderStatus;
 }(model_1.TableEntity));
-__decorate([
-    decorator_1.column("id", true, false),
-    __metadata("design:type", Number)
-], OrderStatus.prototype, "id", void 0);
-__decorate([
-    decorator_1.column("status_name"),
-    __metadata("design:type", String)
-], OrderStatus.prototype, "statusName", void 0);
 exports.OrderStatus = OrderStatus;
 //# sourceMappingURL=orderStatus.js.map

@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var EmployeeTerritory = (function (_super) {
+var EmployeeTerritory = /** @class */ (function (_super) {
     __extends(EmployeeTerritory, _super);
     function EmployeeTerritory() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,19 +28,19 @@ var EmployeeTerritory = (function (_super) {
     EmployeeTerritory.prototype.getTableName = function () {
         return "EmployeeTerritory";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", String)
+    ], EmployeeTerritory.prototype, "id", void 0);
+    __decorate([
+        _1.column("EmployeeId", false, true),
+        __metadata("design:type", Number)
+    ], EmployeeTerritory.prototype, "employeeId", void 0);
+    __decorate([
+        _1.column("TerritoryId", false, true),
+        __metadata("design:type", String)
+    ], EmployeeTerritory.prototype, "territoryId", void 0);
     return EmployeeTerritory;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", String)
-], EmployeeTerritory.prototype, "id", void 0);
-__decorate([
-    _1.column("EmployeeId", false, true),
-    __metadata("design:type", Number)
-], EmployeeTerritory.prototype, "employeeId", void 0);
-__decorate([
-    _1.column("TerritoryId", false, true),
-    __metadata("design:type", String)
-], EmployeeTerritory.prototype, "territoryId", void 0);
 exports.EmployeeTerritory = EmployeeTerritory;
 //# sourceMappingURL=employeeTerritory.js.map

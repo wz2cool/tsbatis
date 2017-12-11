@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var Shipper = (function (_super) {
+var Shipper = /** @class */ (function (_super) {
     __extends(Shipper, _super);
     function Shipper() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,19 +28,19 @@ var Shipper = (function (_super) {
     Shipper.prototype.getTableName = function () {
         return "Shipper";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", Number)
+    ], Shipper.prototype, "id", void 0);
+    __decorate([
+        _1.column("CompanyName", false, true),
+        __metadata("design:type", String)
+    ], Shipper.prototype, "companyName", void 0);
+    __decorate([
+        _1.column("Phone", false, true),
+        __metadata("design:type", String)
+    ], Shipper.prototype, "phone", void 0);
     return Shipper;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", Number)
-], Shipper.prototype, "id", void 0);
-__decorate([
-    _1.column("CompanyName", false, true),
-    __metadata("design:type", String)
-], Shipper.prototype, "companyName", void 0);
-__decorate([
-    _1.column("Phone", false, true),
-    __metadata("design:type", String)
-], Shipper.prototype, "phone", void 0);
 exports.Shipper = Shipper;
 //# sourceMappingURL=shipper.js.map

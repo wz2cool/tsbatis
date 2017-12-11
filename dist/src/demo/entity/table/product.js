@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var decorator_1 = require("../../../decorator");
 var model_1 = require("../../../model");
-var Product = (function (_super) {
+var Product = /** @class */ (function (_super) {
     __extends(Product, _super);
     function Product() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -29,19 +29,19 @@ var Product = (function (_super) {
     Product.prototype.getTableName = function () {
         return "products";
     };
+    __decorate([
+        decorator_1.column("id"),
+        __metadata("design:type", Number)
+    ], Product.prototype, "id", void 0);
+    __decorate([
+        decorator_1.column("product_name"),
+        __metadata("design:type", String)
+    ], Product.prototype, "productName", void 0);
+    __decorate([
+        decorator_1.column("standard_cost"),
+        __metadata("design:type", Number)
+    ], Product.prototype, "standardCost", void 0);
     return Product;
 }(model_1.TableEntity));
-__decorate([
-    decorator_1.column("id"),
-    __metadata("design:type", Number)
-], Product.prototype, "id", void 0);
-__decorate([
-    decorator_1.column("product_name"),
-    __metadata("design:type", String)
-], Product.prototype, "productName", void 0);
-__decorate([
-    decorator_1.column("standard_cost"),
-    __metadata("design:type", Number)
-], Product.prototype, "standardCost", void 0);
 exports.Product = Product;
 //# sourceMappingURL=product.js.map

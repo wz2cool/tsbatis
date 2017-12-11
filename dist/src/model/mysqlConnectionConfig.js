@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var databaseType_1 = require("./databaseType");
-var MysqlConnectionConfig = (function () {
+var MysqlConnectionConfig = /** @class */ (function () {
     function MysqlConnectionConfig() {
         this.port = 3306;
     }

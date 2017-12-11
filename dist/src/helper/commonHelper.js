@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CommonHelper = (function () {
+var CommonHelper = /** @class */ (function () {
     function CommonHelper() {
         // hide constructor
     }

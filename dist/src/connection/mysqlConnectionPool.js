@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var helper_1 = require("../helper");
 var mysqlConnection_1 = require("./mysqlConnection");
-var MysqlConnectionPool = (function () {
+var MysqlConnectionPool = /** @class */ (function () {
     function MysqlConnectionPool(config, enableLog) {
         this.enableLog = enableLog;
         var mysql = this.getDriver();

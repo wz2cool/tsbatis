@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-    return { next: verb(0), "throw": verb(1), "return": verb(2) };
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -41,7 +41,7 @@ var model_1 = require("../model");
 var provider_1 = require("../provider");
 // https://github.com/mapbox/node-sqlite3/issues/304
 // create new db if start a transaction.
-var SqliteConnection = (function () {
+var SqliteConnection = /** @class */ (function () {
     function SqliteConnection(filepath, enableLog) {
         if (enableLog === void 0) { enableLog = false; }
         this.enableLog = enableLog;
@@ -169,24 +169,6 @@ var SqliteConnection = (function () {
             });
         });
     };
-    // public async rollbackAndRelease(): Promise<void> {
-    //     try {
-    //         await this.rollback();
-    //         await this.release();
-    //         return new Promise<void>((resolve, reject) => resolve());
-    //     } catch (e) {
-    //         return new Promise<void>((resolve, reject) => reject(e));
-    //     }
-    // }
-    // public async commitAndRelease(): Promise<void> {
-    //     try {
-    //         await this.commit();
-    //         await this.release();
-    //         return new Promise<void>((resolve, reject) => resolve());
-    //     } catch (e) {
-    //         return new Promise<void>((resolve, reject) => reject(e));
-    //     }
-    // }
     SqliteConnection.prototype.serialize = function () {
         var _this = this;
         this.log("serialize...");

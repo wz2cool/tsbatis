@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var filterDescriptorBase_1 = require("./filterDescriptorBase");
-var CustomFilterDescriptor = (function (_super) {
+var CustomFilterDescriptor = /** @class */ (function (_super) {
     __extends(CustomFilterDescriptor, _super);
     function CustomFilterDescriptor() {
         var _this = _super.call(this) || this;

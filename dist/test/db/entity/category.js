@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var Category = (function (_super) {
+var Category = /** @class */ (function (_super) {
     __extends(Category, _super);
     function Category() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,19 +28,19 @@ var Category = (function (_super) {
     Category.prototype.getTableName = function () {
         return "Category";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", Number)
+    ], Category.prototype, "id", void 0);
+    __decorate([
+        _1.column("CategoryName", false, true),
+        __metadata("design:type", String)
+    ], Category.prototype, "categoryName", void 0);
+    __decorate([
+        _1.column("Description", false, true),
+        __metadata("design:type", String)
+    ], Category.prototype, "description", void 0);
     return Category;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", Number)
-], Category.prototype, "id", void 0);
-__decorate([
-    _1.column("CategoryName", false, true),
-    __metadata("design:type", String)
-], Category.prototype, "categoryName", void 0);
-__decorate([
-    _1.column("Description", false, true),
-    __metadata("design:type", String)
-], Category.prototype, "description", void 0);
 exports.Category = Category;
 //# sourceMappingURL=category.js.map

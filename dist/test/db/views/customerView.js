@@ -10,26 +10,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("../../../src/index");
-var CustomerView = (function () {
+var CustomerView = /** @class */ (function () {
     function CustomerView() {
     }
+    __decorate([
+        index_1.column("Id", "customer"),
+        __metadata("design:type", String)
+    ], CustomerView.prototype, "id", void 0);
+    __decorate([
+        index_1.column("CompanyName", "customer"),
+        __metadata("design:type", String)
+    ], CustomerView.prototype, "companyName", void 0);
+    __decorate([
+        index_1.column("ContactName", "customer"),
+        __metadata("design:type", String)
+    ], CustomerView.prototype, "contactName", void 0);
+    __decorate([
+        index_1.column("ContactTitle", "customer"),
+        __metadata("design:type", String)
+    ], CustomerView.prototype, "contactTitle", void 0);
     return CustomerView;
 }());
-__decorate([
-    index_1.column("Id", "customer"),
-    __metadata("design:type", String)
-], CustomerView.prototype, "id", void 0);
-__decorate([
-    index_1.column("CompanyName", "customer"),
-    __metadata("design:type", String)
-], CustomerView.prototype, "companyName", void 0);
-__decorate([
-    index_1.column("ContactName", "customer"),
-    __metadata("design:type", String)
-], CustomerView.prototype, "contactName", void 0);
-__decorate([
-    index_1.column("ContactTitle", "customer"),
-    __metadata("design:type", String)
-], CustomerView.prototype, "contactTitle", void 0);
 exports.CustomerView = CustomerView;
 //# sourceMappingURL=customerView.js.map

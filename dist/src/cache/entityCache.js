@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var lodash = require("lodash");
 var helper_1 = require("../helper");
-var EntityCache = (function () {
+var EntityCache = /** @class */ (function () {
     function EntityCache() {
         this.columnCache = {};
         // hide constructor
@@ -47,8 +47,8 @@ var EntityCache = (function () {
         }
         return lodash.map(columnInfos, function (c) { return c.property; });
     };
+    EntityCache.instance = new EntityCache();
     return EntityCache;
 }());
-EntityCache.instance = new EntityCache();
 exports.EntityCache = EntityCache;
 //# sourceMappingURL=entityCache.js.map

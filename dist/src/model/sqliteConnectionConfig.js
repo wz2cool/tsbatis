@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var databaseType_1 = require("./databaseType");
-var SqliteConnectionConfig = (function () {
+var SqliteConnectionConfig = /** @class */ (function () {
     function SqliteConnectionConfig() {
     }
     SqliteConnectionConfig.prototype.getDatabaseType = function () {

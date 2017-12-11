@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var commonHelper_1 = require("./commonHelper");
-var EntityHelper = (function () {
+var EntityHelper = /** @class */ (function () {
     function EntityHelper() {
         // hide constructor.
     }

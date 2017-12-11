@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var Territory = (function (_super) {
+var Territory = /** @class */ (function (_super) {
     __extends(Territory, _super);
     function Territory() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,19 +28,19 @@ var Territory = (function (_super) {
     Territory.prototype.getTableName = function () {
         return "Territory";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", String)
+    ], Territory.prototype, "id", void 0);
+    __decorate([
+        _1.column("TerritoryDescription", false, true),
+        __metadata("design:type", String)
+    ], Territory.prototype, "territoryDescription", void 0);
+    __decorate([
+        _1.column("RegionId", false, true),
+        __metadata("design:type", Number)
+    ], Territory.prototype, "regionId", void 0);
     return Territory;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", String)
-], Territory.prototype, "id", void 0);
-__decorate([
-    _1.column("TerritoryDescription", false, true),
-    __metadata("design:type", String)
-], Territory.prototype, "territoryDescription", void 0);
-__decorate([
-    _1.column("RegionId", false, true),
-    __metadata("design:type", Number)
-], Territory.prototype, "regionId", void 0);
 exports.Territory = Territory;
 //# sourceMappingURL=territory.js.map

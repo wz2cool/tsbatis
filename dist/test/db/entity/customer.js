@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var Customer = (function (_super) {
+var Customer = /** @class */ (function (_super) {
     __extends(Customer, _super);
     function Customer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,51 +28,51 @@ var Customer = (function (_super) {
     Customer.prototype.getTableName = function () {
         return "Customer";
     };
+    __decorate([
+        _1.column("Id", true, false),
+        __metadata("design:type", String)
+    ], Customer.prototype, "id", void 0);
+    __decorate([
+        _1.column("CompanyName", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "companyName", void 0);
+    __decorate([
+        _1.column("ContactName", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "contactName", void 0);
+    __decorate([
+        _1.column("ContactTitle", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "contactTitle", void 0);
+    __decorate([
+        _1.column("Address", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "address", void 0);
+    __decorate([
+        _1.column("City", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "city", void 0);
+    __decorate([
+        _1.column("Region", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "region", void 0);
+    __decorate([
+        _1.column("PostalCode", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "postalCode", void 0);
+    __decorate([
+        _1.column("Country", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "country", void 0);
+    __decorate([
+        _1.column("Phone", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "phone", void 0);
+    __decorate([
+        _1.column("Fax", false, true),
+        __metadata("design:type", String)
+    ], Customer.prototype, "fax", void 0);
     return Customer;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, false),
-    __metadata("design:type", String)
-], Customer.prototype, "id", void 0);
-__decorate([
-    _1.column("CompanyName", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "companyName", void 0);
-__decorate([
-    _1.column("ContactName", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "contactName", void 0);
-__decorate([
-    _1.column("ContactTitle", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "contactTitle", void 0);
-__decorate([
-    _1.column("Address", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "address", void 0);
-__decorate([
-    _1.column("City", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "city", void 0);
-__decorate([
-    _1.column("Region", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "region", void 0);
-__decorate([
-    _1.column("PostalCode", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "postalCode", void 0);
-__decorate([
-    _1.column("Country", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "country", void 0);
-__decorate([
-    _1.column("Phone", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "phone", void 0);
-__decorate([
-    _1.column("Fax", false, true),
-    __metadata("design:type", String)
-], Customer.prototype, "fax", void 0);
 exports.Customer = Customer;
 //# sourceMappingURL=customer.js.map

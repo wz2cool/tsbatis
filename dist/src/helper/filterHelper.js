@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var lodash = require("lodash");
 var model_1 = require("../model");
 var commonHelper_1 = require("./commonHelper");
-var FilterHelper = (function () {
+var FilterHelper = /** @class */ (function () {
     function FilterHelper() {
         // hide
     }

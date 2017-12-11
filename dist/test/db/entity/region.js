@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var Region = (function (_super) {
+var Region = /** @class */ (function (_super) {
     __extends(Region, _super);
     function Region() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,15 +28,15 @@ var Region = (function (_super) {
     Region.prototype.getTableName = function () {
         return "Region";
     };
+    __decorate([
+        _1.column("Id", true, true),
+        __metadata("design:type", Number)
+    ], Region.prototype, "id", void 0);
+    __decorate([
+        _1.column("RegionDescription", false, true),
+        __metadata("design:type", String)
+    ], Region.prototype, "regionDescription", void 0);
     return Region;
 }(_1.TableEntity));
-__decorate([
-    _1.column("Id", true, true),
-    __metadata("design:type", Number)
-], Region.prototype, "id", void 0);
-__decorate([
-    _1.column("RegionDescription", false, true),
-    __metadata("design:type", String)
-], Region.prototype, "regionDescription", void 0);
 exports.Region = Region;
 //# sourceMappingURL=region.js.map

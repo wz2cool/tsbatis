@@ -20,7 +20,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require("../../../src/");
-var Student = (function (_super) {
+var Student = /** @class */ (function (_super) {
     __extends(Student, _super);
     function Student() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28,15 +28,15 @@ var Student = (function (_super) {
     Student.prototype.getTableName = function () {
         return "student";
     };
+    __decorate([
+        _1.column("name", false, true),
+        __metadata("design:type", String)
+    ], Student.prototype, "name", void 0);
+    __decorate([
+        _1.column("age", false, true),
+        __metadata("design:type", Number)
+    ], Student.prototype, "age", void 0);
     return Student;
 }(_1.TableEntity));
-__decorate([
-    _1.column("name", false, true),
-    __metadata("design:type", String)
-], Student.prototype, "name", void 0);
-__decorate([
-    _1.column("age", false, true),
-    __metadata("design:type", Number)
-], Student.prototype, "age", void 0);
 exports.Student = Student;
 //# sourceMappingURL=student.js.map

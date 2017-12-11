@@ -4,7 +4,7 @@ var lodash = require("lodash");
 var cache_1 = require("../cache");
 var helper_1 = require("../helper");
 var model_1 = require("../model");
-var SqlTemplateProvider = (function () {
+var SqlTemplateProvider = /** @class */ (function () {
     function SqlTemplateProvider() {
         // hide constructor
     }

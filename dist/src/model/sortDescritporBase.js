@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var sortDirection_1 = require("./sortDirection");
-var SortDescriptorBase = (function () {
+var SortDescriptorBase = /** @class */ (function () {
     function SortDescriptorBase() {
         this.direction = sortDirection_1.SortDirection.ASC;
     }

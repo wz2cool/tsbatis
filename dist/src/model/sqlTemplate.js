@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var SqlTemplate = (function () {
+var SqlTemplate = /** @class */ (function () {
     function SqlTemplate() {
         this.sqlExpression = "";
         this.params = [];

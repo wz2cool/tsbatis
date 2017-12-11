@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var lodash = require("lodash");
 var model_1 = require("../model");
 var baseMapper_1 = require("./baseMapper");
-var BaseMybatisMapper = (function (_super) {
+var BaseMybatisMapper = /** @class */ (function (_super) {
     __extends(BaseMybatisMapper, _super);
     function BaseMybatisMapper(sqlConnection) {
         return _super.call(this, sqlConnection) || this;
