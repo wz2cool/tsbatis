@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { MysqlConnection } from "../../src/connection/index";
-import { DatabaseType } from "../../src/index";
+import { DatabaseType, MysqlConnectionConfig } from "../../src/index";
 import { RowBounds } from "../../src/model/index";
 
 describe(".mysqlConnection", () => {
@@ -18,6 +18,24 @@ describe(".mysqlConnection", () => {
             const rowbounds = new RowBounds(20, 10);
             const result = conn.getRowBoundsExpression(rowbounds);
             expect("limit 20, 10").to.be.eq(result);
+        });
+    });
+
+    describe("#common", () => {
+        it("should select customer", (done) => {
+            const config = new MysqlConnectionConfig();
+            config.database = "northwind";
+            config.host = "localhost";
+            config.user = "root";
+            const conn = new MysqlConnection(config);
+            conn.selectCount("SELECT COUNT(0) FROM customer", [])
+                .then((value) => {
+                    console.log(value);
+                    done(value);
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
     });
 });
