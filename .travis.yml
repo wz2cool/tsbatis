@@ -7,5 +7,8 @@ node_js:
   - "6"
   - "5"
 
+before_script:
+  - mysql -e 'create database tsbatis_test;'
+
 after_success:
   - npm run coveralls
