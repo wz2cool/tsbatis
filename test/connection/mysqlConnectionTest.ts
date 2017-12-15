@@ -30,14 +30,9 @@ describe(".mysqlConnection", () => {
             const pool = new MysqlConnectionPool(config, true);
             pool.getConnection()
                 .then((conn) => {
-                    conn.selectCount("SELECT COUNT(0) FROM customer", [])
-                        .then((value) => {
-                            console.log(value);
-                            done(value);
-                        })
-                        .catch((err) => {
-                            done(err);
-                        });
+                    return conn.selectCount("SELECT COUNT(0) FROM customer", []);
+                }).then((value) => {
+                    console.log(value);
                 })
                 .catch((err) => {
                     done(err);
