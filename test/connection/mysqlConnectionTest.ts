@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { MysqlConnection } from "../../src/connection/index";
+import { MysqlConnection, MysqlConnectionPool } from "../../src/connection/index";
 import { DatabaseType, MysqlConnectionConfig } from "../../src/index";
 import { RowBounds } from "../../src/model/index";
 
@@ -27,11 +27,17 @@ describe(".mysqlConnection", () => {
             config.database = "northwind";
             config.host = "localhost";
             config.user = "root";
-            const conn = new MysqlConnection(config);
-            conn.selectCount("SELECT COUNT(0) FROM customer", [])
-                .then((value) => {
-                    console.log(value);
-                    done(value);
+            const pool = new MysqlConnectionPool(config, true);
+            pool.getConnection()
+                .then((conn) => {
+                    conn.selectCount("SELECT COUNT(0) FROM customer", [])
+                        .then((value) => {
+                            console.log(value);
+                            done(value);
+                        })
+                        .catch((err) => {
+                            done(err);
+                        });
                 })
                 .catch((err) => {
                     done(err);
