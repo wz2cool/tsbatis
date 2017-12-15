@@ -8,7 +8,8 @@ node_js:
   - "5"
 
 before_script:
-  - mysql -e 'create database tsbatis_test;'
+  - mysql -e 'create database northwind;'
+  - mysql -u root --default-character-set=utf8 northwind < sql/mysql/northwind.sql
 
 after_success:
   - npm run coveralls
