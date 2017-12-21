@@ -37,6 +37,6 @@ describe(".mysqlConnection", () => {
                 .catch((err) => {
                     done(err);
                 });
-        }).timeout(10000);
+        }).timeout(60000);
     });
 });
