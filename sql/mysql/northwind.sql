@@ -41,3 +41,8 @@ INSERT INTO `customer` (`id`, `company_name`, `contract_name`, `contract_title`,
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+-- Dumping structure for table northwind.customer
+CREATE TABLE IF NOT EXISTS `student` (
+  `name` varchar(255) NOT NULL,
+  `age` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
