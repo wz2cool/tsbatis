@@ -1,5 +1,5 @@
 import * as path from "path";
-import { MysqlConnectionPool } from "../../src/connection/MysqlConnectionPool";
+import { MysqlConnectionPool } from "../../src/connection/mysqlConnectionPool";
 import { MysqlConnectionConfig } from "../../src/index";
 import { Student } from "../db/entity/student";
 
