@@ -50,6 +50,7 @@ export class MysqlConnection implements IConnection {
     public selectCount(sql: string, params: any[]): Promise<number> {
         this.log(`selectCount:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<number>((resolve, reject) => {
+            console.log("select count start");
             this.connection.query(sql, params, (err, result) => {
                 try {
                     if (CommonHelper.isNullOrUndefined(err)) {

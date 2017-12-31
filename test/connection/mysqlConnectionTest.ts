@@ -26,17 +26,22 @@ describe(".mysqlConnection", () => {
             const config = new MysqlConnectionConfig();
             config.database = "northwind";
             config.host = "localhost";
-            config.user = "root";
+            config.user = "travis";
             const pool = new MysqlConnectionPool(config, true);
             pool.getConnection()
                 .then((conn) => {
                     return conn.selectCount("SELECT COUNT(0) FROM customer", []);
                 }).then((value) => {
-                    console.log(value);
+                    console.log("get count: ", value);
+                    if (value > 0) {
+                        done();
+                    } else {
+                        done("count should greater than 0");
+                    }
                 })
                 .catch((err) => {
                     done(err);
                 });
-        }).timeout(60000);
+        }).timeout(1000);
     });
 });
