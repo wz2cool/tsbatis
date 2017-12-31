@@ -21,7 +21,55 @@ describe(".mysqlConnection", () => {
         });
     });
 
-    describe("#common", () => {
+    describe("#run", () => {
+        it("should get any value", (done) => {
+            const config = new MysqlConnectionConfig();
+            config.database = "northwind";
+            config.host = "localhost";
+            config.user = "travis";
+            const pool = new MysqlConnectionPool(config, true);
+            pool.getConnection()
+                .then((conn) => {
+                    return conn.run("show tables;", []);
+                }).then((value) => {
+                    console.log("run value: ", value);
+                    if (value) {
+                        done();
+                    } else {
+                        done("show return value");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        }).timeout(1000);
+    });
+
+    describe("#select", () => {
+        it("should get any value", (done) => {
+            const config = new MysqlConnectionConfig();
+            config.database = "northwind";
+            config.host = "localhost";
+            config.user = "travis";
+            const pool = new MysqlConnectionPool(config, true);
+            pool.getConnection()
+                .then((conn) => {
+                    return conn.select("SELECT COUNT(0) FROM customer WHERE id=?", ["ALFKI"]);
+                }).then((value) => {
+                    console.log("run value: ", value);
+                    if (value.length === 1) {
+                        done();
+                    } else {
+                        done("show return value must equal 1");
+                    }
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        }).timeout(1000);
+    });
+
+    describe("#select count", () => {
         it("should select customer", (done) => {
             const config = new MysqlConnectionConfig();
             config.database = "northwind";
