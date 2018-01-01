@@ -184,7 +184,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
 
     private async getSeqIdForSqlite(o: T): Promise<number> {
         try {
-            const sql = "SELECT seq FROM sqlite_sequence WHERE name = ?";
+            const sql = "SELECT seq FROM sqlite_sequence WHERE";
             const tableName = o.getTableName();
             const result = await super.select(sql, [tableName]);
             return new Promise<number>((resolve, reject) => {
