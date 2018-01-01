@@ -6,8 +6,18 @@ describe(".baseTableMapper", () => {
     const helper = new BaseTableMapperTestHelper();
 
     describe("#insert", () => {
-        it("show insert successfully", (done) => {
-            helper.insertTest()
+        it("show inserttWithoutAutoIncrease successfully", (done) => {
+            helper.insertWithoutAutoIncreaseTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+
+        it("show inserttWithAutoIncrease successfully", (done) => {
+            helper.insertWithAutoIncreaseTest()
                 .then(() => {
                     done();
                 })

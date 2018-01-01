@@ -117,8 +117,6 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     private async insertInternal(o: T, selective: boolean): Promise<number> {
         try {
             const sqlParam = SqlTemplateProvider.getInsert<T>(o, selective);
-            console.log("xxxxxxxxxxxxxxxxxxxxxxxx: ", JSON.stringify(o));
-            console.log("sqlParam: ", JSON.stringify(sqlParam));
             const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
             let insertId: number;
             let effectCount: number;

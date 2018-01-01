@@ -46,3 +46,11 @@ CREATE TABLE IF NOT EXISTS `student` (
   `name` varchar(255) NOT NULL,
   `age` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `book` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(100) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+;
