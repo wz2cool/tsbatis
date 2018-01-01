@@ -46,10 +46,7 @@ export class BaseTableMapperTestHelper {
             const mapper = new BookMapper(conn);
             const newBook = new Book();
             newBook.name = "book_" + new Date().toString();
-            conn.beginTransaction();
             const result = await mapper.insert(newBook);
-            console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: ", JSON.stringify(newBook));
-            conn.commit();
             conn.release();
             if (result > 0 && newBook.id > 0) {
                 return new Promise<void>((resolve) => resolve());
