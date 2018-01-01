@@ -40,15 +40,45 @@ export class BaseTableMapperTestHelper {
         }
     }
 
+    public async insertSelectiveWithAutoIncreaseTest(): Promise<void> {
+        try {
+            await this.insertSelectiveTestInternalWithAutoIncrease(this.sqliteConnectionFactory);
+            await this.insertSelectiveTestInternalWithAutoIncrease(this.mysqlConnectionFactory);
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
     private async insertTestInternalWithAutoIncrease(connectionFactory: ConnectionFactory): Promise<void> {
         try {
             const conn = await connectionFactory.getConnection();
             const mapper = new BookMapper(conn);
             const newBook = new Book();
             newBook.name = "book_" + new Date().toString();
+            newBook.price = 20;
             const result = await mapper.insert(newBook);
             conn.release();
             if (result > 0 && newBook.id > 0) {
+                return new Promise<void>((resolve) => resolve());
+            } else {
+                return new Promise<void>((resolve, reject) => reject("insert failed"));
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async insertSelectiveTestInternalWithAutoIncrease(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            const mapper = new BookMapper(conn);
+            const newBook = new Book();
+            newBook.name = "book_" + new Date().toString();
+            const result = await mapper.insertSelective(newBook);
+
+            const searchBooks = await mapper.selectByPrimaryKey(newBook.id);
+            conn.release();
+            if (result > 0 && newBook.id > 0 && searchBooks.length > 0 && searchBooks[0].price === 10) {
                 return new Promise<void>((resolve) => resolve());
             } else {
                 return new Promise<void>((resolve, reject) => reject("insert failed"));

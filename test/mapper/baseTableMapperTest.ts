@@ -6,7 +6,7 @@ describe(".baseTableMapper", () => {
     const helper = new BaseTableMapperTestHelper();
 
     describe("#insert", () => {
-        it("show inserttWithoutAutoIncrease successfully", (done) => {
+        it("inserttWithoutAutoIncrease successfully", (done) => {
             helper.insertWithoutAutoIncreaseTest()
                 .then(() => {
                     done();
@@ -16,8 +16,20 @@ describe(".baseTableMapper", () => {
                 });
         });
 
-        it("show inserttWithAutoIncrease successfully", (done) => {
+        it("inserttWithAutoIncrease successfully", (done) => {
             helper.insertWithAutoIncreaseTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
+
+    describe("#insertSelective", () => {
+        it("insertSelectiveWithAutoIncreaseTest successfully", (done) => {
+            helper.insertSelectiveWithAutoIncreaseTest()
                 .then(() => {
                     done();
                 })
