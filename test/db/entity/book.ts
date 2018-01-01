@@ -9,6 +9,6 @@ export class Book extends TableEntity {
     public price: number;
 
     public getTableName(): string {
-        return "Book";
+        return "book";
     }
 }
