@@ -30,7 +30,7 @@ export class SqlTemplateProvider {
         const placeholders: string[] = [];
         const params: any[] = [];
         columnInfos.forEach((colInfo) => {
-            if (!colInfo.insertable) {
+            if (colInfo.autoIncrease) {
                 return;
             }
 

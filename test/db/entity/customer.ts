@@ -1,27 +1,27 @@
 import { column, TableEntity } from "../../../src/";
 
 export class Customer extends TableEntity {
-    @column("Id", true, false)
+    @column("Id", true, true)
     public id: string;
-    @column("CompanyName", false, true)
+    @column("CompanyName", false)
     public companyName: string;
-    @column("ContactName", false, true)
+    @column("ContactName", false)
     public contactName: string;
-    @column("ContactTitle", false, true)
+    @column("ContactTitle", false)
     public contactTitle: string;
-    @column("Address", false, true)
+    @column("Address", false)
     public address: string;
-    @column("City", false, true)
+    @column("City", false)
     public city: string;
-    @column("Region", false, true)
+    @column("Region", false)
     public region: string;
-    @column("PostalCode", false, true)
+    @column("PostalCode", false)
     public postalCode: string;
-    @column("Country", false, true)
+    @column("Country", false)
     public country: string;
-    @column("Phone", false, true)
+    @column("Phone", false)
     public phone: string;
-    @column("Fax", false, true)
+    @column("Fax", false)
     public fax: string;
 
     public getTableName(): string {

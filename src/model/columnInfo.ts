@@ -2,7 +2,7 @@ import { CommonHelper } from "../helper";
 
 export class ColumnInfo {
     public isPK: boolean;
-    public insertable: boolean;
+    public autoIncrease: boolean;
     public property: string;
     public underscoreProperty: string;
     public propertyType: string;

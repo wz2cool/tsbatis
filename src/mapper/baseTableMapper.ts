@@ -117,22 +117,32 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     private async insertInternal(o: T, selective: boolean): Promise<number> {
         try {
             const sqlParam = SqlTemplateProvider.getInsert<T>(o, selective);
+            console.log("xxxxxxxxxxxxxxxxxxxxxxxx: ", JSON.stringify(o));
+            console.log("sqlParam: ", JSON.stringify(sqlParam));
             const result = await super.run(sqlParam.sqlExpression, sqlParam.params);
             let insertId: number;
             let effectCount: number;
+            const keyColumn = SqlTemplateProvider.getPkColumn<T>(o);
+
             if (this.connection.getDataBaseType() === DatabaseType.MYSQL) {
-                insertId = Number(result.insertId);
+                if (keyColumn && keyColumn.autoIncrease) {
+                    insertId = Number(result.insertId);
+                }
                 effectCount = Number(result.affectedRows);
             } else if (this.connection.getDataBaseType() === DatabaseType.SQLITE3) {
-                insertId = await this.getSeqIdForSqlite(o);
+                if (keyColumn && keyColumn.autoIncrease) {
+                    insertId = await this.getSeqIdForSqlite(o);
+                }
                 effectCount = await this.getEffectCountForSqlite();
             } else {
                 insertId = 0;
                 effectCount = 0;
             }
+
             // assgin id;
-            const keyColumn = SqlTemplateProvider.getPkColumn<T>(o);
-            o[keyColumn.property] = insertId;
+            if (keyColumn && keyColumn.autoIncrease) {
+                o[keyColumn.property] = insertId;
+            }
             return new Promise<number>((resolve, reject) => resolve(effectCount));
         } catch (e) {
             return new Promise<number>((resolve, reject) => reject(e));

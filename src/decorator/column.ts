@@ -4,7 +4,7 @@ import { EntityCache } from "../cache/entityCache";
 import { CommonHelper } from "../helper";
 import { ColumnInfo } from "../model/columnInfo";
 
-export function column(name: string, isPrimaryKey?: boolean, insertable?: boolean);
+export function column(name: string, isPrimaryKey?: boolean, autoIncrease?: boolean);
 export function column(
     name: string,
     table: string);
@@ -19,7 +19,7 @@ export function column(name: string, a2?, a3?) {
 
         let table = "";
         let isKey = false;
-        let insertable = true;
+        let autoIncrease = false;
         if (typeof a2 === "string") {
             table = a2;
         } else if (typeof a2 === "boolean") {
@@ -27,14 +27,14 @@ export function column(name: string, a2?, a3?) {
         }
 
         if (typeof a3 === "boolean") {
-            insertable = a3;
+            autoIncrease = a3;
         }
 
         const entity = target.constructor.name;
         const propertyType = Reflect.getMetadata("design:type", target, propertyKey);
         const columnInfo = new ColumnInfo();
         columnInfo.isPK = isKey;
-        columnInfo.insertable = insertable;
+        columnInfo.autoIncrease = autoIncrease;
         columnInfo.entity = entity;
         columnInfo.columnName = name;
         columnInfo.table = table;

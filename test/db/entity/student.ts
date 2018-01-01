@@ -1,9 +1,9 @@
 import { column, TableEntity } from "../../../src/";
 
 export class Student extends TableEntity {
-    @column("name", false, true)
+    @column("name", false)
     public name: string;
-    @column("age", false, true)
+    @column("age", false)
     public age: number;
 
     public getTableName(): string {
