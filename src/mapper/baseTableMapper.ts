@@ -188,6 +188,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
             const tableName = o.getTableName();
             const result = await super.select(sql, [tableName]);
             return new Promise<number>((resolve, reject) => {
+                console.log("XXXXXXXXXXXXXX: ", JSON.stringify(result));
                 if (result.length > 0) {
                     const seqId = Number(result[0].seq);
                     resolve(seqId);
