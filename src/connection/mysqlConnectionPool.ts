@@ -11,22 +11,13 @@ export class MysqlConnectionPool implements IConnectionPool {
         this.enableLog = enableLog;
         const mysql = this.getDriver();
 
-        if (config.password) {
-            this.pool = mysql.createPool({
-                host: config.host,
-                port: config.port,
-                database: config.database,
-                user: config.user,
-                password: config.password,
-            });
-        } else {
-            this.pool = mysql.createPool({
-                host: config.host,
-                port: config.port,
-                database: config.database,
-                user: config.user,
-            });
-        }
+        this.pool = mysql.createPool({
+            host: config.host,
+            port: config.port,
+            database: config.database,
+            user: config.user,
+            password: config.password,
+        });
     }
 
     public getConnection(): Promise<IConnection> {
