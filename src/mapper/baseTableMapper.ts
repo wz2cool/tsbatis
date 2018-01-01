@@ -186,14 +186,10 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         try {
             const testSql = "SELECT * FROM sqlite_sequence";
             const testResult = await super.select(testSql, []);
-
-            console.log("aaaaaaaaaa: ", JSON.stringify(testResult));
-
             const sql = "SELECT seq FROM sqlite_sequence WHERE name = ?";
             const tableName = o.getTableName();
             const result = await super.select(sql, [tableName]);
             return new Promise<number>((resolve, reject) => {
-                console.log("XXXXXXXXXXXXXX: ", JSON.stringify(result));
                 if (result.length > 0) {
                     const seqId = Number(result[0].seq);
                     resolve(seqId);
