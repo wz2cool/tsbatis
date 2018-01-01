@@ -38,4 +38,28 @@ describe(".baseTableMapper", () => {
                 });
         });
     });
+
+    describe("#updateByPrimaryKey", () => {
+        it("updateByPrimaryKey successfully", (done) => {
+            helper.updateByPrimaryKeyTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
+
+    describe("#updateSelectiveByPrimaryKey", () => {
+        it("updateSelectiveByPrimaryKey successfully", (done) => {
+            helper.updateSelectiveByPrimaryKeyTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
 });

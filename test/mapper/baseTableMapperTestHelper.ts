@@ -26,6 +26,7 @@ export class BaseTableMapperTestHelper {
         try {
             await this.insertTestInternalWithoutAutoIncrease(this.sqliteConnectionFactory);
             await this.insertTestInternalWithoutAutoIncrease(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
         }
@@ -35,6 +36,7 @@ export class BaseTableMapperTestHelper {
         try {
             await this.insertTestInternalWithAutoIncrease(this.sqliteConnectionFactory);
             await this.insertTestInternalWithAutoIncrease(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
         }
@@ -44,6 +46,27 @@ export class BaseTableMapperTestHelper {
         try {
             await this.insertSelectiveTestInternalWithAutoIncrease(this.sqliteConnectionFactory);
             await this.insertSelectiveTestInternalWithAutoIncrease(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    public async updateByPrimaryKeyTest(): Promise<void> {
+        try {
+            await this.updateByPrimaryKeyInternal(this.sqliteConnectionFactory);
+            await this.updateByPrimaryKeyInternal(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    public async updateSelectiveByPrimaryKeyTest(): Promise<void> {
+        try {
+            await this.updateSelectiveByPrimaryKeyInternal(this.sqliteConnectionFactory);
+            await this.updateSelectiveByPrimaryKeyInternal(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
         }
@@ -101,6 +124,75 @@ export class BaseTableMapperTestHelper {
                 return new Promise<void>((resolve) => resolve());
             } else {
                 return new Promise<void>((resolve, reject) => reject("insert failed"));
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async updateByPrimaryKeyInternal(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            try {
+                const mapper = new BookMapper(conn);
+                const newBook = new Book();
+                newBook.name = "book_" + new Date().toString();
+                const result = await mapper.insertSelective(newBook);
+                const searchBooks = await mapper.selectByPrimaryKey(newBook.id);
+                if (result > 0 && newBook.id > 0 && searchBooks.length > 0 && searchBooks[0].price === 10) {
+                    const updateBook = new Book();
+                    updateBook.price = 100;
+                    updateBook.name = newBook.name;
+                    updateBook.id = newBook.id;
+                    await mapper.updateByPrimaryKey(updateBook);
+                    const updatedBook = await mapper.selectByPrimaryKey(newBook.id);
+                    if (updatedBook.length > 0
+                        && updatedBook[0].price === 100
+                        && updatedBook[0].name === newBook.name) {
+                        return new Promise<void>((resolve) => resolve());
+                    } else {
+                        return new Promise<void>((resolve, reject) => reject("upate failed"));
+                    }
+                } else {
+                    return new Promise<void>((resolve, reject) => reject("insert failed"));
+                }
+            } finally {
+                conn.release();
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async updateSelectiveByPrimaryKeyInternal(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            try {
+                const mapper = new BookMapper(conn);
+                const newBook = new Book();
+                newBook.name = "book_" + new Date().toString();
+                const result = await mapper.insertSelective(newBook);
+                const searchBooks = await mapper.selectByPrimaryKey(newBook.id);
+                if (result > 0 && newBook.id > 0 && searchBooks.length > 0 && searchBooks[0].price === 10) {
+                    const updateBook = new Book();
+                    updateBook.price = 100;
+                    // no need assign name
+                    // updateBook.name = newBook.name;
+                    updateBook.id = newBook.id;
+                    await mapper.updateByPrimaryKeySelective(updateBook);
+                    const updatedBook = await mapper.selectByPrimaryKey(newBook.id);
+                    if (updatedBook.length > 0
+                        && updatedBook[0].price === 100
+                        && updatedBook[0].name === newBook.name) {
+                        return new Promise<void>((resolve) => resolve());
+                    } else {
+                        return new Promise<void>((resolve, reject) => reject("upate failed"));
+                    }
+                } else {
+                    return new Promise<void>((resolve, reject) => reject("insert failed"));
+                }
+            } finally {
+                conn.release();
             }
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
