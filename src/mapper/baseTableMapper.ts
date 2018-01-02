@@ -36,13 +36,15 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
-    public selectByPrimaryKey(key: any, relations: RelationBase[] = []): Promise<T[]> {
+    public async selectByPrimaryKey(key: any, relations: RelationBase[] = []): Promise<T> {
         try {
             const entityClass = this.getEntityClass();
             const sqlParam = SqlTemplateProvider.getSelectByPk<T>(entityClass, key);
-            return super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
+            const entities = await super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
+            const result = entities.length > 0 ? entities[0] : null;
+            return new Promise<T>((resolve) => resolve(result));
         } catch (e) {
-            return new Promise<T[]>((resolve, reject) => reject(e));
+            return new Promise<T>((resolve, reject) => reject(e));
         }
     }
 

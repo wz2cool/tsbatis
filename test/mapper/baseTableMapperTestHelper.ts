@@ -99,9 +99,9 @@ export class BaseTableMapperTestHelper {
             newBook.name = "book_" + new Date().toString();
             const result = await mapper.insertSelective(newBook);
 
-            const searchBooks = await mapper.selectByPrimaryKey(newBook.id);
+            const searchBook = await mapper.selectByPrimaryKey(newBook.id);
             conn.release();
-            if (result > 0 && newBook.id > 0 && searchBooks.length > 0 && searchBooks[0].price === 10) {
+            if (result > 0 && newBook.id > 0 && searchBook && searchBook.price === 10) {
                 return new Promise<void>((resolve) => resolve());
             } else {
                 return new Promise<void>((resolve, reject) => reject("insert failed"));
@@ -138,17 +138,17 @@ export class BaseTableMapperTestHelper {
                 const newBook = new Book();
                 newBook.name = "book_" + new Date().toString();
                 const result = await mapper.insertSelective(newBook);
-                const searchBooks = await mapper.selectByPrimaryKey(newBook.id);
-                if (result > 0 && newBook.id > 0 && searchBooks.length > 0 && searchBooks[0].price === 10) {
+                const searchBook = await mapper.selectByPrimaryKey(newBook.id);
+                if (result > 0 && newBook.id > 0 && searchBook && searchBook.price === 10) {
                     const updateBook = new Book();
                     updateBook.price = 100;
                     updateBook.name = newBook.name;
                     updateBook.id = newBook.id;
                     await mapper.updateByPrimaryKey(updateBook);
                     const updatedBook = await mapper.selectByPrimaryKey(newBook.id);
-                    if (updatedBook.length > 0
-                        && updatedBook[0].price === 100
-                        && updatedBook[0].name === newBook.name) {
+                    if (updatedBook
+                        && updatedBook.price === 100
+                        && updatedBook.name === newBook.name) {
                         return new Promise<void>((resolve) => resolve());
                     } else {
                         return new Promise<void>((resolve, reject) => reject("upate failed"));
@@ -172,8 +172,8 @@ export class BaseTableMapperTestHelper {
                 const newBook = new Book();
                 newBook.name = "book_" + new Date().toString();
                 const result = await mapper.insertSelective(newBook);
-                const searchBooks = await mapper.selectByPrimaryKey(newBook.id);
-                if (result > 0 && newBook.id > 0 && searchBooks.length > 0 && searchBooks[0].price === 10) {
+                const searchBook = await mapper.selectByPrimaryKey(newBook.id);
+                if (result > 0 && newBook.id > 0 && searchBook && searchBook.price === 10) {
                     const updateBook = new Book();
                     updateBook.price = 100;
                     // no need assign name
@@ -181,9 +181,9 @@ export class BaseTableMapperTestHelper {
                     updateBook.id = newBook.id;
                     await mapper.updateByPrimaryKeySelective(updateBook);
                     const updatedBook = await mapper.selectByPrimaryKey(newBook.id);
-                    if (updatedBook.length > 0
-                        && updatedBook[0].price === 100
-                        && updatedBook[0].name === newBook.name) {
+                    if (updatedBook
+                        && updatedBook.price === 100
+                        && updatedBook.name === newBook.name) {
                         return new Promise<void>((resolve) => resolve());
                     } else {
                         return new Promise<void>((resolve, reject) => reject("upate failed"));
