@@ -62,4 +62,52 @@ describe(".baseTableMapper", () => {
                 });
         });
     });
+
+    describe("#selectByExample", () => {
+        it("selectByExample successfully", (done) => {
+            helper.selectByExmapleTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
+
+    describe("#selectCountByExample", () => {
+        it("selectCountByExample successfully", (done) => {
+            helper.selectCountByExmapleTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
+
+    describe("#selectByDynamicQuery", () => {
+        it("selectByDynamicQuery successfully", (done) => {
+            helper.selectByDynamicQueryTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
+
+    describe("#selectCountByDynamicQuery", () => {
+        it("selectCountByDynamicQuery successfully", (done) => {
+            helper.selectCountByDynamicQueryTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
 });

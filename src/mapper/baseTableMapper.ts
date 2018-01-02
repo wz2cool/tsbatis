@@ -67,16 +67,6 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
-    public selectCountByPrimaryKey(key: any): Promise<number> {
-        try {
-            const entityClass = this.getEntityClass();
-            const sqlParam = SqlTemplateProvider.getSelectCountByPk<T>(entityClass, key);
-            return super.selectCount(sqlParam.sqlExpression, sqlParam.params);
-        } catch (e) {
-            return new Promise<number>((resolve, reject) => reject(e));
-        }
-    }
-
     public selectCountByDynamicQuery(query: DynamicQuery<T>): Promise<number> {
         try {
             const entityClass = this.getEntityClass();
