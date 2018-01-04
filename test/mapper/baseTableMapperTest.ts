@@ -110,4 +110,16 @@ describe(".baseTableMapper", () => {
                 });
         });
     });
+
+    describe("#deleteByExample", () => {
+        it("deleteByExample successfully", (done) => {
+            helper.deleteByExampleTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
 });

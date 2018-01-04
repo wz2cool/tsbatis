@@ -114,6 +114,16 @@ export class BaseTableMapperTestHelper {
         }
     }
 
+    public async deleteByExampleTest(): Promise<void> {
+        try {
+            await this.deleteByExampleInternal(this.sqliteConnectionFactory);
+            await this.deleteByExampleInternal(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
     private async insertTestInternalWithAutoIncrease(connectionFactory: ConnectionFactory): Promise<void> {
         try {
             const conn = await connectionFactory.getConnection();
@@ -372,6 +382,41 @@ export class BaseTableMapperTestHelper {
                     return new Promise<void>((resolve, reject) => resolve());
                 } else {
                     return new Promise<void>((resolve, reject) => reject("should get 2 items"));
+                }
+            } finally {
+                conn.release();
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async deleteByExampleInternal(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            try {
+                const sameBookName = "deleteByExample" + new Date().toString();
+                const mapper = new BookMapper(conn);
+                const newBook1 = new Book();
+                newBook1.name = sameBookName;
+                const newBook2 = new Book();
+                newBook2.name = sameBookName;
+                const insert1Result = await mapper.insertSelective(newBook1);
+                if (insert1Result <= 0) {
+                    return new Promise<void>((resolve, reject) => reject("insert faild"));
+                }
+                const insert2Result = await mapper.insertSelective(newBook2);
+                if (insert2Result <= 0) {
+                    return new Promise<void>((resolve, reject) => reject("insert faild"));
+                }
+
+                const searchBook = new Book();
+                searchBook.name = sameBookName;
+                const deleteResult = await mapper.deleteByExample(searchBook);
+                if (deleteResult === 2) {
+                    return new Promise<void>((resolve) => resolve());
+                } else {
+                    return new Promise<void>((resolve, reject) => reject("delete count should be 2"));
                 }
             } finally {
                 conn.release();
