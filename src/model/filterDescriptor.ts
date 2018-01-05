@@ -21,12 +21,13 @@ export class FilterDescriptor<T extends Entity> extends FilterDescriptorBase {
         value: any);
     constructor(a1?, a2?, a3?, a4?) {
         super();
-        if (!a1) {
+        if (typeof a1 === "undefined") {
             // empty contructor
             return;
         }
 
         if (typeof a1 === "number") {
+            console.log("hello");
             // conditon
             this.condition = a1;
             this.propertyPath = EntityHelper.getPropertyName<T>(a2);

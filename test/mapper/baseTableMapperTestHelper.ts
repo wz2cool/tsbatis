@@ -5,6 +5,7 @@ import { Book } from "../db/entity/book";
 import { Student } from "../db/entity/student";
 import { FilterDescriptor } from "../../src/model/filterDescriptor";
 import { FilterOperator, DynamicQuery } from "../../src/model/index";
+import { FilterCondition } from "../../src/model/filterCondition";
 
 export class BaseTableMapperTestHelper {
     private readonly sqliteConnectionFactory: ConnectionFactory;
@@ -118,6 +119,26 @@ export class BaseTableMapperTestHelper {
         try {
             await this.deleteByExampleInternal(this.sqliteConnectionFactory);
             await this.deleteByExampleInternal(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    public async deleteByPrimaryKeyTest(): Promise<void> {
+        try {
+            await this.deleteByPrimaryKeyInternal(this.sqliteConnectionFactory);
+            await this.deleteByPrimaryKeyInternal(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    public async deleteByDynamicQueryTest(): Promise<void> {
+        try {
+            await this.deleteByDynamicQueryInternal(this.sqliteConnectionFactory);
+            await this.deleteByDynamicQueryInternal(this.mysqlConnectionFactory);
             return new Promise<void>((resolve) => resolve());
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
@@ -417,6 +438,66 @@ export class BaseTableMapperTestHelper {
                     return new Promise<void>((resolve) => resolve());
                 } else {
                     return new Promise<void>((resolve, reject) => reject("delete count should be 2"));
+                }
+            } finally {
+                conn.release();
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async deleteByPrimaryKeyInternal(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            try {
+                const sameBookName = "deleteByPrimaryKeyInternal" + new Date().toString();
+                const mapper = new BookMapper(conn);
+                const newBook1 = new Book();
+                newBook1.name = sameBookName;
+                const insert1Result = await mapper.insertSelective(newBook1);
+                if (insert1Result <= 0) {
+                    return new Promise<void>((resolve, reject) => reject("insert faild"));
+                }
+
+                const deleteResult = await mapper.deleteByPrimaryKey(newBook1.id);
+                if (deleteResult === 1) {
+                    return new Promise<void>((resolve) => resolve());
+                } else {
+                    return new Promise<void>((resolve, reject) => reject("delete count should be 2"));
+                }
+            } finally {
+                conn.release();
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async deleteByDynamicQueryInternal(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            try {
+                const sameBookName = "deleteByDynamicQueryInternal" + new Date().toString();
+                const mapper = new BookMapper(conn);
+                const newBook1 = new Book();
+                newBook1.name = sameBookName;
+                const insert1Result = await mapper.insertSelective(newBook1);
+                if (insert1Result <= 0) {
+                    return new Promise<void>((resolve, reject) => reject("insert faild"));
+                }
+                const nameFilter = new FilterDescriptor<Book>(
+                    FilterCondition.AND,
+                    (u) => u.name,
+                    FilterOperator.EQUAL,
+                    sameBookName);
+
+                const query = DynamicQuery.createIntance<Book>().addFilters(nameFilter);
+                const deleteResult = await mapper.deleteByDynamicQuery(query);
+                if (deleteResult === 1) {
+                    return new Promise<void>((resolve) => resolve());
+                } else {
+                    return new Promise<void>((resolve, reject) => reject("delete count should be 1"));
                 }
             } finally {
                 conn.release();

@@ -122,4 +122,28 @@ describe(".baseTableMapper", () => {
                 });
         });
     });
+
+    describe("#deleteByPrimaryKey", () => {
+        it("deleteByPrimaryKey successfully", (done) => {
+            helper.deleteByPrimaryKeyTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
+
+    describe("#deleteByDynamicQuery", () => {
+        it("deleteByDynamicQuery successfully", (done) => {
+            helper.deleteByDynamicQueryTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
 });
