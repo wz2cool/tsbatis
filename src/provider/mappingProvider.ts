@@ -21,18 +21,8 @@ export class MappingProvider {
 
     public static toEntities<T extends Entity>(
         entity: T | { new(): T }, dbObjs: any[], underscoreToCamelCase = false): T[] {
-        const cache = EntityCache.getInstance();
-        const entityName = EntityHelper.getEntityName(entity);
-        const columnInfos = cache.getColumnInfos(entityName);
         return lodash.map(dbObjs, (dbObj) => {
-            const entityObj = EntityHelper.createObject<T>(entity);
-            columnInfos.forEach((colInfo) => {
-                const dbValue = underscoreToCamelCase ? dbObj[colInfo.underscoreProperty] : dbObj[colInfo.property];
-                const propertyType = colInfo.propertyType;
-                const propertyValue = MappingProvider.toPropertyValue(dbValue, propertyType);
-                entityObj[colInfo.property] = propertyValue;
-            });
-            return entityObj;
+            return MappingProvider.toEntity<T>(entity, dbObj, underscoreToCamelCase);
         });
     }
 
