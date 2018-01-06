@@ -1,11 +1,11 @@
 import * as path from "path";
 import { MysqlConnectionPool } from "../../src/connection/mysqlConnectionPool";
 import { BaseTableMapper, ConnectionFactory, MysqlConnectionConfig, SqliteConnectionConfig } from "../../src/index";
+import { FilterCondition } from "../../src/model/filterCondition";
+import { FilterDescriptor } from "../../src/model/filterDescriptor";
+import { DynamicQuery, FilterOperator } from "../../src/model/index";
 import { Book } from "../db/entity/book";
 import { Student } from "../db/entity/student";
-import { FilterDescriptor } from "../../src/model/filterDescriptor";
-import { FilterOperator, DynamicQuery } from "../../src/model/index";
-import { FilterCondition } from "../../src/model/filterCondition";
 
 export class BaseTableMapperTestHelper {
     private readonly sqliteConnectionFactory: ConnectionFactory;
