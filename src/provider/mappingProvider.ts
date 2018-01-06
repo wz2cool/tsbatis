@@ -4,6 +4,21 @@ import { CommonHelper, EntityHelper } from "../helper";
 import { Entity } from "../model";
 
 export class MappingProvider {
+    public static toEntity<T extends Entity>(
+        entity: T | { new(): T }, dbObj: any, underscoreToCamelCase = false): T {
+        const cache = EntityCache.getInstance();
+        const entityName = EntityHelper.getEntityName(entity);
+        const columnInfos = cache.getColumnInfos(entityName);
+        const entityObj = EntityHelper.createObject<T>(entity);
+        columnInfos.forEach((colInfo) => {
+            const dbValue = underscoreToCamelCase ? dbObj[colInfo.underscoreProperty] : dbObj[colInfo.property];
+            const propertyType = colInfo.propertyType;
+            const propertyValue = MappingProvider.toPropertyValue(dbValue, propertyType);
+            entityObj[colInfo.property] = propertyValue;
+        });
+        return entityObj;
+    }
+
     public static toEntities<T extends Entity>(
         entity: T | { new(): T }, dbObjs: any[], underscoreToCamelCase = false): T[] {
         const cache = EntityCache.getInstance();
