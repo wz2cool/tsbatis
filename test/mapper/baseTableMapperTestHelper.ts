@@ -145,6 +145,26 @@ export class BaseTableMapperTestHelper {
         }
     }
 
+    public async mybatisSelectTest(): Promise<void> {
+        try {
+            await this.mybatisSelectInternal(this.sqliteConnectionFactory);
+            await this.mybatisSelectInternal(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    public async mybatisSelectEntitiesTest(): Promise<void> {
+        try {
+            await this.mybatisSelectEntitiesInternal(this.sqliteConnectionFactory);
+            await this.mybatisSelectEntitiesInternal(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
     private async insertTestInternalWithAutoIncrease(connectionFactory: ConnectionFactory): Promise<void> {
         try {
             const conn = await connectionFactory.getConnection();
@@ -498,6 +518,68 @@ export class BaseTableMapperTestHelper {
                     return new Promise<void>((resolve) => resolve());
                 } else {
                     return new Promise<void>((resolve, reject) => reject("delete count should be 1"));
+                }
+            } finally {
+                conn.release();
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async mybatisSelectInternal(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            try {
+                const sameBookName = "mybatisSelectInternal" + new Date().toString();
+                const mapper = new BookMapper(conn);
+                const newBook1 = new Book();
+                newBook1.name = sameBookName;
+                const insert1Result = await mapper.insertSelective(newBook1);
+                if (insert1Result <= 0) {
+                    return new Promise<void>((resolve, reject) => reject("insert faild"));
+                }
+
+                const sql = "SELECT * FROM book where name = #{filterName}";
+                const paramMap: { [key: string]: any } = {};
+                paramMap.filterName = sameBookName;
+
+                const result = await mapper.mybatisSelect(sql, paramMap);
+                if (result.length === 1) {
+                    return new Promise<void>((resolve) => resolve());
+                } else {
+                    return new Promise<void>((resolve, reject) => reject("select count should be 1"));
+                }
+            } finally {
+                conn.release();
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async mybatisSelectEntitiesInternal(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            try {
+                const sameBookName = "mybatisSelectEntitiesInternal" + new Date().toString();
+                const mapper = new BookMapper(conn);
+                const newBook1 = new Book();
+                newBook1.name = sameBookName;
+                const insert1Result = await mapper.insertSelective(newBook1);
+                if (insert1Result <= 0) {
+                    return new Promise<void>((resolve, reject) => reject("insert faild"));
+                }
+
+                const sql = "SELECT * FROM book where name = #{filterName}";
+                const paramMap: { [key: string]: any } = {};
+                paramMap.filterName = sameBookName;
+
+                const result = await mapper.mybatisSelectEntities(sql, paramMap);
+                if (result.length === 1) {
+                    return new Promise<void>((resolve) => resolve());
+                } else {
+                    return new Promise<void>((resolve, reject) => reject("select count should be 1"));
                 }
             } finally {
                 conn.release();

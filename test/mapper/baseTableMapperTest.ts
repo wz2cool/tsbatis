@@ -146,4 +146,28 @@ describe(".baseTableMapper", () => {
                 });
         });
     });
+
+    describe("#mybatisSelect", () => {
+        it("mybatisSelect successfully", (done) => {
+            helper.mybatisSelectTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
+
+    describe("#mybatisSelectEntities", () => {
+        it("mybatisSelectEntities successfully", (done) => {
+            helper.mybatisSelectEntitiesTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
 });
