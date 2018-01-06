@@ -170,4 +170,16 @@ describe(".baseTableMapper", () => {
                 });
         });
     });
+
+    describe("#mybatisSelectEntitiesRowBounds", () => {
+        it("mybatisSelectEntitiesRowBounds successfully", (done) => {
+            helper.mybatisSelectEntitiesRowBoundsTest()
+                .then(() => {
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
+        });
+    });
 });

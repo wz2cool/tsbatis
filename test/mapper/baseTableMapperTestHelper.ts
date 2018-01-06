@@ -6,6 +6,7 @@ import { FilterDescriptor } from "../../src/model/filterDescriptor";
 import { DynamicQuery, FilterOperator } from "../../src/model/index";
 import { Book } from "../db/entity/book";
 import { Student } from "../db/entity/student";
+import { RowBounds } from "../../src/model/rowBounds";
 
 export class BaseTableMapperTestHelper {
     private readonly sqliteConnectionFactory: ConnectionFactory;
@@ -159,6 +160,16 @@ export class BaseTableMapperTestHelper {
         try {
             await this.mybatisSelectEntitiesInternal(this.sqliteConnectionFactory);
             await this.mybatisSelectEntitiesInternal(this.mysqlConnectionFactory);
+            return new Promise<void>((resolve) => resolve());
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    public async mybatisSelectEntitiesRowBoundsTest(): Promise<void> {
+        try {
+            await this.mybatisSelectEntitiesRowBoundsInternal(this.sqliteConnectionFactory);
+            await this.mybatisSelectEntitiesRowBoundsInternal(this.mysqlConnectionFactory);
             return new Promise<void>((resolve) => resolve());
         } catch (e) {
             return new Promise<void>((resolve, reject) => reject(e));
@@ -576,6 +587,46 @@ export class BaseTableMapperTestHelper {
                 paramMap.filterName = sameBookName;
 
                 const result = await mapper.mybatisSelectEntities(sql, paramMap);
+                if (result.length === 1) {
+                    return new Promise<void>((resolve) => resolve());
+                } else {
+                    return new Promise<void>((resolve, reject) => reject("select count should be 1"));
+                }
+            } finally {
+                conn.release();
+            }
+        } catch (e) {
+            return new Promise<void>((resolve, reject) => reject(e));
+        }
+    }
+
+    private async mybatisSelectEntitiesRowBoundsInternal(connectionFactory: ConnectionFactory): Promise<void> {
+        try {
+            const conn = await connectionFactory.getConnection();
+            try {
+                const sameBookName = "mybatisSelectEntitiesRowBounds" + new Date().toString();
+                const mapper = new BookMapper(conn);
+                const newBook1 = new Book();
+                newBook1.name = sameBookName;
+                const insert1Result = await mapper.insertSelective(newBook1);
+                if (insert1Result <= 0) {
+                    return new Promise<void>((resolve, reject) => reject("insert faild"));
+                }
+
+                const newBook2 = new Book();
+                newBook2.name = sameBookName;
+                const insert2Result = await mapper.insertSelective(newBook2);
+                if (insert2Result <= 0) {
+                    return new Promise<void>((resolve, reject) => reject("insert faild"));
+                }
+
+                const sql = "SELECT * FROM book where name = #{filterName}";
+                const paramMap: { [key: string]: any } = {};
+                paramMap.filterName = sameBookName;
+
+                const rowBounds = new RowBounds(1, 1);
+                const result = await mapper.mybatisSelectEntitiesRowBounds(sql, paramMap, rowBounds);
+                console.log("result: ", JSON.stringify(result));
                 if (result.length === 1) {
                     return new Promise<void>((resolve) => resolve());
                 } else {

@@ -107,7 +107,7 @@ export abstract class BaseMapper<T extends Entity> {
         plainSql: string, params: any[], rowBounds: RowBounds, relations: RelationBase[]) {
         const paging = this.connection.getRowBoundsExpression(rowBounds);
         const selectPagingSql = `${plainSql} ${paging}`;
-        return this.selectEntitiesWithRelationInteral(plainSql, params, relations);
+        return this.selectEntitiesWithRelationInteral(selectPagingSql, params, relations);
     }
 
     private async assignRelationInternal<TR extends Entity>(
