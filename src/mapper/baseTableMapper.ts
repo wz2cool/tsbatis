@@ -1,3 +1,6 @@
+import { Page } from '../model/page';
+import { PageRowBounds } from '../model/pageRowBounds';
+import { RowBounds } from '../model/rowBounds';
 import * as lodash from "lodash";
 import { IConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";
@@ -36,6 +39,28 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
         }
     }
 
+    public selectRowBoundsByExample(
+        example: T, rowBounds: RowBounds, relations: RelationBase[] = []): Promise<T[]> {
+        try {
+            const sqlParam = SqlTemplateProvider.getSelect<T>(example);
+            const entityClass = EntityHelper.getEntityClass<T>(example);
+            return super.selectEntitiesRowBounds(sqlParam.sqlExpression, sqlParam.params, rowBounds, relations);
+        } catch (e) {
+            return new Promise<T[]>((resolve, reject) => reject(e));
+        }
+    }
+
+    public selectPageRowBoundsByExample(
+        example: T, pageRowBounds: PageRowBounds, relations: RelationBase[] = []): Promise<Page<T>> {
+        try {
+            const sqlParam = SqlTemplateProvider.getSelect<T>(example);
+            const entityClass = EntityHelper.getEntityClass<T>(example);
+            return super.selectEntitiesPageRowBounds(sqlParam.sqlExpression, sqlParam.params, pageRowBounds, relations);
+        } catch (e) {
+            return new Promise<Page<T>>((resolve, reject) => reject(e));
+        }
+    }
+
     public async selectByPrimaryKey(key: any, relations: RelationBase[] = []): Promise<T> {
         try {
             const entityClass = this.getEntityClass();
@@ -55,6 +80,32 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
             return super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
         } catch (e) {
             return new Promise<T[]>((resolve, reject) => reject(e));
+        }
+    }
+
+    public selectRowBoundsByDynamicQuery(
+        query: DynamicQuery<T>,
+        rowBounds: RowBounds,
+        relations: RelationBase[] = []): Promise<T[]> {
+        try {
+            const entityClass = this.getEntityClass();
+            const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
+            return super.selectEntitiesRowBounds(sqlParam.sqlExpression, sqlParam.params, rowBounds, relations);
+        } catch (e) {
+            return new Promise<T[]>((resolve, reject) => reject(e));
+        }
+    }
+
+    public selectPageRowBoundsByDynamicQuery(
+        query: DynamicQuery<T>,
+        pageRowBounds: PageRowBounds,
+        relations: RelationBase[] = []): Promise<Page<T>> {
+        try {
+            const entityClass = this.getEntityClass();
+            const sqlParam = SqlTemplateProvider.getSelectByDynamicQuery<T>(entityClass, query);
+            return super.selectEntitiesPageRowBounds(sqlParam.sqlExpression, sqlParam.params, pageRowBounds, relations);
+        } catch (e) {
+            return new Promise<Page<T>>((resolve, reject) => reject(e));
         }
     }
 
