@@ -56,7 +56,7 @@ describe(".MappingProvider", () => {
         class DtoTestClass extends DtoObject {
             @dtoField("name1")
             public name: string;
-            @dtoField("age")
+            @dtoField()
             public age: string;
         }
 
