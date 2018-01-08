@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { MappingProvider } from "../../src/provider";
+import { column, dtoField, DtoObject, MappingProvider } from "../../src";
 
 describe(".MappingProvider", () => {
     describe("#toPropertyValue", () => {
@@ -49,6 +49,25 @@ describe(".MappingProvider", () => {
         it("return dbvalue if property type cannot be resolved", () => {
             const value = (MappingProvider as any).toPropertyValue("1", "custom");
             expect("1").to.be.eq(value);
+        });
+    });
+
+    describe("#toDtoObject", () => {
+        class DtoTestClass extends DtoObject {
+            @dtoField("name1")
+            public name: string;
+            @dtoField("age")
+            public age: string;
+        }
+
+        it("should work", () => {
+            const jsonObj: any = {};
+            jsonObj.name1 = "frank";
+            jsonObj.age = 20;
+
+            const result = MappingProvider.toDtoObject<DtoTestClass>(DtoTestClass, jsonObj);
+            expect("frank").to.be.eq(result.name);
+            expect("20").to.be.eq(result.age);
         });
     });
 });

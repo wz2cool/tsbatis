@@ -22,7 +22,7 @@ export function dtoField(a1?) {
         dtoFieldInfo.dtoObjectName = dtoObjectName;
         dtoFieldInfo.name = fieldName;
         dtoFieldInfo.property = propertyKey;
-        dtoFieldInfo.propertyType = propertyType;
+        dtoFieldInfo.propertyType = propertyType.name;
         cache.cacheFieldInfo(dtoFieldInfo);
     };
 }

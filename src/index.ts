@@ -5,6 +5,7 @@ import {
   CustomFilterDescriptor,
   CustomSortDescriptor,
   DatabaseType,
+  DtoObject,
   DynamicQuery,
   Entity,
   FilterCondition,
@@ -27,7 +28,7 @@ import {
 } from "./model";
 
 import { ConnectionFactory, IConnection } from "./connection";
-import { column } from "./decorator";
+import { column, dtoField } from "./decorator";
 import { CommonHelper, EntityHelper } from "./helper";
 import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import { MappingProvider, SqlTemplateProvider } from "./provider";
@@ -40,6 +41,8 @@ export {
   CustomSortDescriptor,
   DatabaseType,
   DynamicQuery,
+  DtoObject,
+  dtoField,
   Entity,
   FilterCondition,
   FilterDescriptor,
