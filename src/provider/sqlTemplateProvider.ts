@@ -38,7 +38,7 @@ export class SqlTemplateProvider {
             if (selective && CommonHelper.isNullOrUndefined(propValue)) {
                 return;
             }
-            propValue = CommonHelper.isNullOrUndefined(propValue) ? null : propValue;
+            propValue = SqlTemplateProvider.toDbParam(CommonHelper.isNullOrUndefined(propValue) ? null : propValue);
             params.push(propValue);
             columnNames.push(colInfo.columnName);
             placeholders.push("?");
@@ -106,7 +106,7 @@ export class SqlTemplateProvider {
                 return;
             }
 
-            propValue = CommonHelper.isNullOrUndefined(propValue) ? null : propValue;
+            propValue = SqlTemplateProvider.toDbParam(CommonHelper.isNullOrUndefined(propValue) ? null : propValue);
             sets.push(colInfo.columnName + " = ?");
             params.push(propValue);
         });
@@ -382,6 +382,14 @@ export class SqlTemplateProvider {
             }
         }
         return dynamicQuery;
+    }
+
+    private static toDbParam(param: any): any {
+        if (param instanceof Date) {
+            return param.toISOString().slice(0, 19).replace("T", " ");
+        } else {
+            return param;
+        }
     }
 
     public constructor() {
