@@ -4,6 +4,7 @@ import { ColumnInfo } from "./columnInfo";
 import { CustomFilterDescriptor } from "./customFilterDescriptor";
 import { CustomSortDescriptor } from "./customSortDescriptor";
 import { DatabaseType } from "./databaseType";
+import { DtoObject } from "./dtoObject";
 import { DynamicQuery } from "./dynamicQuery";
 import { Entity } from "./entity";
 import { FilterCondition } from "./filterCondition";
@@ -31,6 +32,7 @@ export {
     CustomSortDescriptor,
     DatabaseType,
     DynamicQuery,
+    DtoObject,
     Entity,
     FilterCondition,
     FilterDescriptor,

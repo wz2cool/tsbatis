@@ -1,3 +1,4 @@
+import { DtoCache } from "./dtoCache";
 import { EntityCache } from "./entityCache";
 
-export { EntityCache };
+export { DtoCache, EntityCache };

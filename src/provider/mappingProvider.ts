@@ -1,9 +1,31 @@
 import * as lodash from "lodash";
-import { EntityCache } from "../cache";
-import { CommonHelper, EntityHelper } from "../helper";
-import { Entity } from "../model";
+import { DtoCache, EntityCache } from "../cache";
+import { CommonHelper, DtoObjectHelper, EntityHelper } from "../helper";
+import { DtoObject, Entity } from "../model";
 
 export class MappingProvider {
+    public static toDtoObject<T extends DtoObject>(
+        dtoObjectClass: T | { new(): T }, jsonObj: any): T {
+        const cache = DtoCache.getInstance();
+        const dtoObjectName = DtoObjectHelper.getDtoObjectName(dtoObjectClass);
+        const fieldInfos = cache.getFieldInfos(dtoObjectName);
+        const dtoObject = DtoObjectHelper.createObject<T>(dtoObjectClass);
+        fieldInfos.forEach((fieldInfo) => {
+            const jsonValue = jsonObj[fieldInfo.name];
+            const propertyType = fieldInfo.propertyType;
+            const propertyValue = MappingProvider.toPropertyValue(jsonValue, propertyType);
+            dtoObject[fieldInfo.property] = propertyValue;
+        });
+        return dtoObject;
+    }
+
+    public static toDtoObjects<T extends DtoObject>(
+        dtoObjectClass: T | { new(): T }, jsonObjs: any[]): T[] {
+        return lodash.map(jsonObjs, (jsonObj) => {
+            return MappingProvider.toDtoObject<T>(dtoObjectClass, jsonObj);
+        });
+    }
+
     public static toEntity<T extends Entity>(
         entity: T | { new(): T }, dbObj: any, underscoreToCamelCase = false): T {
         const cache = EntityCache.getInstance();
