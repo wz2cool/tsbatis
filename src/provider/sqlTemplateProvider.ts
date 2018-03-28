@@ -260,7 +260,7 @@ export class SqlTemplateProvider {
 
                 expression = CommonHelper.isBlank(expression)
                     ? sqlParam.sqlExpression
-                    : `${expression} ${sqlParam.sqlExpression}`;
+                    : `${expression}, ${sqlParam.sqlExpression}`;
             }
         });
 
