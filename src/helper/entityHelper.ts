@@ -8,8 +8,10 @@ export class EntityHelper {
         }
 
         const expression = fn.toString();
-        const regexp = new RegExp(`^function.+return\\s+\\w+\.(\\w+)\\s*;\\s*}$`);
-        const match = regexp.exec(expression);
+        const returnIndex = expression.indexOf("return");
+        const newExpression = expression.substring(returnIndex, expression.length - 1);
+        const regexp = new RegExp(`^return\\s+\\w+\.(\\w+)\\s*;\\s*$`);
+        const match = regexp.exec(newExpression);
 
         if (match && match.length === 2) {
             return match[1];
