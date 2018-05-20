@@ -9,14 +9,25 @@ export class EntityHelper {
 
         const expression = fn.toString();
         const returnIndex = expression.indexOf("return");
-        const newExpression = expression.substring(returnIndex, expression.length - 1);
-        const regexp = new RegExp(`^return\\s+\\w+\.(\\w+)\\s*;\\s*$`);
-        const match = regexp.exec(newExpression);
+        if (returnIndex > -1) {
+            const newExpression = expression.substring(returnIndex, expression.length - 1);
+            const regexp = new RegExp(`^return\\s+\\w+\.(\\w+)\\s*;\\s*$`);
+            const match = regexp.exec(newExpression);
 
-        if (match && match.length === 2) {
-            return match[1];
+            if (match && match.length === 2) {
+                return match[1];
+            } else {
+                return "";
+            }
         } else {
-            return "";
+            const regexp = new RegExp(`^\\s*\\(?\\w+\\)?\\s*=>\\s*\\w+\\.(\\w+)\\s*$`);
+            const match = regexp.exec(expression);
+
+            if (match && match.length === 2) {
+                return match[1];
+            } else {
+                return "";
+            }
         }
     }
 
