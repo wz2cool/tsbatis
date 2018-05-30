@@ -240,7 +240,7 @@ export class SqlTemplateProvider {
         });
 
         const result = new SqlTemplate();
-        result.sqlExpression = expression;
+        result.sqlExpression = `(${expression})`;
         result.params = result.params.concat(params);
         return result;
     }

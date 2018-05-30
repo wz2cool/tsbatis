@@ -68,7 +68,7 @@ describe(".SqlTemplateProvider", () => {
             example.id = "3";
             example.address = "test";
             const result = SqlTemplateProvider.getDelete(example);
-            const expectValue = `DELETE FROM Customer WHERE Id = ? AND Address = ?`;
+            const expectValue = `DELETE FROM Customer WHERE (Id = ? AND Address = ?)`;
             expect(expectValue).to.be.eq(result.sqlExpression);
         });
     });
@@ -80,7 +80,7 @@ describe(".SqlTemplateProvider", () => {
             const addressFilter = new FilterDescriptor<Customer>((u) => u.address, FilterOperator.START_WITH, "test");
             query.addFilters(idFilter, addressFilter);
             const result = SqlTemplateProvider.getDeleteByDynamicQuery<Customer>(Customer, query);
-            const expectValue = `DELETE FROM Customer WHERE Id = ? AND Address LIKE ?`;
+            const expectValue = `DELETE FROM Customer WHERE (Id = ? AND Address LIKE ?)`;
             expect(expectValue).to.be.eq(result.sqlExpression);
             expect("1").to.be.eq(result.params[0]);
             expect("test%").to.be.eq(result.params[1]);
@@ -130,7 +130,7 @@ describe(".SqlTemplateProvider", () => {
             example.address = "test";
             const result = SqlTemplateProvider.getSelect(example);
             // tslint:disable-next-line:max-line-length
-            const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE Id = ? AND Address = ?`;
+            const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE (Id = ? AND Address = ?)`;
             expect(expectValue).to.be.eq(result.sqlExpression);
         });
     });
@@ -156,7 +156,7 @@ describe(".SqlTemplateProvider", () => {
             example.id = "1";
             example.address = "test";
             const result = SqlTemplateProvider.getSelectCount(example);
-            const expectValue = `SELECT COUNT(0) FROM Customer WHERE Id = ? AND Address = ?`;
+            const expectValue = `SELECT COUNT(0) FROM Customer WHERE (Id = ? AND Address = ?)`;
             expect(expectValue).to.be.eq(result.sqlExpression);
         });
     });
@@ -168,7 +168,7 @@ describe(".SqlTemplateProvider", () => {
             query.addFilters(idFilter);
             const result = SqlTemplateProvider.getSelectByDynamicQuery<Customer>(Customer, query);
             // tslint:disable-next-line:max-line-length
-            const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE Id = ?`;
+            const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE (Id = ?)`;
             expect(expectValue).to.be.eq(result.sqlExpression);
         });
     });
@@ -180,7 +180,7 @@ describe(".SqlTemplateProvider", () => {
             const query = DynamicQuery.createIntance<Customer>();
             query.addFilters(idFilter, addressFiler);
             const result = SqlTemplateProvider.getSelectCountByDynamicQuery<Customer>(Customer, query);
-            const expectValue = `SELECT COUNT(0) FROM Customer WHERE Id = ? AND Address LIKE ?`;
+            const expectValue = `SELECT COUNT(0) FROM Customer WHERE (Id = ? AND Address LIKE ?)`;
             expect(expectValue).to.be.eq(result.sqlExpression);
         });
     });
@@ -218,7 +218,7 @@ describe(".SqlTemplateProvider", () => {
 
             // tslint:disable-next-line:max-line-length
             const result = SqlTemplateProvider.getSqlByDynamicQuery<Customer>(Customer, "SELECT * FROM Customer", query);
-            const expectValue = `SELECT * FROM Customer WHERE Address LIKE ? ORDER BY Id DESC`;
+            const expectValue = `SELECT * FROM Customer WHERE (Address LIKE ?) ORDER BY Id DESC`;
             expect(expectValue).to.be.eq(result.sqlExpression);
             expect("test%").to.be.eq(result.params[0]);
         });
@@ -312,7 +312,7 @@ describe(".SqlTemplateProvider", () => {
             const groupFilter = new FilterGroupDescriptor();
             groupFilter.filters = [idFilter, addressFilter];
             const result = SqlTemplateProvider.getFilterExpressionByFilterBase<Customer>(Customer, groupFilter);
-            const expectValue = `Id = ? OR Address LIKE ?`;
+            const expectValue = `(Id = ? OR Address LIKE ?)`;
             expect(expectValue).to.be.eq(result.sqlExpression);
             expect("1").to.be.eq(result.params[0]);
             expect("test%").to.be.eq(result.params[1]);

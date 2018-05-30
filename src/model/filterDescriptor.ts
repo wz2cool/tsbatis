@@ -27,7 +27,6 @@ export class FilterDescriptor<T extends Entity> extends FilterDescriptorBase {
         }
 
         if (typeof a1 === "number") {
-            console.log("hello");
             // conditon
             this.condition = a1;
             this.propertyPath = EntityHelper.getPropertyName<T>(a2);
