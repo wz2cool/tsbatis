@@ -2,10 +2,11 @@ import { Page } from "../model/page";
 import { PageRowBounds } from "../model/pageRowBounds";
 import { RowBounds } from "../model/rowBounds";
 import { IConnection } from "../connection";
-import { CommonHelper, EntityHelper } from "../helper";
+import { EntityHelper } from "../helper";
 import { DatabaseType, DynamicQuery, FilterDescriptor, FilterOperator, RelationBase, TableEntity } from "../model";
 import { SqlTemplateProvider } from "../provider";
 import { BaseMybatisMapper } from "./baseMybatisMapper";
+import * as lodash from "lodash";
 
 export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatisMapper<T> {
   constructor(sqlConnection: IConnection) {
@@ -28,10 +29,11 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     return this.updateByPrimaryKeyInternal(o, true);
   }
 
-  public selectByExample(example: T, relations: RelationBase[] = []): Promise<T[]> {
+  public selectByExample(example: Partial<T>, relations: RelationBase[] = []): Promise<T[]> {
     try {
-      const sqlParam = SqlTemplateProvider.getSelect<T>(example);
-      const entityClass = EntityHelper.getEntityClass<T>(example);
+      const obj = EntityHelper.createObject(this.getEntityClass());
+      const newExample = lodash.assign(obj, example);
+      const sqlParam = SqlTemplateProvider.getSelect<T>(newExample);
       return super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
     } catch (e) {
       return new Promise<T[]>((resolve, reject) => reject(e));
@@ -100,9 +102,11 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     }
   }
 
-  public selectCountByExample(example: T): Promise<number> {
+  public selectCountByExample(example: Partial<T>): Promise<number> {
     try {
-      const sqlParam = SqlTemplateProvider.getSelectCount<T>(example);
+      const obj = EntityHelper.createObject(this.getEntityClass());
+      const newExample = lodash.assign(obj, example);
+      const sqlParam = SqlTemplateProvider.getSelectCount<T>(newExample);
       return super.selectCount(sqlParam.sqlExpression, sqlParam.params);
     } catch (e) {
       return new Promise<number>((resolve, reject) => reject(e));
