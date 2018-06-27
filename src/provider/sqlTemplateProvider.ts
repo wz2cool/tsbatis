@@ -140,7 +140,7 @@ export class SqlTemplateProvider {
     return sqlParam;
   }
 
-  public static getSelect<T extends TableEntity>(example: Partial<T>): SqlTemplate {
+  public static getSelect<T extends TableEntity>(example: T): SqlTemplate {
     const query = this.generateDynamicQueryByExample<T>(example);
     const entityClass = EntityHelper.getEntityClass<T>(example);
     return this.getSelectByDynamicQuery<T>(entityClass, query);
@@ -165,7 +165,7 @@ export class SqlTemplateProvider {
     return sqlParam;
   }
 
-  public static getSelectCount<T extends TableEntity>(example: Partial<T>): SqlTemplate {
+  public static getSelectCount<T extends TableEntity>(example: T): SqlTemplate {
     const query = this.generateDynamicQueryByExample<T>(example);
     const entityClass = EntityHelper.getEntityClass<T>(example);
     return this.getSelectCountByDynamicQuery<T>(entityClass, query);
@@ -356,7 +356,7 @@ export class SqlTemplateProvider {
     return lodash.map(columnInfos, s => s.getQueryColumn() + " AS " + s.underscoreProperty).join(", ");
   }
 
-  public static generateDynamicQueryByExample<T>(example: Partial<T>): DynamicQuery<T> {
+  public static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {
     const dynamicQuery = DynamicQuery.createIntance<T>();
     for (const prop in example) {
       if (example.hasOwnProperty(prop) && !CommonHelper.isNullOrUndefined(example[prop])) {

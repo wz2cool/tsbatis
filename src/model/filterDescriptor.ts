@@ -10,12 +10,7 @@ export class FilterDescriptor<T extends Entity> extends FilterDescriptorBase {
   public value: any = null;
 
   constructor();
-  constructor(
-    condition: FilterCondition,
-    getPropFun: (t: T) => any,
-    operator: FilterOperator,
-    value: any
-  );
+  constructor(condition: FilterCondition, getPropFun: (t: T) => any, operator: FilterOperator, value: any);
   constructor(getPropFun: (t: T) => any, operator: FilterOperator, value: any);
   constructor(a1?, a2?, a3?, a4?) {
     super();
