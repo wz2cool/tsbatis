@@ -17,10 +17,8 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     return this.insertInternal(o, false);
   }
 
-  public insertSelective(o: Partial<T>): Promise<number> {
-    const obj = EntityHelper.createObject(this.getEntityClass());
-    const newExample = lodash.assign(obj, o);
-    return this.insertInternal(newExample, true);
+  public insertSelective(o: T): Promise<number> {
+    return this.insertInternal(o, true);
   }
 
   public updateByPrimaryKey(o: T): Promise<number> {

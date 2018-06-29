@@ -1,5 +1,4 @@
 import * as path from "path";
-import { MysqlConnectionPool } from "../../src/connection/mysqlConnectionPool";
 import { BaseTableMapper, ConnectionFactory, MysqlConnectionConfig, SqliteConnectionConfig } from "../../src/index";
 import { FilterCondition } from "../../src/model/filterCondition";
 import { FilterDescriptor } from "../../src/model/filterDescriptor";
@@ -11,7 +10,6 @@ import { RowBounds } from "../../src/model/rowBounds";
 export class BaseTableMapperTestHelper {
     private readonly sqliteConnectionFactory: ConnectionFactory;
     private readonly mysqlConnectionFactory: ConnectionFactory;
-    private readonly studentMapper: StudentMapper;
 
     constructor() {
         const filepath = path.join(__dirname, "../../", "test", "northwind.db");
