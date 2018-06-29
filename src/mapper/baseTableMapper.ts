@@ -17,16 +17,20 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     return this.insertInternal(o, false);
   }
 
-  public insertSelective(o: T): Promise<number> {
-    return this.insertInternal(o, true);
+  public insertSelective(o: Partial<T>): Promise<number> {
+    const obj = EntityHelper.createObject(this.getEntityClass());
+    const newExample = lodash.assign(obj, o);
+    return this.insertInternal(newExample, true);
   }
 
   public updateByPrimaryKey(o: T): Promise<number> {
     return this.updateByPrimaryKeyInternal(o, false);
   }
 
-  public updateByPrimaryKeySelective(o: T): Promise<number> {
-    return this.updateByPrimaryKeyInternal(o, true);
+  public updateByPrimaryKeySelective(o: Partial<T>): Promise<number> {
+    const obj = EntityHelper.createObject(this.getEntityClass());
+    const newExample = lodash.assign(obj, o);
+    return this.updateByPrimaryKeyInternal(newExample, true);
   }
 
   public selectByExample(example: Partial<T>, relations: RelationBase[] = []): Promise<T[]> {
@@ -40,20 +44,22 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     }
   }
 
-  public selectRowBoundsByExample(example: T, rowBounds: RowBounds, relations: RelationBase[] = []): Promise<T[]> {
+  public selectRowBoundsByExample(example: Partial<T>, rowBounds: RowBounds, relations: RelationBase[] = []): Promise<T[]> {
     try {
-      const sqlParam = SqlTemplateProvider.getSelect<T>(example);
-      const entityClass = EntityHelper.getEntityClass<T>(example);
+      const obj = EntityHelper.createObject(this.getEntityClass());
+      const newExample = lodash.assign(obj, example);
+      const sqlParam = SqlTemplateProvider.getSelect<T>(newExample);
       return super.selectEntitiesRowBounds(sqlParam.sqlExpression, sqlParam.params, rowBounds, relations);
     } catch (e) {
       return new Promise<T[]>((resolve, reject) => reject(e));
     }
   }
 
-  public selectPageRowBoundsByExample(example: T, pageRowBounds: PageRowBounds, relations: RelationBase[] = []): Promise<Page<T>> {
+  public selectPageRowBoundsByExample(example: Partial<T>, pageRowBounds: PageRowBounds, relations: RelationBase[] = []): Promise<Page<T>> {
     try {
-      const sqlParam = SqlTemplateProvider.getSelect<T>(example);
-      const entityClass = EntityHelper.getEntityClass<T>(example);
+      const obj = EntityHelper.createObject(this.getEntityClass());
+      const newExample = lodash.assign(obj, example);
+      const sqlParam = SqlTemplateProvider.getSelect<T>(newExample);
       return super.selectEntitiesPageRowBounds(sqlParam.sqlExpression, sqlParam.params, pageRowBounds, relations);
     } catch (e) {
       return new Promise<Page<T>>((resolve, reject) => reject(e));
