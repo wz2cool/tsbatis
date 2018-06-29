@@ -129,9 +129,11 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
     }
   }
 
-  public deleteByExample(example: T): Promise<number> {
+  public deleteByExample(example: Partial<T>): Promise<number> {
     try {
-      const sqlParam = SqlTemplateProvider.getDelete<T>(example);
+      const obj = EntityHelper.createObject(this.getEntityClass());
+      const newExample = lodash.assign(obj, example);
+      const sqlParam = SqlTemplateProvider.getDelete<T>(newExample);
       return this.deleteInternal(sqlParam.sqlExpression, sqlParam.params);
     } catch (e) {
       return new Promise<number>((resolve, reject) => reject(e));
