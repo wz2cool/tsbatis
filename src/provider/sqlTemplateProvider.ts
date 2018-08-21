@@ -10,7 +10,7 @@ import {
   FilterGroupDescriptor,
   SortDescriptor,
   SortDescriptorBase,
-  SortDirection
+  SortDirection,
 } from "ts-dynamic-query";
 
 export class SqlTemplateProvider {
