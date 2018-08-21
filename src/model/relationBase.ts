@@ -1,4 +1,4 @@
-import { DynamicQuery } from "./dynamicQuery";
+import { DynamicQuery } from "ts-dynamic-query";
 import { Entity } from "./entity";
 
 export abstract class RelationBase {

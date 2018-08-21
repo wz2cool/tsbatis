@@ -1,22 +1,17 @@
 import * as lodash from "lodash";
 import { EntityCache } from "../cache";
 import { CommonHelper, EntityHelper, FilterHelper } from "../helper";
+import { ColumnInfo, CustomFilterDescriptor, CustomSortDescriptor, Entity, SqlTemplate, TableEntity } from "../model";
 import {
-  ColumnInfo,
-  CustomFilterDescriptor,
-  CustomSortDescriptor,
   DynamicQuery,
-  Entity,
   FilterCondition,
   FilterDescriptor,
   FilterDescriptorBase,
   FilterGroupDescriptor,
   SortDescriptor,
   SortDescriptorBase,
-  SortDirection,
-  SqlTemplate,
-  TableEntity,
-} from "../model";
+  SortDirection
+} from "ts-dynamic-query";
 
 export class SqlTemplateProvider {
   public static getPkColumn<T extends TableEntity>(o: T): ColumnInfo {
@@ -357,13 +352,13 @@ export class SqlTemplateProvider {
   }
 
   public static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {
-    const dynamicQuery = DynamicQuery.createIntance<T>();
+    const dynamicQuery = new DynamicQuery<T>();
     for (const prop in example) {
       if (example.hasOwnProperty(prop) && !CommonHelper.isNullOrUndefined(example[prop])) {
         const filter = new FilterDescriptor();
         filter.propertyPath = prop;
-        filter.value = example[prop];
-        dynamicQuery.addFilters(filter);
+        filter.value = example[prop] as any;
+        dynamicQuery.addFilters([filter]);
       }
     }
     return dynamicQuery;

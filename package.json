@@ -28,7 +28,8 @@
   "homepage": "https://github.com/wz2cool/tsbatis#readme",
   "dependencies": {
     "lodash": "^4.17.4",
-    "reflect-metadata": "^0.1.10"
+    "reflect-metadata": "^0.1.10",
+    "ts-dynamic-query": "^1.0.15"
   },
   "devDependencies": {
     "@types/chai": "^4.0.5",
