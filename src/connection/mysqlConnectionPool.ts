@@ -15,8 +15,8 @@ export class MysqlConnectionPool implements IConnectionPool {
     this.config = config;
   }
 
-  public getConnection(): Promise<IConnection> {
-    this.init();
+  public async getConnection(): Promise<IConnection> {
+    await this.init();
     return new Promise<IConnection>((resolve, reject) => {
       this.pool.getConnection((err, sqlConn) => {
         if (CommonHelper.isNullOrUndefined(err)) {
