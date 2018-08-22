@@ -5,36 +5,46 @@ import { IConnectionPool } from "./iConnectionPool";
 import { MysqlConnection } from "./mysqlConnection";
 
 export class MysqlConnectionPool implements IConnectionPool {
-    private readonly pool: any;
-    private readonly enableLog: boolean;
-    constructor(config: MysqlConnectionConfig, enableLog: boolean) {
-        this.enableLog = enableLog;
-        const mysql = this.getDriver();
+  private pool: any;
+  private readonly enableLog: boolean;
+  private readonly config: MysqlConnectionConfig;
+  private isInited: boolean = false;
 
-        this.pool = mysql.createPool({
-            host: config.host,
-            port: config.port,
-            database: config.database,
-            user: config.user,
-            password: config.password,
-        });
-    }
+  constructor(config: MysqlConnectionConfig, enableLog: boolean) {
+    this.enableLog = enableLog;
+    this.config = config;
+  }
 
-    public getConnection(): Promise<IConnection> {
-        return new Promise<IConnection>((resolve, reject) => {
-            this.pool.getConnection((err, sqlConn) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
-                    const result = new MysqlConnection(sqlConn, this.enableLog);
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
-            });
-        });
-    }
+  public getConnection(): Promise<IConnection> {
+    this.init();
+    return new Promise<IConnection>((resolve, reject) => {
+      this.pool.getConnection((err, sqlConn) => {
+        if (CommonHelper.isNullOrUndefined(err)) {
+          const result = new MysqlConnection(sqlConn, this.enableLog);
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
 
-    private getDriver(): any {
-        // tslint:disable-next-line:no-implicit-dependencies
-        return require("mysql");
-    }
+  private async getDriver(): Promise<any> {
+    // tslint:disable-next-line:no-implicit-dependencies
+    return await import("mysql");
+  }
+
+  private async init() {
+    if (this.isInited) return;
+
+    const mysql = await this.getDriver();
+    this.pool = mysql.createPool({
+      host: this.config.host,
+      port: this.config.port,
+      database: this.config.database,
+      user: this.config.user,
+      password: this.config.password,
+    });
+    this.isInited = true;
+  }
 }
