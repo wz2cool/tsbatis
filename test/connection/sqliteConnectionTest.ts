@@ -80,7 +80,7 @@ describe(".SqliteConnection", () => {
 
   describe("#selectCount", async () => {
     const filepath = path.join(__dirname, "../../", "test", "northwind.db");
-    const mysqlConnection = await new SqliteConnection(filepath, true);
+    const mysqlConnection = await new SqliteConnection(filepath, true).init();
     it("should run if valid sql", done => {
       mysqlConnection
         .selectCount("SELECT 1", [])
@@ -110,7 +110,7 @@ describe(".SqliteConnection", () => {
 
   describe("#selectEntities", async () => {
     const filepath = path.join(__dirname, "../../", "test", "northwind.db");
-    const mysqlConnection = await new SqliteConnection(filepath, true);
+    const mysqlConnection = await new SqliteConnection(filepath, true).init();
     it("should run if valid sql", done => {
       mysqlConnection
         .selectEntities<Customer>(Customer, "SELECT * FROM Customer", [])
