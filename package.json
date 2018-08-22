@@ -36,7 +36,6 @@
     "@types/lodash": "^4.14.77",
     "@types/mocha": "^2.2.43",
     "@types/mysql": "^0.0.34",
-    "@types/node": "^8.0.44",
     "@types/reflect-metadata": "^0.0.5",
     "@types/typescript": "^2.0.0",
     "chai": "^4.1.2",
