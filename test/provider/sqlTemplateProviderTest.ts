@@ -118,7 +118,7 @@ describe(".SqlTemplateProvider", () => {
     it("should getSelectByPk sql template", () => {
       const result = SqlTemplateProvider.getSelectByPk<Customer>(Customer, "1");
       // tslint:disable-next-line:max-line-length
-      const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE Id = ?`;
+      const expectValue = `SELECT Id AS id, CompanyName AS companyName, ContactName AS contactName, ContactTitle AS contactTitle, Address AS address, City AS city, Region AS region, PostalCode AS postalCode, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE Id = ?`;
       expect(expectValue).to.be.eq(result.sqlExpression);
     });
 
@@ -138,7 +138,7 @@ describe(".SqlTemplateProvider", () => {
       example.address = "test";
       const result = SqlTemplateProvider.getSelect(example);
       // tslint:disable-next-line:max-line-length
-      const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE (Id = ? AND Address = ?)`;
+      const expectValue = `SELECT Id AS id, CompanyName AS companyName, ContactName AS contactName, ContactTitle AS contactTitle, Address AS address, City AS city, Region AS region, PostalCode AS postalCode, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE (Id = ? AND Address = ?)`;
       expect(expectValue).to.be.eq(result.sqlExpression);
     });
   });
@@ -180,7 +180,7 @@ describe(".SqlTemplateProvider", () => {
       query.addFilters([idFilter]);
       const result = SqlTemplateProvider.getSelectByDynamicQuery<Customer>(Customer, query);
       // tslint:disable-next-line:max-line-length
-      const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE (Id = ?)`;
+      const expectValue = `SELECT Id AS id, CompanyName AS companyName, ContactName AS contactName, ContactTitle AS contactTitle, Address AS address, City AS city, Region AS region, PostalCode AS postalCode, Country AS country, Phone AS phone, Fax AS fax FROM Customer WHERE (Id = ?)`;
       expect(expectValue).to.be.eq(result.sqlExpression);
     });
   });
@@ -209,7 +209,7 @@ describe(".SqlTemplateProvider", () => {
     it("should getSelectSql sql template", () => {
       const result = SqlTemplateProvider.getSelectSql<Customer>(Customer);
       // tslint:disable-next-line:max-line-length
-      const expectValue = `SELECT Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax FROM Customer`;
+      const expectValue = `SELECT Id AS id, CompanyName AS companyName, ContactName AS contactName, ContactTitle AS contactTitle, Address AS address, City AS city, Region AS region, PostalCode AS postalCode, Country AS country, Phone AS phone, Fax AS fax FROM Customer`;
       expect(expectValue).to.be.eq(result);
     });
   });
@@ -252,7 +252,7 @@ describe(".SqlTemplateProvider", () => {
     it("shoud getColumnExpression sql template", () => {
       const result = SqlTemplateProvider.getColumnsExpression<Customer>(Customer);
       // tslint:disable-next-line:max-line-length
-      const expectValue = `Id AS id, CompanyName AS company_name, ContactName AS contact_name, ContactTitle AS contact_title, Address AS address, City AS city, Region AS region, PostalCode AS postal_code, Country AS country, Phone AS phone, Fax AS fax`;
+      const expectValue = `Id AS id, CompanyName AS companyName, ContactName AS contactName, ContactTitle AS contactTitle, Address AS address, City AS city, Region AS region, PostalCode AS postalCode, Country AS country, Phone AS phone, Fax AS fax`;
       expect(expectValue).to.be.eq(result);
     });
 
