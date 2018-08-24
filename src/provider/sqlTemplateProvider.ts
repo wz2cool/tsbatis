@@ -348,7 +348,7 @@ export class SqlTemplateProvider {
   //#endregion
 
   public static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
-    return lodash.map(columnInfos, s => s.getQueryColumn() + " AS " + s.underscoreProperty).join(", ");
+    return lodash.map(columnInfos, s => s.getQueryColumn() + " AS " + s.property).join(", ");
   }
 
   public static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {
