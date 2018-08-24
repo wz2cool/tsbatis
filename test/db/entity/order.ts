@@ -1,36 +1,36 @@
 import { column, TableEntity } from "../../../src/";
 
 export class Order extends TableEntity {
-    @column("Id", true, true)
-    public id: number;
-    @column("CustomerId", false, true)
-    public customerId: string;
-    @column("EmployeeId", false, true)
-    public employeeId: number;
-    @column("OrderDate", false, true)
-    public orderDate: string;
-    @column("RequiredDate", false, true)
-    public requiredDate: string;
-    @column("ShippedDate", false, true)
-    public shippedDate: string;
-    @column("ShipVia", false, true)
-    public shipVia: number;
-    @column("Freight", false, true)
-    public freight: number;
-    @column("ShipName", false, true)
-    public shipName: string;
-    @column("ShipAddress", false, true)
-    public shipAddress: string;
-    @column("ShipCity", false, true)
-    public shipCity: string;
-    @column("ShipRegion", false, true)
-    public shipRegion: string;
-    @column("ShipPostalCode", false, true)
-    public shipPostalCode: string;
-    @column("ShipCountry", false, true)
-    public shipCountry: string;
+  @column({ columnName: "Id", isPK: true, autoIncrease: true })
+  public id: number;
+  @column({ columnName: "CustomerId" })
+  public customerId: string;
+  @column({ columnName: "EmployeeId" })
+  public employeeId: number;
+  @column({ columnName: "OrderDate" })
+  public orderDate: string;
+  @column({ columnName: "RequiredDate" })
+  public requiredDate: string;
+  @column({ columnName: "ShippedDate" })
+  public shippedDate: string;
+  @column({ columnName: "ShipVia" })
+  public shipVia: number;
+  @column({ columnName: "Freight" })
+  public freight: number;
+  @column({ columnName: "ShipName" })
+  public shipName: string;
+  @column({ columnName: "ShipAddress" })
+  public shipAddress: string;
+  @column({ columnName: "ShipCity" })
+  public shipCity: string;
+  @column({ columnName: "ShipRegion" })
+  public shipRegion: string;
+  @column({ columnName: "ShipPostalCode" })
+  public shipPostalCode: string;
+  @column({ columnName: "ShipCountry" })
+  public shipCountry: string;
 
-    public getTableName(): string {
-        return "Order";
-    }
+  public getTableName(): string {
+    return "Order";
+  }
 }

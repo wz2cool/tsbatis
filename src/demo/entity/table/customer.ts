@@ -3,16 +3,16 @@ import { TableEntity } from "../../../model";
 import { Order } from "./order";
 
 export class Customer extends TableEntity {
-    @column("id", true, false)
-    public id: number;
-    @column("last_name")
-    public lastName: string;
-    @column("first_name")
-    public firstName: string;
+  @column({ columnName: "id", isPK: true, autoIncrease: false })
+  public id: number;
+  @column({ columnName: "last_name" })
+  public lastName: string;
+  @column({ columnName: "first_name" })
+  public firstName: string;
 
-    public orders: Order[];
+  public orders: Order[];
 
-    public getTableName(): string {
-        return "customers";
-    }
+  public getTableName(): string {
+    return "customers";
+  }
 }

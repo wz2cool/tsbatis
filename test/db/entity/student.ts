@@ -1,12 +1,12 @@
 import { column, TableEntity } from "../../../src/";
 
 export class Student extends TableEntity {
-    @column("name", false)
-    public name: string;
-    @column("age", false)
-    public age: number;
+  @column({ columnName: "name" })
+  public name: string;
+  @column({ columnName: "age" })
+  public age: number;
 
-    public getTableName(): string {
-        return "student";
-    }
+  public getTableName(): string {
+    return "student";
+  }
 }

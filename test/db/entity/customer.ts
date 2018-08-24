@@ -1,30 +1,30 @@
 import { column, TableEntity } from "../../../src/";
 
 export class Customer extends TableEntity {
-    @column("Id", true, true)
-    public id: string;
-    @column("CompanyName", false)
-    public companyName: string;
-    @column("ContactName", false)
-    public contactName: string;
-    @column("ContactTitle", false)
-    public contactTitle: string;
-    @column("Address", false)
-    public address: string;
-    @column("City", false)
-    public city: string;
-    @column("Region", false)
-    public region: string;
-    @column("PostalCode", false)
-    public postalCode: string;
-    @column("Country", false)
-    public country: string;
-    @column("Phone", false)
-    public phone: string;
-    @column("Fax", false)
-    public fax: string;
+  @column({ columnName: "Id", isPK: true, autoIncrease: true })
+  public id: string;
+  @column({ columnName: "CompanyName" })
+  public companyName: string;
+  @column({ columnName: "ContactName" })
+  public contactName: string;
+  @column({ columnName: "ContactTitle" })
+  public contactTitle: string;
+  @column({ columnName: "Address" })
+  public address: string;
+  @column({ columnName: "City" })
+  public city: string;
+  @column({ columnName: "Region" })
+  public region: string;
+  @column({ columnName: "PostalCode" })
+  public postalCode: string;
+  @column({ columnName: "Country" })
+  public country: string;
+  @column({ columnName: "Phone" })
+  public phone: string;
+  @column({ columnName: "Fax" })
+  public fax: string;
 
-    public getTableName(): string {
-        return "Customer";
-    }
+  public getTableName(): string {
+    return "Customer";
+  }
 }

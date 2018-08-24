@@ -4,24 +4,24 @@ import { OrderDetailStatus } from "./orderDetailStatus";
 import { Product } from "./product";
 
 export class OrderDetail extends TableEntity {
-    @column("id")
-    public id: number;
-    @column("order_id")
-    public orderId: number;
-    @column("quantity")
-    public quantity: number;
-    @column("unit_price")
-    public unitPrice: number;
-    @column("discount")
-    public discount: number;
-    @column("product_id")
-    public productId: number;
-    @column("status_id")
-    public statusId: number;
+  @column({ columnName: "id" })
+  public id: number;
+  @column({ columnName: "order_id" })
+  public orderId: number;
+  @column({ columnName: "quantity" })
+  public quantity: number;
+  @column({ columnName: "unit_price" })
+  public unitPrice: number;
+  @column({ columnName: "discount" })
+  public discount: number;
+  @column({ columnName: "product_id" })
+  public productId: number;
+  @column({ columnName: "status_id" })
+  public statusId: number;
 
-    public status: OrderDetailStatus;
-    public product: Product;
-    public getTableName(): string {
-        return "order_details";
-    }
+  public status: OrderDetailStatus;
+  public product: Product;
+  public getTableName(): string {
+    return "order_details";
+  }
 }
