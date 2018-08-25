@@ -27,7 +27,7 @@ export function column(option?: ColumnOption) {
 
     if (option) {
       table = CommonHelper.isNullOrUndefined(option.table) ? "" : option.table;
-      columnName = CommonHelper.isNullOrUndefined(option.columnName) ? "" : option.columnName;
+      columnName = CommonHelper.isNullOrUndefined(option.columnName) ? propertyKey : option.columnName;
       isKey = CommonHelper.isNullOrUndefined(option.isPK) ? false : option.isPK;
       autoIncrease = CommonHelper.isNullOrUndefined(option.autoIncrease) ? false : option.autoIncrease;
     } else {
