@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DatabaseType, SortDescriptor, SortDirection, SqliteConnectionConfig } from "../../src";
+import { DatabaseType, SqliteConnectionConfig } from "../../src";
 
 describe(".SqliteConnectionConfig", () => {
     describe("#getDatabaseType", () => {

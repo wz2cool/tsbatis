@@ -54,5 +54,3 @@ export {
   MappingProvider,
   SqlTemplateProvider,
 };
-
-export * from "ts-dynamic-query";

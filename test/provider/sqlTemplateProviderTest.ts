@@ -1,7 +1,8 @@
 import { CustomSortDescriptor } from "../../src/model/customSortDescriptor";
 import { expect } from "chai";
 import * as path from "path";
-import { DynamicQuery, FilterDescriptor, SqlTemplateProvider, CustomFilterDescriptor } from "../../src";
+import { SqlTemplateProvider, CustomFilterDescriptor } from "../../src";
+import { DynamicQuery, FilterDescriptor } from "ts-dynamic-query";
 import { MysqlConnection, SqliteConnection } from "../../src/connection";
 import { DatabaseType, SqliteConnectionConfig } from "../../src/model";
 import { RowBounds } from "../../src/model/rowBounds";
