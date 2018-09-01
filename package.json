@@ -1,9 +1,9 @@
 {
   "name": "tsbatis",
-  "version": "0.2.13",
+  "version": "0.2.15",
   "description": "",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/dist/index.d.ts",
   "scripts": {
     "pretest": "npm run deletedist && npm run copydb && tsc -p tsconfig.test.json",
     "test": "nyc mocha dist/test --recursive",
