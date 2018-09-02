@@ -6,14 +6,16 @@ import { EntityHelper } from "../../src/helper";
 describe(".EntityCache", () => {
   describe("#addColumnInfo", () => {
     const cache = EntityCache.getInstance();
+
     it("should get column after adding it", () => {
+      const targetConstrutor = EntityHelper.getTargetConstrutor(ColumnInfo);
       const colInfo = new ColumnInfo();
       colInfo.columnName = "colName";
       colInfo.property = "prop";
       colInfo.table = "table";
+      colInfo.targetConstructor = targetConstrutor;
       cache.cacheColumnInfo(colInfo);
 
-      const targetConstrutor = EntityHelper.getTargetConstrutor(colInfo);
       const result = cache.getColumnInfo(targetConstrutor, "prop");
       expect(colInfo.columnName).to.be.eq(result.columnName);
       expect(colInfo.property).to.be.eq(result.property);
@@ -21,16 +23,19 @@ describe(".EntityCache", () => {
     });
 
     it("should get columns after adding multi columns", () => {
+      const targetConstrutor2 = EntityHelper.getTargetConstrutor(ColumnInfo);
       const colInfo1 = new ColumnInfo();
       colInfo1.columnName = "colName";
       colInfo1.property = "prop";
       colInfo1.table = "table";
+      colInfo1.targetConstructor = targetConstrutor2;
       cache.cacheColumnInfo(colInfo1);
 
       const colInfo2 = new ColumnInfo();
       colInfo2.columnName = "colName2";
       colInfo2.property = "prop2";
       colInfo2.table = "table";
+      colInfo2.targetConstructor = targetConstrutor2;
       cache.cacheColumnInfo(colInfo2);
 
       const targetConstrutor = EntityHelper.getTargetConstrutor(ColumnInfo);
@@ -64,6 +69,7 @@ describe(".EntityCache", () => {
     colInfo.columnName = "colName";
     colInfo.property = "prop";
     colInfo.table = "table";
+    colInfo.targetConstructor = EntityHelper.getTargetConstrutor(ColumnInfo);
     cache.cacheColumnInfo(colInfo);
 
     it("should return empty array, if entity not found", () => {
@@ -84,6 +90,7 @@ describe(".EntityCache", () => {
     colInfo.columnName = "colName";
     colInfo.property = "prop";
     colInfo.table = "table";
+    colInfo.targetConstructor = EntityHelper.getTargetConstrutor(ColumnInfo);
     cache.cacheColumnInfo(colInfo);
 
     it("should return ['prop'], if entity exists", () => {
