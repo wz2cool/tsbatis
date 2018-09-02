@@ -3,14 +3,15 @@ import { EntityCache } from "../../src/cache";
 import { column } from "../../src/decorator";
 import { CommonHelper, EntityHelper } from "../../src/helper";
 import { ColumnInfo } from "../../src/model";
+import { Product } from "../db/entity/product";
 
 describe(".column", () => {
   describe("#tableColumn", () => {
     const cache = EntityCache.getInstance();
     it("id is key", () => {
-      const targetContructor = EntityHelper.getTargetConstrutor(ColumnInfo);
-      const result = cache.getColumnInfo(targetContructor, "name");
-      expect("name").to.be.eq(result.columnName);
+      const targetContructor = EntityHelper.getTargetConstrutor(Product);
+      const result = cache.getColumnInfo(targetContructor, "id");
+      expect("id").to.be.eq(result.columnName);
       expect(false).to.be.eq(result.isPK);
       expect(false).to.be.eq(result.autoIncrease);
       expect(true).to.be.eq(CommonHelper.isBlank(result.table));
