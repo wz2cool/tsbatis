@@ -1,101 +1,99 @@
 import { expect } from "chai";
 import { EntityCache } from "../../src/cache/entityCache";
 import { ColumnInfo } from "../../src/model/columnInfo";
+import { EntityHelper } from "../../src/helper";
 
 describe(".EntityCache", () => {
-    describe("#addColumnInfo", () => {
-        const cache = EntityCache.getInstance();
-        it("should get column after adding it", () => {
-            const colInfo = new ColumnInfo();
-            colInfo.columnName = "colName";
-            colInfo.entity = "entity";
-            colInfo.property = "prop";
-            colInfo.table = "table";
-            cache.cacheColumnInfo(colInfo);
+  describe("#addColumnInfo", () => {
+    const cache = EntityCache.getInstance();
+    it("should get column after adding it", () => {
+      const colInfo = new ColumnInfo();
+      colInfo.columnName = "colName";
+      colInfo.property = "prop";
+      colInfo.table = "table";
+      cache.cacheColumnInfo(colInfo);
 
-            const result = cache.getColumnInfo("entity", "prop");
-            expect(colInfo.columnName).to.be.eq(result.columnName);
-            expect(colInfo.entity).to.be.eq(result.entity);
-            expect(colInfo.property).to.be.eq(result.property);
-            expect(colInfo.table).to.be.eq(result.table);
-        });
-
-        it("should get columns after adding multi columns", () => {
-            const colInfo1 = new ColumnInfo();
-            colInfo1.columnName = "colName";
-            colInfo1.entity = "entity";
-            colInfo1.property = "prop";
-            colInfo1.table = "table";
-            cache.cacheColumnInfo(colInfo1);
-
-            const colInfo2 = new ColumnInfo();
-            colInfo2.columnName = "colName2";
-            colInfo2.entity = "entity";
-            colInfo2.property = "prop2";
-            colInfo2.table = "table";
-            cache.cacheColumnInfo(colInfo2);
-
-            const result = cache.getColumnInfos("entity");
-            expect(2).to.be.eq(result.length);
-        });
+      const targetConstrutor = EntityHelper.getTargetConstrutor(colInfo);
+      const result = cache.getColumnInfo(targetConstrutor, "prop");
+      expect(colInfo.columnName).to.be.eq(result.columnName);
+      expect(colInfo.property).to.be.eq(result.property);
+      expect(colInfo.table).to.be.eq(result.table);
     });
 
-    describe("#getColumnInfo", () => {
-        const cache = EntityCache.getInstance();
-        const colInfo = new ColumnInfo();
-        colInfo.columnName = "colName";
-        colInfo.entity = "entity";
-        colInfo.property = "prop";
-        colInfo.table = "table";
-        cache.cacheColumnInfo(colInfo);
+    it("should get columns after adding multi columns", () => {
+      const colInfo1 = new ColumnInfo();
+      colInfo1.columnName = "colName";
+      colInfo1.property = "prop";
+      colInfo1.table = "table";
+      cache.cacheColumnInfo(colInfo1);
 
-        it("should return null, if entity not found", () => {
-            const result = cache.getColumnInfo("notfoundentity", "name");
-            expect(null).to.be.eq(result);
-        });
+      const colInfo2 = new ColumnInfo();
+      colInfo2.columnName = "colName2";
+      colInfo2.property = "prop2";
+      colInfo2.table = "table";
+      cache.cacheColumnInfo(colInfo2);
 
-        it("should return null, if prop not found", () => {
-            const result = cache.getColumnInfo("entity", "notfoundProp");
-            expect(null).to.be.eq(result);
-        });
+      const targetConstrutor = EntityHelper.getTargetConstrutor(ColumnInfo);
+      const result = cache.getColumnInfos(targetConstrutor);
+      expect(2).to.be.eq(result.length);
+    });
+  });
+
+  describe("#getColumnInfo", () => {
+    const cache = EntityCache.getInstance();
+    const colInfo = new ColumnInfo();
+    colInfo.columnName = "colName";
+    colInfo.property = "prop";
+    colInfo.table = "table";
+    cache.cacheColumnInfo(colInfo);
+    const targetConstrutor = EntityHelper.getTargetConstrutor(colInfo);
+    it("should return null, if entity not found", () => {
+      const result = cache.getColumnInfo(targetConstrutor, "name");
+      expect(null).to.be.eq(result);
     });
 
-    describe("#getColumnInfos", () => {
-        const cache = EntityCache.getInstance();
-        const colInfo = new ColumnInfo();
-        colInfo.columnName = "colName";
-        colInfo.entity = "entity";
-        colInfo.property = "prop";
-        colInfo.table = "table";
-        cache.cacheColumnInfo(colInfo);
+    it("should return null, if prop not found", () => {
+      const result = cache.getColumnInfo(targetConstrutor, "notfoundProp");
+      expect(null).to.be.eq(result);
+    });
+  });
 
-        it("should return empty array, if entity not found", () => {
-            const result = cache.getColumnInfos("notfoundentity");
-            expect(0).to.be.eq(result.length);
-        });
+  describe("#getColumnInfos", () => {
+    const cache = EntityCache.getInstance();
+    const colInfo = new ColumnInfo();
+    colInfo.columnName = "colName";
+    colInfo.property = "prop";
+    colInfo.table = "table";
+    cache.cacheColumnInfo(colInfo);
 
-        it("should return columns", () => {
-            const result = cache.getColumnInfos("entity");
-            expect(true).to.be.eq(result.length > 0);
-        });
+    it("should return empty array, if entity not found", () => {
+      const result = cache.getColumnInfos(null);
+      expect(0).to.be.eq(result.length);
     });
 
-    describe("#getProperties", () => {
-        const cache = EntityCache.getInstance();
-        const colInfo = new ColumnInfo();
-        colInfo.columnName = "colName";
-        colInfo.entity = "entity";
-        colInfo.property = "prop";
-        colInfo.table = "table";
-        cache.cacheColumnInfo(colInfo);
-
-        it("should return ['prop'], if entity exists", () => {
-            const result = cache.getProperties("entity");
-            expect("prop").to.be.eq(result[0]);
-        });
-        it("should return [], if entity does not exist", () => {
-            const result = cache.getProperties("notFoundEntity");
-            expect(0).to.be.eq(result.length);
-        });
+    it("should return columns", () => {
+      const targetConstrutor = EntityHelper.getTargetConstrutor(ColumnInfo);
+      const result = cache.getColumnInfos(targetConstrutor);
+      expect(true).to.be.eq(result.length > 0);
     });
+  });
+
+  describe("#getProperties", () => {
+    const cache = EntityCache.getInstance();
+    const colInfo = new ColumnInfo();
+    colInfo.columnName = "colName";
+    colInfo.property = "prop";
+    colInfo.table = "table";
+    cache.cacheColumnInfo(colInfo);
+
+    it("should return ['prop'], if entity exists", () => {
+      const targetConstrutor = EntityHelper.getTargetConstrutor(ColumnInfo);
+      const result = cache.getProperties(targetConstrutor);
+      expect("prop").to.be.eq(result[0]);
+    });
+    it("should return [], if entity does not exist", () => {
+      const result = cache.getProperties(null);
+      expect(0).to.be.eq(result.length);
+    });
+  });
 });

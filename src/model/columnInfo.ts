@@ -1,18 +1,17 @@
 import { CommonHelper } from "../helper";
 
 export class ColumnInfo {
-    public isPK: boolean;
-    public autoIncrease: boolean;
-    public property: string;
-    public underscoreProperty: string;
-    public propertyType: string;
-    public entity: string;
-    // column name
-    public columnName: string;
-    public table: string;
+  public isPK: boolean;
+  public autoIncrease: boolean;
+  public property: string;
+  public underscoreProperty: string;
+  public propertyType: string;
+  // column name
+  public columnName: string;
+  public table: string;
+  public targetConstructor: Function;
 
-    public getQueryColumn() {
-        return CommonHelper.isBlank(this.table)
-            ? this.columnName : this.table + "." + this.columnName;
-    }
+  public getQueryColumn() {
+    return CommonHelper.isBlank(this.table) ? this.columnName : this.table + "." + this.columnName;
+  }
 }

@@ -21,7 +21,6 @@ export function column(option?: ColumnOption) {
     let isKey: boolean = false;
     let autoIncrease: boolean = false;
 
-    const entity = target.constructor.name;
     const propertyType = Reflect.getMetadata("design:type", target, propertyKey);
     const columnInfo = new ColumnInfo();
 
@@ -36,13 +35,12 @@ export function column(option?: ColumnOption) {
 
     columnInfo.isPK = isKey;
     columnInfo.autoIncrease = autoIncrease;
-    columnInfo.entity = entity;
     columnInfo.columnName = columnName;
     columnInfo.table = table;
     columnInfo.property = propertyKey;
     columnInfo.propertyType = propertyType.name;
     columnInfo.underscoreProperty = _.snakeCase(propertyKey);
-    console.log("set columnInfo");
+    columnInfo.targetConstructor = target.constructor;
     cache.cacheColumnInfo(columnInfo);
   };
 }

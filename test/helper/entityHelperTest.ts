@@ -24,23 +24,6 @@ describe(".EntityHelper", () => {
         });
     });
 
-    describe("#getEntityName", () => {
-        it("should return empty if input is null", () => {
-            const result = EntityHelper.getEntityName<Student>(null);
-            expect("").to.be.eq(result);
-        });
-
-        it("should return entity name by entity name", () => {
-            const result = EntityHelper.getEntityName<Student>(Student);
-            expect("Student").to.be.eq(result);
-        });
-
-        it("should return entity name by entity", () => {
-            const result = EntityHelper.getEntityName<Student>(new Student());
-            expect("Student").to.be.eq(result);
-        });
-    });
-
     describe("#createObject", () => {
         it("should return object if o is type", () => {
             const result = EntityHelper.createObject<Student>(Student);

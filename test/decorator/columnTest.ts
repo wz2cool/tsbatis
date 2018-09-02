@@ -1,13 +1,15 @@
 import { expect } from "chai";
 import { EntityCache } from "../../src/cache";
 import { column } from "../../src/decorator";
-import { CommonHelper } from "../../src/helper";
+import { CommonHelper, EntityHelper } from "../../src/helper";
+import { ColumnInfo } from "../../src/model";
 
 describe(".column", () => {
   describe("#tableColumn", () => {
     const cache = EntityCache.getInstance();
     it("id is key", () => {
-      const result = cache.getColumnInfo("Student", "name");
+      const targetContructor = EntityHelper.getTargetConstrutor(ColumnInfo);
+      const result = cache.getColumnInfo(targetContructor, "name");
       expect("name").to.be.eq(result.columnName);
       expect(false).to.be.eq(result.isPK);
       expect(false).to.be.eq(result.autoIncrease);
@@ -28,7 +30,8 @@ describe(".column", () => {
     }
     const cache = EntityCache.getInstance();
     it("id column has table", () => {
-      const result = cache.getColumnInfo("ProductView", "id");
+      const targetContructor = EntityHelper.getTargetConstrutor(ProductView);
+      const result = cache.getColumnInfo(targetContructor, "id");
       expect("product_id").to.be.eq(result.columnName);
       expect(false).to.be.eq(result.isPK);
       expect(false).to.be.eq(result.autoIncrease);
@@ -37,7 +40,8 @@ describe(".column", () => {
     });
 
     it("get createTime type", () => {
-      const result = cache.getColumnInfo("ProductView", "createTime");
+      const targetContructor = EntityHelper.getTargetConstrutor(ProductView);
+      const result = cache.getColumnInfo(targetContructor, "createTime");
       expect("Date").to.be.eq(result.propertyType);
     });
 

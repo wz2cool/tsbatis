@@ -29,7 +29,7 @@ export class MappingProvider {
     public static toEntity<T extends Entity>(
         entity: T | { new(): T }, dbObj: any, underscoreToCamelCase = false): T {
         const cache = EntityCache.getInstance();
-        const entityName = EntityHelper.getEntityName(entity);
+        const entityName = EntityHelper.getTargetConstrutor(entity);
         const columnInfos = cache.getColumnInfos(entityName);
         const entityObj = EntityHelper.createObject<T>(entity);
         columnInfos.forEach((colInfo) => {

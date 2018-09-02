@@ -255,22 +255,22 @@ export class SqlTemplateProvider {
   }
 
   public static getColumnsExpression<T extends Entity>(entityClass: { new (): T }): string {
-    const entityName = EntityHelper.getEntityName(entityClass);
-    if (CommonHelper.isBlank(entityName)) {
+    const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
+    if (CommonHelper.isNullOrUndefined(targetConstructor)) {
       throw new Error("cannot find entity, please set @column to entity!");
     }
 
-    const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
+    const columnInfos = EntityCache.getInstance().getColumnInfos(targetConstructor);
     return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
   }
 
   public static getColumnInfos<T extends Entity>(o: T | { new (): T }): ColumnInfo[] {
-    const entityName = EntityHelper.getEntityName(o);
-    if (CommonHelper.isBlank(entityName)) {
+    const targetConstructor = EntityHelper.getTargetConstrutor(o);
+    if (CommonHelper.isNullOrUndefined(targetConstructor)) {
       throw new Error("cannot find entity, please set @column to entity!");
     }
 
-    const columnInfos = EntityCache.getInstance().getColumnInfos(entityName);
+    const columnInfos = EntityCache.getInstance().getColumnInfos(targetConstructor);
     return columnInfos;
   }
 
@@ -291,8 +291,8 @@ export class SqlTemplateProvider {
     const value = filter.value;
     const operator = filter.operator;
     const propertyPath = filter.propertyPath;
-    const entity = EntityHelper.getEntityName(entityClass);
-    const columnInfo = EntityCache.getInstance().getColumnInfo(entity, propertyPath);
+    const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
+    const columnInfo = EntityCache.getInstance().getColumnInfo(targetConstructor, propertyPath);
     return FilterHelper.getFilterExpression(operator, columnInfo, value);
   }
 
@@ -324,8 +324,8 @@ export class SqlTemplateProvider {
   }
 
   public static getSortExpressionBySortDescriptor<T extends Entity>(entityClass: { new (): T }, sort: SortDescriptor<T>): SqlTemplate {
-    const entity = EntityHelper.getEntityName(entityClass);
-    const columnInfo = EntityCache.getInstance().getColumnInfo(entity, sort.propertyPath);
+    const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
+    const columnInfo = EntityCache.getInstance().getColumnInfo(targetConstructor, sort.propertyPath);
     const directionStr = SortDirection[sort.direction];
     const queryColumn = columnInfo.getQueryColumn();
     const expression = `${queryColumn} ${directionStr}`;
