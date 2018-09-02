@@ -11,7 +11,7 @@ describe(".column", () => {
     it("id is key", () => {
       const targetContructor = EntityHelper.getTargetConstrutor(Product);
       const result = cache.getColumnInfo(targetContructor, "id");
-      expect("id").to.be.eq(result.columnName);
+      expect("Id").to.be.eq(result.columnName);
       expect(false).to.be.eq(result.isPK);
       expect(false).to.be.eq(result.autoIncrease);
       expect(true).to.be.eq(CommonHelper.isBlank(result.table));
