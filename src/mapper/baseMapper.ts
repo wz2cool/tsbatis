@@ -1,4 +1,3 @@
-import * as lodash from "lodash";
 import { EntityCache } from "../cache";
 import { IConnection } from "../connection";
 import { CommonHelper, EntityHelper } from "../helper";

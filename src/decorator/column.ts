@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import "reflect-metadata";
 import { EntityCache } from "../cache/entityCache";
 import { CommonHelper } from "../helper";
@@ -41,7 +41,7 @@ export function column(option?: ColumnOption) {
     columnInfo.table = table;
     columnInfo.property = propertyKey;
     columnInfo.propertyType = propertyType.name;
-    columnInfo.underscoreProperty = lodash.snakeCase(propertyKey);
+    columnInfo.underscoreProperty = _.snakeCase(propertyKey);
     cache.cacheColumnInfo(columnInfo);
   };
 }

@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import { CommonHelper } from "../helper";
 import { ColumnInfo } from "../model/columnInfo";
 
@@ -43,7 +43,7 @@ export class EntityCache {
         if (CommonHelper.isNullOrUndefined(propColMap)) {
             return [];
         }
-        return lodash.values(propColMap);
+        return _.values(propColMap);
     }
 
     public getProperties(entity: string): string[] {
@@ -52,6 +52,6 @@ export class EntityCache {
             || columnInfos.length === 0) {
             return [];
         }
-        return lodash.map(columnInfos, (c) => c.property);
+        return _.map(columnInfos, (c) => c.property);
     }
 }

@@ -19,7 +19,7 @@ const config = {
     extensions: [".ts", ".tsx", ".js"],
   },
   externals: {
-    lodash: "lodash",
+    lodash: "_",
     "ts-dynamic-query": "ts-dynamic-query",
   },
   devtool: "source-map",

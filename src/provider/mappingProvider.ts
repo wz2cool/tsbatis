@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import { DtoCache, EntityCache } from "../cache";
 import { CommonHelper, DtoObjectHelper, EntityHelper } from "../helper";
 import { DtoObject, Entity } from "../model";
@@ -21,7 +21,7 @@ export class MappingProvider {
 
     public static toDtoObjects<T extends DtoObject>(
         dtoObjectClass: T | { new(): T }, jsonObjs: any[]): T[] {
-        return lodash.map(jsonObjs, (jsonObj) => {
+        return _.map(jsonObjs, (jsonObj) => {
             return MappingProvider.toDtoObject<T>(dtoObjectClass, jsonObj);
         });
     }
@@ -43,7 +43,7 @@ export class MappingProvider {
 
     public static toEntities<T extends Entity>(
         entity: T | { new(): T }, dbObjs: any[], underscoreToCamelCase = false): T[] {
-        return lodash.map(dbObjs, (dbObj) => {
+        return _.map(dbObjs, (dbObj) => {
             return MappingProvider.toEntity<T>(entity, dbObj, underscoreToCamelCase);
         });
     }

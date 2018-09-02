@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds } from "../model";
 import { MappingProvider } from "../provider";
@@ -56,7 +56,7 @@ export class SqliteConnection implements IConnection {
       this.db.all(sql, params, (err, result) => {
         try {
           if (CommonHelper.isNullOrUndefined(err)) {
-            const count = lodash.values(result[0])[0] as number;
+            const count = _.values(result[0])[0] as number;
             resolve(count);
           } else {
             reject(err);

@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import { CommonHelper } from "../helper/commonHelper";
 import { DtoFieldInfo } from "../model/dtoFieldInfo";
 
@@ -29,6 +29,6 @@ export class DtoCache {
         if (CommonHelper.isNullOrUndefined(propFieldMap)) {
             return [];
         }
-        return lodash.values(propFieldMap);
+        return _.values(propFieldMap);
     }
 }

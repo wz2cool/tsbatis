@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import { EntityCache } from "../cache";
 import { CommonHelper, EntityHelper, FilterHelper } from "../helper";
 import { ColumnInfo, CustomFilterDescriptor, CustomSortDescriptor, Entity, SqlTemplate, TableEntity } from "../model";
@@ -16,7 +16,7 @@ import {
 export class SqlTemplateProvider {
   public static getPkColumn<T extends TableEntity>(o: T): ColumnInfo {
     const columnInfos = SqlTemplateProvider.getColumnInfos(o);
-    return lodash.find(columnInfos, s => s.isPK);
+    return _.find(columnInfos, s => s.isPK);
   }
 
   public static getInsert<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
@@ -52,7 +52,7 @@ export class SqlTemplateProvider {
 
   public static getDeleteByPk<T extends TableEntity>(entityClass: { new (): T }, key: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-    const keyColumn = lodash.find(columnInfos, s => s.isPK);
+    const keyColumn = _.find(columnInfos, s => s.isPK);
     if (CommonHelper.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
@@ -81,7 +81,7 @@ export class SqlTemplateProvider {
 
   public static getUpdateByPk<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(o);
-    const keyColumn = lodash.find(columnInfos, s => s.isPK);
+    const keyColumn = _.find(columnInfos, s => s.isPK);
     if (CommonHelper.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
@@ -117,7 +117,7 @@ export class SqlTemplateProvider {
 
   public static getSelectByPk<T extends TableEntity>(entityClass: { new (): T }, key: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-    const keyColumn = lodash.find(columnInfos, s => s.isPK);
+    const keyColumn = _.find(columnInfos, s => s.isPK);
     if (CommonHelper.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
@@ -143,7 +143,7 @@ export class SqlTemplateProvider {
 
   public static getSelectCountByPk<T extends TableEntity>(entityClass: { new (): T }, pk: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-    const keyColumn = lodash.find(columnInfos, s => s.isPK);
+    const keyColumn = _.find(columnInfos, s => s.isPK);
     if (CommonHelper.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
@@ -348,7 +348,7 @@ export class SqlTemplateProvider {
   //#endregion
 
   public static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
-    return lodash.map(columnInfos, s => s.getQueryColumn() + " AS " + s.property).join(", ");
+    return _.map(columnInfos, s => s.getQueryColumn() + " AS " + s.property).join(", ");
   }
 
   public static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {
