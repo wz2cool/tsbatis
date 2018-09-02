@@ -42,6 +42,7 @@ export function column(option?: ColumnOption) {
     columnInfo.property = propertyKey;
     columnInfo.propertyType = propertyType.name;
     columnInfo.underscoreProperty = _.snakeCase(propertyKey);
+    console.log("set columnInfo");
     cache.cacheColumnInfo(columnInfo);
   };
 }

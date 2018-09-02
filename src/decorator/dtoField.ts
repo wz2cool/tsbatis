@@ -20,7 +20,7 @@ export function dtoField(name?: string) {
         const dtoFieldInfo = new DtoFieldInfo();
         dtoFieldInfo.dtoObjectName = dtoObjectName;
         dtoFieldInfo.name = fieldName;
-        dtoFieldInfo.property = propertyKey;
+        dtoFieldInfo.property = property;
         dtoFieldInfo.propertyType = propertyType.name;
         cache.cacheFieldInfo(dtoFieldInfo);
     };
