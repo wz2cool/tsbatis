@@ -32,7 +32,7 @@ export class QueryCacheInternal {
     return this.queryCache.delete(query);
   }
 
-  public getAllQuerys(): IterableIterator<DynamicQuery<any>> {
-    return this.queryCache.keys();
+  public getAllQuerys(): DynamicQuery<any>[] {
+    return Array.from(this.queryCache.keys());
   }
 }

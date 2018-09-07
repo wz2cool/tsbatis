@@ -16,7 +16,7 @@ export class QueryCache {
     return this.queryCache.clearQuerys();
   }
 
-  public static getAllQuerys(): IterableIterator<DynamicQuery<any>> {
+  public static getAllQuerys(): DynamicQuery<any>[] {
     return this.queryCache.getAllQuerys();
   }
 }

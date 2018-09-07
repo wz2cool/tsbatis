@@ -13,7 +13,7 @@ describe(".QueryCache", () => {
       const query = new DynamicQuery<ColumnInfo>();
 
       QueryCache.addQuery(query);
-      const getAll = queryCacheInternal.getAllQuerys();
+      const getAll  = queryCacheInternal.getAllQuerys();
       expect(getAll[0]).to.be.eq(query);
       QueryCache.clearQuerys();
     });
@@ -23,7 +23,7 @@ describe(".QueryCache", () => {
       QueryCache.addQuery(query);
       QueryCache.removeQuery(query);
       const getAll = queryCacheInternal.getAllQuerys();
-      expect(0).to.be.eq(Array.from(getAll).length);
+      expect(0).to.be.eq(getAll.length);
       QueryCache.clearQuerys();
     });
   });
