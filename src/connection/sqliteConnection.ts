@@ -1,8 +1,8 @@
 import * as _ from "lodash";
-import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds } from "../model";
 import { MappingProvider } from "../provider";
 import { IConnection } from "./iConnection";
+import { ObjectUtils } from "ts-commons";
 
 // https://github.com/mapbox/node-sqlite3/issues/304
 // create new db if start a transaction.
@@ -29,7 +29,7 @@ export class SqliteConnection implements IConnection {
     this.log(`run:\r\nsql: ${sql}\r\nparams: ${params}`);
     return new Promise<any>((resolve, reject) => {
       this.db.run(sql, params, (err, row) => {
-        if (CommonHelper.isNullOrUndefined(err)) {
+        if (ObjectUtils.isNullOrUndefined(err)) {
           resolve(row);
         } else {
           reject(err);
@@ -41,7 +41,7 @@ export class SqliteConnection implements IConnection {
     this.log(`select:\r\nsql: ${sql}\r\nparams: ${params}`);
     return new Promise<any[]>((resolve, reject) => {
       this.db.all(sql, params, (err, result) => {
-        if (CommonHelper.isNullOrUndefined(err)) {
+        if (ObjectUtils.isNullOrUndefined(err)) {
           resolve(result);
         } else {
           reject(err);
@@ -55,7 +55,7 @@ export class SqliteConnection implements IConnection {
     return new Promise<number>((resolve, reject) => {
       this.db.all(sql, params, (err, result) => {
         try {
-          if (CommonHelper.isNullOrUndefined(err)) {
+          if (ObjectUtils.isNullOrUndefined(err)) {
             const count = _.values(result[0])[0] as number;
             resolve(count);
           } else {
@@ -73,7 +73,7 @@ export class SqliteConnection implements IConnection {
     return new Promise<T[]>((resolve, reject) => {
       this.db.all(sql, params, (err, result) => {
         try {
-          if (CommonHelper.isNullOrUndefined(err)) {
+          if (ObjectUtils.isNullOrUndefined(err)) {
             const entities = MappingProvider.toEntities<T>(entityClass, result, true);
             resolve(entities);
           } else {
@@ -111,7 +111,7 @@ export class SqliteConnection implements IConnection {
     this.log(`release...`);
     return new Promise<void>((resolve, reject) => {
       this.db.close(err => {
-        if (CommonHelper.isNullOrUndefined(err)) {
+        if (ObjectUtils.isNullOrUndefined(err)) {
           resolve();
         } else {
           reject(err);
@@ -131,7 +131,7 @@ export class SqliteConnection implements IConnection {
     this.log(`exec:\r\nsql: ${sql}`);
     return new Promise<void>((resolve, reject) => {
       this.db.exec(sql, err => {
-        if (CommonHelper.isNullOrUndefined(err)) {
+        if (ObjectUtils.isNullOrUndefined(err)) {
           resolve();
         } else {
           reject(err);
@@ -146,7 +146,7 @@ export class SqliteConnection implements IConnection {
   }
 
   private log(log: string): void {
-    if (!CommonHelper.isNullOrUndefined(this.enableLog) && this.enableLog) {
+    if (!ObjectUtils.isNullOrUndefined(this.enableLog) && this.enableLog) {
       console.log(`[TSBATIS] ${log}`);
     }
   }

@@ -1,6 +1,5 @@
 import { EntityCache } from "../cache";
 import { IConnection } from "../connection";
-import { CommonHelper, EntityHelper } from "../helper";
 import {
   AssociationRelation,
   CollectionRelation,
@@ -15,6 +14,7 @@ import {
 } from "../model";
 import { SqlTemplateProvider } from "../provider";
 import { DynamicQuery, FilterDescriptor, FilterDescriptorBase, FilterOperator, SortDescriptorBase } from "ts-dynamic-query";
+import { ObjectUtils } from "ts-commons";
 
 export abstract class BaseMapper<T extends Entity> {
   protected readonly connection: IConnection;
@@ -77,10 +77,9 @@ export abstract class BaseMapper<T extends Entity> {
 
   private async selectEntitiesWithRelationInteral(plainSql: string, params: any[], relations: RelationBase[]): Promise<T[]> {
     try {
-      console.log(plainSql);
       const entityClass = this.getEntityClass();
       const entities = await this.selectEntitiesInternal<T>(entityClass, plainSql, params);
-      if (!CommonHelper.isNullOrUndefined(entities) && entities.length > 0 && !CommonHelper.isNullOrUndefined(relations) && relations.length > 0) {
+      if (!ObjectUtils.isNullOrUndefined(entities) && entities.length > 0 && !ObjectUtils.isNullOrUndefined(relations) && relations.length > 0) {
         for (const entity of entities) {
           for (const relation of relations) {
             await this.assignRelationInternal(entity, relation);
@@ -109,7 +108,7 @@ export abstract class BaseMapper<T extends Entity> {
       refColumnFilter.propertyPath = relation.getTargetProp();
       refColumnFilter.value = sourceValue;
 
-      if (CommonHelper.isNullOrUndefined(dynamicQuery)) {
+      if (ObjectUtils.isNullOrUndefined(dynamicQuery)) {
         dynamicQuery = new DynamicQuery().addFilters([refColumnFilter]);
       } else {
         dynamicQuery.addFilters([refColumnFilter]);
@@ -121,7 +120,7 @@ export abstract class BaseMapper<T extends Entity> {
         // only take one row.
         const rowBounds = new RowBounds(0, 1);
         nestEntities = await this.selectEntitiesRowBoundInternal(refEntityClass, sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds);
-        if (!CommonHelper.isNullOrUndefined(nestEntities) && nestEntities.length > 0) {
+        if (!ObjectUtils.isNullOrUndefined(nestEntities) && nestEntities.length > 0) {
           sourceEntity[mappingProp] = nestEntities[0];
         }
       } else {
@@ -130,7 +129,7 @@ export abstract class BaseMapper<T extends Entity> {
         sourceEntity[mappingProp] = nestEntities;
       }
 
-      if (!CommonHelper.isNullOrUndefined(relation.relations) && relation.relations.length > 0) {
+      if (!ObjectUtils.isNullOrUndefined(relation.relations) && relation.relations.length > 0) {
         for (const nestEntity of nestEntities) {
           for (const nestRelation of relation.relations) {
             await this.assignRelationInternal(nestEntity, nestRelation);

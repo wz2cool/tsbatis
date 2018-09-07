@@ -1,9 +1,9 @@
 import { Entity } from "../model";
-import { CommonHelper } from "./commonHelper";
+import { ObjectUtils } from "ts-commons";
 
 export class EntityHelper {
   public static getPropertyName<T extends Entity>(fn: (o: T) => any): string {
-    if (CommonHelper.isNullOrUndefined(fn)) {
+    if (ObjectUtils.isNullOrUndefined(fn)) {
       return "";
     }
 
@@ -32,7 +32,7 @@ export class EntityHelper {
   }
 
   public static getTargetConstrutor<T extends Entity>(o: T | { new (): T }): Function {
-    if (CommonHelper.isNullOrUndefined(o)) {
+    if (ObjectUtils.isNullOrUndefined(o)) {
       return null;
     }
 

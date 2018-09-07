@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 import { EntityCache } from "../cache";
-import { CommonHelper, EntityHelper, FilterHelper } from "../helper";
+import { ObjectUtils, StringUtils } from "ts-commons";
+import { EntityHelper, FilterHelper } from "../helper";
 import { ColumnInfo, CustomFilterDescriptor, CustomSortDescriptor, Entity, SqlTemplate, TableEntity } from "../model";
 import {
   DynamicQuery,
@@ -30,10 +31,10 @@ export class SqlTemplateProvider {
       }
 
       let propValue = o[colInfo.property];
-      if (selective && CommonHelper.isNullOrUndefined(propValue)) {
+      if (selective && ObjectUtils.isNullOrUndefined(propValue)) {
         return;
       }
-      propValue = SqlTemplateProvider.toDbParam(CommonHelper.isNullOrUndefined(propValue) ? null : propValue);
+      propValue = SqlTemplateProvider.toDbParam(ObjectUtils.isNullOrUndefined(propValue) ? null : propValue);
       params.push(propValue);
       columnNames.push(colInfo.columnName);
       placeholders.push("?");
@@ -53,7 +54,7 @@ export class SqlTemplateProvider {
   public static getDeleteByPk<T extends TableEntity>(entityClass: { new (): T }, key: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
     const keyColumn = _.find(columnInfos, s => s.isPK);
-    if (CommonHelper.isNullOrUndefined(keyColumn)) {
+    if (ObjectUtils.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
 
@@ -73,7 +74,6 @@ export class SqlTemplateProvider {
   }
 
   public static getDeleteByDynamicQuery<T extends TableEntity>(entityClass: { new (): T }, query: DynamicQuery<T>): SqlTemplate {
-    const columnInfos = SqlTemplateProvider.getColumnInfos(new entityClass());
     const table = new entityClass().getTableName();
     const deleteSql = `DELETE FROM ${table}`;
     return this.getSqlByDynamicQuery<T>(entityClass, deleteSql, query);
@@ -82,7 +82,7 @@ export class SqlTemplateProvider {
   public static getUpdateByPk<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(o);
     const keyColumn = _.find(columnInfos, s => s.isPK);
-    if (CommonHelper.isNullOrUndefined(keyColumn)) {
+    if (ObjectUtils.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
 
@@ -96,11 +96,11 @@ export class SqlTemplateProvider {
       }
 
       let propValue = o[colInfo.property];
-      if (selective && CommonHelper.isNullOrUndefined(propValue)) {
+      if (selective && ObjectUtils.isNullOrUndefined(propValue)) {
         return;
       }
 
-      propValue = SqlTemplateProvider.toDbParam(CommonHelper.isNullOrUndefined(propValue) ? null : propValue);
+      propValue = SqlTemplateProvider.toDbParam(ObjectUtils.isNullOrUndefined(propValue) ? null : propValue);
       sets.push(colInfo.columnName + " = ?");
       params.push(propValue);
     });
@@ -118,7 +118,7 @@ export class SqlTemplateProvider {
   public static getSelectByPk<T extends TableEntity>(entityClass: { new (): T }, key: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
     const keyColumn = _.find(columnInfos, s => s.isPK);
-    if (CommonHelper.isNullOrUndefined(keyColumn)) {
+    if (ObjectUtils.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
 
@@ -144,7 +144,7 @@ export class SqlTemplateProvider {
   public static getSelectCountByPk<T extends TableEntity>(entityClass: { new (): T }, pk: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
     const keyColumn = _.find(columnInfos, s => s.isPK);
-    if (CommonHelper.isNullOrUndefined(keyColumn)) {
+    if (ObjectUtils.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
 
@@ -191,13 +191,13 @@ export class SqlTemplateProvider {
   }
 
   public static getSqlByDynamicQuery<T extends Entity>(entityClass: { new (): T }, sql: string, dynamicQuery: DynamicQuery<T>): SqlTemplate {
-    const useQuery = CommonHelper.isNullOrUndefined(dynamicQuery) ? new DynamicQuery() : dynamicQuery;
+    const useQuery = ObjectUtils.isNullOrUndefined(dynamicQuery) ? new DynamicQuery() : dynamicQuery;
     let expression = sql;
     const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, useQuery.filters);
     const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, useQuery.sorts);
 
-    expression = CommonHelper.isBlank(filterSqlParam.sqlExpression) ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
-    expression = CommonHelper.isBlank(sortSqlParam.sqlExpression) ? expression : `${expression} ORDER BY ${sortSqlParam.sqlExpression}`;
+    expression = StringUtils.isBlank(filterSqlParam.sqlExpression) ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
+    expression = StringUtils.isBlank(sortSqlParam.sqlExpression) ? expression : `${expression} ORDER BY ${sortSqlParam.sqlExpression}`;
     let params: any = [];
     params = params.concat(filterSqlParam.params);
     params = params.concat(sortSqlParam.params);
@@ -209,7 +209,7 @@ export class SqlTemplateProvider {
   }
 
   public static getFilterExpression<T extends Entity>(entityClass: { new (): T }, filters: FilterDescriptorBase[]): SqlTemplate {
-    if (CommonHelper.isNullOrUndefined(filters) || filters.length === 0) {
+    if (ObjectUtils.isNullOrUndefined(filters) || filters.length === 0) {
       return new SqlTemplate();
     }
 
@@ -217,10 +217,10 @@ export class SqlTemplateProvider {
     let params: any[] = [];
     filters.forEach(filter => {
       const sqlParam = SqlTemplateProvider.getFilterExpressionByFilterBase(entityClass, filter);
-      if (sqlParam != null && CommonHelper.isNotBlank(sqlParam.sqlExpression)) {
+      if (sqlParam != null && StringUtils.isNotBlank(sqlParam.sqlExpression)) {
         params = params.concat(sqlParam.params);
 
-        expression = CommonHelper.isBlank(expression)
+        expression = StringUtils.isBlank(expression)
           ? sqlParam.sqlExpression
           : `${expression} ${FilterCondition[filter.condition]} ${sqlParam.sqlExpression}`;
       }
@@ -233,7 +233,7 @@ export class SqlTemplateProvider {
   }
 
   public static getSortExpression<T extends Entity>(entityClass: { new (): T }, sorts: SortDescriptorBase[]): SqlTemplate {
-    if (CommonHelper.isNullOrUndefined(sorts) || sorts.length === 0) {
+    if (ObjectUtils.isNullOrUndefined(sorts) || sorts.length === 0) {
       return new SqlTemplate();
     }
 
@@ -241,10 +241,10 @@ export class SqlTemplateProvider {
     let params: any[] = [];
     sorts.forEach(sort => {
       const sqlParam = SqlTemplateProvider.getSortExpressionBySortBase(entityClass, sort);
-      if (sqlParam != null && CommonHelper.isNotBlank(sqlParam.sqlExpression)) {
+      if (sqlParam != null && StringUtils.isNotBlank(sqlParam.sqlExpression)) {
         params = params.concat(sqlParam.params);
 
-        expression = CommonHelper.isBlank(expression) ? sqlParam.sqlExpression : `${expression}, ${sqlParam.sqlExpression}`;
+        expression = StringUtils.isBlank(expression) ? sqlParam.sqlExpression : `${expression}, ${sqlParam.sqlExpression}`;
       }
     });
 
@@ -256,7 +256,7 @@ export class SqlTemplateProvider {
 
   public static getColumnsExpression<T extends Entity>(entityClass: { new (): T }): string {
     const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
-    if (CommonHelper.isNullOrUndefined(targetConstructor)) {
+    if (ObjectUtils.isNullOrUndefined(targetConstructor)) {
       throw new Error("cannot find entity, please set @column to entity!");
     }
 
@@ -266,7 +266,7 @@ export class SqlTemplateProvider {
 
   public static getColumnInfos<T extends Entity>(o: T | { new (): T }): ColumnInfo[] {
     const targetConstructor = EntityHelper.getTargetConstrutor(o);
-    if (CommonHelper.isNullOrUndefined(targetConstructor)) {
+    if (ObjectUtils.isNullOrUndefined(targetConstructor)) {
       throw new Error("cannot find entity, please set @column to entity!");
     }
 
@@ -301,7 +301,7 @@ export class SqlTemplateProvider {
     filter: CustomFilterDescriptor,
   ): SqlTemplate {
     const sqlParam = new SqlTemplate();
-    let expression = CommonHelper.isBlank(filter.expression) ? "" : filter.expression;
+    let expression = StringUtils.isBlank(filter.expression) ? "" : filter.expression;
     for (let i = 0; i < filter.params.length; i++) {
       expression = expression.replace(`{${i}}`, "?");
     }
@@ -336,7 +336,7 @@ export class SqlTemplateProvider {
 
   public static getSortExpressionByCustomSortDescriptor<T extends Entity>(entityClass: { new (): T }, sort: CustomSortDescriptor): SqlTemplate {
     const sqlParam = new SqlTemplate();
-    let expression = CommonHelper.isBlank(sort.expression) ? "" : sort.expression;
+    let expression = StringUtils.isBlank(sort.expression) ? "" : sort.expression;
     for (let i = 0; i < sort.params.length; i++) {
       expression = expression.replace(`{${i}}`, "?");
     }
@@ -354,7 +354,7 @@ export class SqlTemplateProvider {
   public static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {
     const dynamicQuery = new DynamicQuery<T>();
     for (const prop in example) {
-      if (example.hasOwnProperty(prop) && !CommonHelper.isNullOrUndefined(example[prop])) {
+      if (example.hasOwnProperty(prop) && !ObjectUtils.isNullOrUndefined(example[prop])) {
         const filter = new FilterDescriptor();
         filter.propertyPath = prop;
         filter.value = example[prop] as any;

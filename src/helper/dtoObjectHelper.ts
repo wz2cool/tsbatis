@@ -1,9 +1,9 @@
 import { DtoObject } from "../model/dtoObject";
-import { CommonHelper } from "./commonHelper";
+import { ObjectUtils } from "ts-commons";
 
 export class DtoObjectHelper {
     public static getDtoObjectName<T extends DtoObject>(o: T | { new(): T }): string {
-        if (CommonHelper.isNullOrUndefined(o)) {
+        if (ObjectUtils.isNullOrUndefined(o)) {
             return "";
         }
 

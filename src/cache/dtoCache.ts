@@ -1,6 +1,6 @@
 import * as _ from "lodash";
-import { CommonHelper } from "../helper/commonHelper";
 import { DtoFieldInfo } from "../model/dtoFieldInfo";
+import { ObjectUtils } from "ts-commons";
 
 export class DtoCache {
     public static getInstance() {
@@ -15,7 +15,7 @@ export class DtoCache {
 
     public cacheFieldInfo(dtoFieldInfo: DtoFieldInfo): void {
         let propFieldMap = this.fieldCache[dtoFieldInfo.dtoObjectName];
-        if (CommonHelper.isNullOrUndefined(propFieldMap)) {
+        if (ObjectUtils.isNullOrUndefined(propFieldMap)) {
             propFieldMap = {};
             propFieldMap[dtoFieldInfo.property] = dtoFieldInfo;
             this.fieldCache[dtoFieldInfo.dtoObjectName] = propFieldMap;
@@ -26,7 +26,7 @@ export class DtoCache {
 
     public getFieldInfos(dtoObjectName: string): DtoFieldInfo[] {
         const propFieldMap = this.fieldCache[dtoObjectName];
-        if (CommonHelper.isNullOrUndefined(propFieldMap)) {
+        if (ObjectUtils.isNullOrUndefined(propFieldMap)) {
             return [];
         }
         return _.values(propFieldMap);

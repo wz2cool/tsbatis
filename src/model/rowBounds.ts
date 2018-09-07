@@ -1,4 +1,4 @@
-import { CommonHelper } from "../helper";
+import { ObjectUtils } from "ts-commons";
 
 export class RowBounds {
     public static readonly NO_ROW_OFFSET: number = 0;
@@ -8,7 +8,7 @@ export class RowBounds {
     public limit: number;
 
     constructor(offset?: number, limit?: number) {
-        this.offset = CommonHelper.isNullOrUndefined(offset) ? RowBounds.NO_ROW_OFFSET : offset;
-        this.limit = CommonHelper.isNullOrUndefined(limit) ? RowBounds.NO_ROW_LIMIT : limit;
+        this.offset = ObjectUtils.isNullOrUndefined(offset) ? RowBounds.NO_ROW_OFFSET : offset;
+        this.limit = ObjectUtils.isNullOrUndefined(limit) ? RowBounds.NO_ROW_LIMIT : limit;
     }
 }

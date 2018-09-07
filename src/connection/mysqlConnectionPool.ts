@@ -1,8 +1,8 @@
-import { CommonHelper } from "../helper";
 import { MysqlConnectionConfig } from "../model";
 import { IConnection } from "./iConnection";
 import { IConnectionPool } from "./iConnectionPool";
 import { MysqlConnection } from "./mysqlConnection";
+import { ObjectUtils } from "ts-commons";
 
 export class MysqlConnectionPool implements IConnectionPool {
   private readonly pool: any;
@@ -23,7 +23,7 @@ export class MysqlConnectionPool implements IConnectionPool {
   public getConnection(): Promise<IConnection> {
     return new Promise<IConnection>((resolve, reject) => {
       this.pool.getConnection((err, sqlConn) => {
-        if (CommonHelper.isNullOrUndefined(err)) {
+        if (ObjectUtils.isNullOrUndefined(err)) {
           const result = new MysqlConnection(sqlConn, this.enableLog);
           resolve(result);
         } else {

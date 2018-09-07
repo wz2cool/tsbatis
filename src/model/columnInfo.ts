@@ -1,4 +1,4 @@
-import { CommonHelper } from "../helper";
+import { StringUtils } from "ts-commons";
 
 export class ColumnInfo {
   public isPK: boolean;
@@ -12,6 +12,6 @@ export class ColumnInfo {
   public targetConstructor: Function;
 
   public getQueryColumn() {
-    return CommonHelper.isBlank(this.table) ? this.columnName : this.table + "." + this.columnName;
+    return StringUtils.isBlank(this.table) ? this.columnName : this.table + "." + this.columnName;
   }
 }

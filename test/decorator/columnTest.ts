@@ -1,9 +1,10 @@
 import { expect } from "chai";
 import { EntityCache } from "../../src/cache";
 import { column } from "../../src/decorator";
-import { CommonHelper, EntityHelper } from "../../src/helper";
+import { EntityHelper } from "../../src/helper";
 import { ColumnInfo } from "../../src/model";
 import { Product } from "../db/entity/product";
+import { StringUtils } from "ts-commons";
 
 describe(".column", () => {
   describe("#tableColumn", () => {
@@ -14,7 +15,7 @@ describe(".column", () => {
       expect("Id").to.be.eq(result.columnName);
       expect(true).to.be.eq(result.isPK);
       expect(true).to.be.eq(result.autoIncrease);
-      expect(true).to.be.eq(CommonHelper.isBlank(result.table));
+      expect(true).to.be.eq(StringUtils.isBlank(result.table));
     });
   });
 

@@ -1,6 +1,6 @@
 import * as _ from "lodash";
-import { CommonHelper } from "../helper";
 import { ColumnInfo } from "../model/columnInfo";
+import { ObjectUtils } from "ts-commons";
 
 export class EntityCache {
   public static getInstance() {
@@ -15,7 +15,7 @@ export class EntityCache {
 
   public cacheColumnInfo(columnInfo: ColumnInfo): void {
     let propColMap = this.columnCache.get(columnInfo.targetConstructor);
-    if (CommonHelper.isNullOrUndefined(propColMap)) {
+    if (ObjectUtils.isNullOrUndefined(propColMap)) {
       propColMap = {};
       propColMap[columnInfo.property] = columnInfo;
       this.columnCache.set(columnInfo.targetConstructor, propColMap);
@@ -26,12 +26,12 @@ export class EntityCache {
 
   public getColumnInfo(targetConstructor: Function, property: string): ColumnInfo {
     const propColMap = this.columnCache.get(targetConstructor);
-    if (CommonHelper.isNullOrUndefined(propColMap)) {
+    if (ObjectUtils.isNullOrUndefined(propColMap)) {
       return null;
     }
 
     const columnInfo = propColMap[property];
-    if (CommonHelper.isNullOrUndefined(columnInfo)) {
+    if (ObjectUtils.isNullOrUndefined(columnInfo)) {
       return null;
     }
 
@@ -40,7 +40,7 @@ export class EntityCache {
 
   public getColumnInfos(targetConstructor: Function): ColumnInfo[] {
     const propColMap = this.columnCache.get(targetConstructor);
-    if (CommonHelper.isNullOrUndefined(propColMap)) {
+    if (ObjectUtils.isNullOrUndefined(propColMap)) {
       return [];
     }
     return _.values(propColMap);
@@ -48,7 +48,7 @@ export class EntityCache {
 
   public getProperties(targetConstructor: Function): string[] {
     const columnInfos = this.getColumnInfos(targetConstructor);
-    if (CommonHelper.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
+    if (ObjectUtils.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
       return [];
     }
     return _.map(columnInfos, c => c.property);

@@ -20,7 +20,7 @@ import {
 
 import { ConnectionFactory, IConnection } from "./connection";
 import { column, dtoField } from "./decorator";
-import { CommonHelper, EntityHelper } from "./helper";
+import { EntityHelper } from "./helper";
 import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import { MappingProvider, SqlTemplateProvider } from "./provider";
 
@@ -46,7 +46,6 @@ export {
   IConnection,
   ConnectionFactory,
   column,
-  CommonHelper,
   EntityHelper,
   BaseMapper,
   BaseMybatisMapper,

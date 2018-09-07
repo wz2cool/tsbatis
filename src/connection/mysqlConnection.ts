@@ -1,8 +1,8 @@
 import * as _ from "lodash";
-import { CommonHelper } from "../helper";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { MappingProvider } from "../provider";
 import { IConnection } from "./iConnection";
+import { ObjectUtils } from "ts-commons";
 
 export class MysqlConnection implements IConnection {
     private readonly connection: any;
@@ -26,7 +26,7 @@ export class MysqlConnection implements IConnection {
         this.log(`run:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<any>((resolve, reject) => {
             this.connection.query(sql, params, (err, result) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
+                if (ObjectUtils.isNullOrUndefined(err)) {
                     resolve(result);
                 } else {
                     reject(err);
@@ -39,7 +39,7 @@ export class MysqlConnection implements IConnection {
         this.log(`select:\r\nsql: ${sql}\r\nparams: ${params}`);
         return new Promise<any[]>((resolve, reject) => {
             this.connection.query(sql, params, (err, result) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
+                if (ObjectUtils.isNullOrUndefined(err)) {
                     resolve(result);
                 } else {
                     reject(err);
@@ -53,7 +53,7 @@ export class MysqlConnection implements IConnection {
             console.log("select count start");
             this.connection.query(sql, params, (err, result) => {
                 try {
-                    if (CommonHelper.isNullOrUndefined(err)) {
+                    if (ObjectUtils.isNullOrUndefined(err)) {
                         const count = _.values(result[0])[0] as number;
                         resolve(count);
                     } else {
@@ -72,7 +72,7 @@ export class MysqlConnection implements IConnection {
         return new Promise<T[]>((resolve, reject) => {
             this.connection.query(sql, params, (err, result) => {
                 try {
-                    if (CommonHelper.isNullOrUndefined(err)) {
+                    if (ObjectUtils.isNullOrUndefined(err)) {
                         const entities = MappingProvider.toEntities<T>(entityClass, result, true);
                         resolve(entities);
                     } else {
@@ -89,7 +89,7 @@ export class MysqlConnection implements IConnection {
         this.log("beginTransaction...");
         return new Promise<void>((resolve, reject) => {
             this.connection.beginTransaction((err) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
+                if (ObjectUtils.isNullOrUndefined(err)) {
                     resolve();
                 } else {
                     reject(err);
@@ -111,7 +111,7 @@ export class MysqlConnection implements IConnection {
         this.log("commit...");
         return new Promise<void>((resolve, reject) => {
             this.connection.commit((err) => {
-                if (CommonHelper.isNullOrUndefined(err)) {
+                if (ObjectUtils.isNullOrUndefined(err)) {
                     resolve();
                 } else {
                     reject(err);
@@ -133,7 +133,7 @@ export class MysqlConnection implements IConnection {
     }
 
     private log(log: string): void {
-        if (!CommonHelper.isNullOrUndefined(this.enableLog)
+        if (!ObjectUtils.isNullOrUndefined(this.enableLog)
             && this.enableLog) {
             console.log(`[TSBATIS] ${log}`);
         }
