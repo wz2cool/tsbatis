@@ -1,27 +1,22 @@
+import { QueryCacheInternal } from "./queryCacheInternal";
 import { DynamicQuery } from "ts-dynamic-query";
-import { ArrayUtils } from "ts-commons";
 
 export class QueryCache {
-  private static instance = new QueryCache();
-  private queryCache: DynamicQuery<any>[];
-  public static getInstance() {
-    return this.instance;
+  private static readonly queryCache = QueryCacheInternal.getInstance();
+  private constructor() {}
+  public static addQuery(query: DynamicQuery<any>): void {
+    return this.queryCache.addQuery(query, null);
   }
 
-  private constructor() {
-    this.queryCache = [];
-    // hide constructor.
+  public static removeQuery(query: DynamicQuery<any>): boolean {
+    return this.queryCache.removeQuery(query);
   }
 
-  public cacheQuery(query: DynamicQuery<any>): void {
-    this.queryCache.push(query);
+  public static clearQuerys(): void {
+    return this.queryCache.clearQuerys();
   }
 
-  public clearCache(): void {
-    this.queryCache = [];
-  }
-
-  public removeQuery(query: DynamicQuery<any>): boolean {
-    return ArrayUtils.remove(this.queryCache, query);
+  public static getAllQuerys(): IterableIterator<DynamicQuery<any>> {
+    return this.queryCache.getAllQuerys();
   }
 }

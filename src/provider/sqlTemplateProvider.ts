@@ -13,8 +13,11 @@ import {
   SortDescriptorBase,
   SortDirection,
 } from "ts-dynamic-query";
+import { QueryCacheInternal } from "../cache/queryCacheInternal";
 
 export class SqlTemplateProvider {
+  private static readonly queryCache: QueryCacheInternal = QueryCacheInternal.getInstance();
+
   public static getPkColumn<T extends TableEntity>(o: T): ColumnInfo {
     const columnInfos = SqlTemplateProvider.getColumnInfos(o);
     return _.find(columnInfos, s => s.isPK);
@@ -191,11 +194,25 @@ export class SqlTemplateProvider {
   }
 
   public static getSqlByDynamicQuery<T extends Entity>(entityClass: { new (): T }, sql: string, dynamicQuery: DynamicQuery<T>): SqlTemplate {
-    const useQuery = ObjectUtils.isNullOrUndefined(dynamicQuery) ? new DynamicQuery() : dynamicQuery;
-    let expression = sql;
-    const filterSqlParam = SqlTemplateProvider.getFilterExpression<T>(entityClass, useQuery.filters);
-    const sortSqlParam = SqlTemplateProvider.getSortExpression<T>(entityClass, useQuery.sorts);
+    const filterSortExpression = this.getFilterSortExpression(entityClass, dynamicQuery);
+    const expression = `${sql} ${filterSortExpression.sqlExpression}`;
+    const result = new SqlTemplate();
+    result.sqlExpression = expression;
+    result.params = filterSortExpression.params;
+    return result;
+  }
 
+  // store with cache
+  public static getFilterSortExpression<T extends Entity>(entityClass: { new (): T }, dynamicQuery: DynamicQuery<T>): SqlTemplate {
+    const cacheSqlTemplate = this.queryCache.getCache(dynamicQuery);
+    if (!ObjectUtils.isNullOrUndefined(cacheSqlTemplate)) {
+      return cacheSqlTemplate;
+    }
+
+    let expression = "";
+    const useQuery = ObjectUtils.isNullOrUndefined(dynamicQuery) ? new DynamicQuery() : dynamicQuery;
+    const filterSqlParam = this.getFilterExpression<T>(entityClass, useQuery.filters);
+    const sortSqlParam = this.getSortExpression<T>(entityClass, useQuery.sorts);
     expression = StringUtils.isBlank(filterSqlParam.sqlExpression) ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
     expression = StringUtils.isBlank(sortSqlParam.sqlExpression) ? expression : `${expression} ORDER BY ${sortSqlParam.sqlExpression}`;
     let params: any = [];
@@ -205,6 +222,10 @@ export class SqlTemplateProvider {
     const result = new SqlTemplate();
     result.sqlExpression = expression;
     result.params = params;
+
+    if (this.queryCache.containsQuery(dynamicQuery)) {
+      this.queryCache.addQuery(dynamicQuery, result);
+    }
     return result;
   }
 

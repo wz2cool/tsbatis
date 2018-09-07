@@ -23,6 +23,7 @@ import { column, dtoField } from "./decorator";
 import { EntityHelper } from "./helper";
 import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import { MappingProvider, SqlTemplateProvider } from "./provider";
+import { QueryCache } from "./cache/queryCache";
 
 export {
   AssociationRelation,
@@ -52,4 +53,5 @@ export {
   BaseTableMapper,
   MappingProvider,
   SqlTemplateProvider,
+  QueryCache,
 };
