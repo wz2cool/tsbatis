@@ -195,7 +195,7 @@ export class SqlTemplateProvider {
 
   public static getSqlByDynamicQuery<T extends Entity>(entityClass: { new (): T }, sql: string, dynamicQuery: DynamicQuery<T>): SqlTemplate {
     const filterSortExpression = this.getFilterSortExpression(entityClass, dynamicQuery);
-    const expression = `${sql} ${filterSortExpression.sqlExpression}`;
+    const expression = `${sql}${filterSortExpression.sqlExpression}`;
     const result = new SqlTemplate();
     result.sqlExpression = expression;
     result.params = filterSortExpression.params;
