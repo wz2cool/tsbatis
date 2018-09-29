@@ -30,8 +30,8 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
-    "ts-commons": "0.0.39",
-    "ts-dynamic-query": "~1.0.27"
+    "ts-commons": "1.0.3",
+    "ts-dynamic-query": "~1.0.30"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
