@@ -41,7 +41,6 @@
     "@types/mysql": "^0.0.34",
     "@types/node": "^8.0.44",
     "@types/reflect-metadata": "^0.0.5",
-    "@types/typescript": "^2.0.0",
     "babel-loader": "^8.0.0",
     "chai": "^4.1.2",
     "copyfiles": "^1.2.0",
