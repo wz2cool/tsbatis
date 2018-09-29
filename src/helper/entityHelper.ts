@@ -36,7 +36,7 @@ export class EntityHelper {
       return null;
     }
 
-    const testObj = typeof o === "function" ? new o() : o;
+    const testObj = this.createObject(o);
     return testObj.constructor;
   }
 
