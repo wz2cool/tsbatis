@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import { DatabaseType, Entity, RowBounds } from "../model";
-import { MappingProvider } from "../provider";
 import { IConnection } from "./iConnection";
 import { ObjectUtils } from "ts-commons";
+import { plainToClass } from "class-transformer";
 
 // https://github.com/mapbox/node-sqlite3/issues/304
 // create new db if start a transaction.
@@ -74,7 +74,7 @@ export class SqliteConnection implements IConnection {
       this.db.all(sql, params, (err, result) => {
         try {
           if (ObjectUtils.isNullOrUndefined(err)) {
-            const entities = MappingProvider.toEntities<T>(entityClass, result, true);
+            const entities = plainToClass(entityClass, result);
             resolve(entities);
           } else {
             reject(err);

@@ -22,7 +22,7 @@ import { ConnectionFactory, IConnection } from "./connection";
 import { column, dtoField } from "./decorator";
 import { EntityHelper } from "./helper";
 import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
-import { MappingProvider, SqlTemplateProvider } from "./provider";
+import { SqlTemplateProvider } from "./provider";
 import { QueryCache } from "./cache/queryCache";
 
 export {
@@ -51,7 +51,6 @@ export {
   BaseMapper,
   BaseMybatisMapper,
   BaseTableMapper,
-  MappingProvider,
   SqlTemplateProvider,
   QueryCache,
 };

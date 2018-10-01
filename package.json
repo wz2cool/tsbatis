@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/wz2cool/tsbatis#readme",
   "dependencies": {
+    "class-transformer": "^0.1.9",
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
     "ts-commons": "1.0.3",
