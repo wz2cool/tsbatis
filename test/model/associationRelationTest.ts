@@ -12,9 +12,9 @@ describe(".AssociationRelation", () => {
       const query = new DynamicQuery<CustomerView>();
       query.addFilters([idFilter]);
       const result = new AssociationRelation<OrderView, CustomerView>(
-        s => s.customer,
-        s => s.customerId,
-        t => t.id,
+        "customer",
+        "customerId",
+        "id",
         CustomerView,
         // tslint:disable-next-line:max-line-length
         "SELECT id AS Id, companyName AS CompanyName, contactName AS ConstactName, contactTitle AS ContactTitle FROM customer",

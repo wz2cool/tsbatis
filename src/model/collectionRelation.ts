@@ -5,42 +5,42 @@ import { RelationBase } from "./relationBase";
 
 // one to many
 export class CollectionRelation<TSource extends Entity, TTarget extends Entity> extends RelationBase {
-  private readonly mappingPropFn: (t: TSource) => TTarget[];
-  private readonly sourcePropFn: (t: TSource) => any;
-  private readonly targetPropFn: (t: TTarget) => any;
+  private readonly mappingProp: keyof TSource;
+  private readonly sourceProp: keyof TSource;
+  private readonly targetProp: keyof TTarget;
   private readonly targetEntityClass: { new (): TTarget };
   private readonly selectSql: string;
   private readonly dynamicQuery: DynamicQuery<TTarget>;
 
   constructor(
     // one to many.
-    mappingPropFn: (source: TSource) => TTarget[],
-    sourcePropFn: (source: TSource) => any,
-    targetPropFn: (target: TTarget) => any,
+    mappingProp: keyof TSource,
+    sourceProp: keyof TSource,
+    targetProp: keyof TTarget,
     targetEntityClass: { new (): TTarget },
     selectSql: string,
     dynamicQuery: DynamicQuery<TTarget> = null,
   ) {
     super();
 
-    this.mappingPropFn = mappingPropFn;
-    this.sourcePropFn = sourcePropFn;
-    this.targetPropFn = targetPropFn;
+    this.mappingProp = mappingProp;
+    this.sourceProp = sourceProp;
+    this.targetProp = targetProp;
     this.targetEntityClass = targetEntityClass;
     this.dynamicQuery = dynamicQuery;
     this.selectSql = selectSql;
   }
 
   public getMappingProp(): string {
-    return EntityHelper.getPropertyName<TSource>(this.mappingPropFn);
+    return this.mappingProp.toString();
   }
 
   public getSourceProp(): string {
-    return EntityHelper.getPropertyName<TSource>(this.sourcePropFn);
+    return this.sourceProp.toString();
   }
 
   public getTargetProp(): string {
-    return EntityHelper.getPropertyName<TTarget>(this.targetPropFn);
+    return this.targetProp.toString();
   }
 
   public getTargetEntityClass(): new () => TTarget {
