@@ -1,4 +1,3 @@
-import { EntityHelper } from "../helper";
 import { DynamicQuery } from "ts-dynamic-query";
 import { Entity } from "./entity";
 import { RelationBase } from "./relationBase";
