@@ -41,7 +41,7 @@ export class EntityHelper {
   }
 
   public static createObject<T extends Entity>(o: T | { new (): T }): T {
-    if (typeof o === "function") {
+    if (o instanceof Function) {
       return new o();
     } else {
       const type = o.constructor as { new (): T };
