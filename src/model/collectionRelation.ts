@@ -5,8 +5,8 @@ import { RelationBase } from "./relationBase";
 // one to many
 export class CollectionRelation<TSource extends Entity, TTarget extends Entity> extends RelationBase {
   private readonly mappingProp: keyof TSource;
-  private readonly sourceProp: keyof TSource;
-  private readonly targetProp: keyof TTarget;
+  private readonly sourceKeyProp: keyof TSource;
+  private readonly targetKeyProp: keyof TTarget;
   private readonly targetEntityClass: { new (): TTarget };
   private readonly selectSql: string;
   private readonly dynamicQuery: DynamicQuery<TTarget>;
@@ -14,8 +14,8 @@ export class CollectionRelation<TSource extends Entity, TTarget extends Entity> 
   constructor(
     // one to many.
     mappingProp: keyof TSource,
-    sourceProp: keyof TSource,
-    targetProp: keyof TTarget,
+    sourceKeyProp: keyof TSource,
+    targetKeyProp: keyof TTarget,
     targetEntityClass: { new (): TTarget },
     selectSql: string,
     dynamicQuery: DynamicQuery<TTarget> = null,
@@ -23,8 +23,8 @@ export class CollectionRelation<TSource extends Entity, TTarget extends Entity> 
     super();
 
     this.mappingProp = mappingProp;
-    this.sourceProp = sourceProp;
-    this.targetProp = targetProp;
+    this.sourceKeyProp = sourceKeyProp;
+    this.targetKeyProp = targetKeyProp;
     this.targetEntityClass = targetEntityClass;
     this.dynamicQuery = dynamicQuery;
     this.selectSql = selectSql;
@@ -35,11 +35,11 @@ export class CollectionRelation<TSource extends Entity, TTarget extends Entity> 
   }
 
   public getSourceProp(): string {
-    return this.sourceProp.toString();
+    return this.sourceKeyProp.toString();
   }
 
   public getTargetProp(): string {
-    return this.targetProp.toString();
+    return this.targetKeyProp.toString();
   }
 
   public getTargetEntityClass(): new () => TTarget {
