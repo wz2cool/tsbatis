@@ -4,7 +4,6 @@ import { ColumnInfo } from "./columnInfo";
 import { CustomFilterDescriptor } from "./customFilterDescriptor";
 import { CustomSortDescriptor } from "./customSortDescriptor";
 import { DatabaseType } from "./databaseType";
-import { DtoObject } from "./dtoObject";
 import { Entity } from "./entity";
 import { IConnectionConfig } from "./iConnectionConfig";
 import { KeyValue } from "./keyValue";
@@ -22,7 +21,6 @@ export {
     CustomFilterDescriptor,
     CustomSortDescriptor,
     DatabaseType,
-    DtoObject,
     Entity,
     TableEntity,
     SqlTemplate,

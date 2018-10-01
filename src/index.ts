@@ -5,7 +5,6 @@ import {
   CustomFilterDescriptor,
   CustomSortDescriptor,
   DatabaseType,
-  DtoObject,
   Entity,
   KeyValue,
   MysqlConnectionConfig,
@@ -19,7 +18,7 @@ import {
 } from "./model";
 
 import { ConnectionFactory, IConnection } from "./connection";
-import { column, dtoField } from "./decorator";
+import { column } from "./decorator";
 import { EntityHelper } from "./helper";
 import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import { SqlTemplateProvider } from "./provider";
@@ -32,8 +31,6 @@ export {
   CustomFilterDescriptor,
   CustomSortDescriptor,
   DatabaseType,
-  DtoObject,
-  dtoField,
   Entity,
   KeyValue,
   Page,
