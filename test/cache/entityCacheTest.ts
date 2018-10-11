@@ -61,6 +61,11 @@ describe(".EntityCache", () => {
       const result = cache.getColumnInfo(targetConstrutor, "notfoundProp");
       expect(null).to.be.eq(result);
     });
+
+    it("should return null, if targetConstructor not found", () => {
+      const result = cache.getColumnInfo(null, "name");
+      expect(null).to.be.eq(result);
+    });
   });
 
   describe("#getColumnInfos", () => {

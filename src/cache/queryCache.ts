@@ -3,7 +3,6 @@ import { DynamicQuery } from "ts-dynamic-query";
 
 export class QueryCache {
   private static readonly queryCache = QueryCacheInternal.getInstance();
-  private constructor() {}
   public static addQuery(query: DynamicQuery<any>): void {
     return this.queryCache.addQuery(query, null);
   }
@@ -14,9 +13,5 @@ export class QueryCache {
 
   public static clearQuerys(): void {
     return this.queryCache.clearQuerys();
-  }
-
-  public static getAllQuerys(): DynamicQuery<any>[] {
-    return this.queryCache.getAllQuerys();
   }
 }
