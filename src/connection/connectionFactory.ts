@@ -6,7 +6,6 @@ import { SqliteConnectionPool } from "./sqliteConnectionPool";
 
 export class ConnectionFactory {
     private readonly pool: IConnectionPool;
-    private readonly enableLog: boolean;
     constructor(config: IConnectionConfig, enableLog: boolean = false) {
         if (config instanceof MysqlConnectionConfig) {
             this.pool = new MysqlConnectionPool(config, enableLog);
