@@ -265,6 +265,38 @@ describe(".SqlTemplateProvider", () => {
     });
   });
 
+  describe("#getColumnsExpressionWithoutProperties", () => {
+    it("shoud getColumnsExpressionWithoutProperties sql template", () => {
+      const result = SqlTemplateProvider.getColumnsExpressionWithoutProperties<Customer>(Customer, ["companyName", "city"]);
+      // tslint:disable-next-line:max-line-length
+      const expectValue = `Id AS id, ContactName AS contactName, ContactTitle AS contactTitle, Address AS address, Region AS region, PostalCode AS postalCode, Country AS country, Phone AS phone, Fax AS fax`;
+      expect(expectValue).to.be.eq(result);
+    });
+
+    it("should has error if entity is null", () => {
+      const test = () => {
+        SqlTemplateProvider.getColumnsExpressionWithoutProperties<Customer>(null, ["companyName", "city"]);
+      };
+      expect(test).to.throw(Error);
+    });
+  });
+
+  describe("#getColumnsExpressionWithProperties", () => {
+    it("shoud getColumnsExpressionWithProperties sql template", () => {
+      const result = SqlTemplateProvider.getColumnsExpressionWithProperties<Customer>(Customer, ["companyName", "city"]);
+      // tslint:disable-next-line:max-line-length
+      const expectValue = `CompanyName AS companyName, City AS city`;
+      expect(expectValue).to.be.eq(result);
+    });
+
+    it("should has error if entity is null", () => {
+      const test = () => {
+        SqlTemplateProvider.getColumnsExpressionWithProperties<Customer>(null, ["companyName", "city"]);
+      };
+      expect(test).to.throw(Error);
+    });
+  });
+
   describe("#getColumnInfos", () => {
     it("should get columnInfos", () => {
       const columnInfos = SqlTemplateProvider.getColumnInfos<Customer>(Customer);
