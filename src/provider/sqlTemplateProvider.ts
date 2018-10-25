@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 import { EntityCache } from "../cache";
-import { ObjectUtils, StringUtils } from "ts-commons";
+import { ObjectUtils, StringUtils, ArrayUtils } from "ts-commons";
 import { EntityHelper, FilterHelper } from "../helper";
 import { ColumnInfo, CustomFilterDescriptor, CustomSortDescriptor, Entity, SqlTemplate, TableEntity } from "../model";
 import {
@@ -273,6 +273,44 @@ export class SqlTemplateProvider {
     result.sqlExpression = expression;
     result.params = result.params.concat(params);
     return result;
+  }
+
+  public static getColumnsExpressionWithProperties<T extends Entity>(entityClass: { new (): T }, props: (keyof T)[]): string {
+    const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
+    if (ObjectUtils.isNullOrUndefined(targetConstructor)) {
+      throw new Error("cannot find entity, please set @column to entity!");
+    }
+
+    const allColumnInfos = EntityCache.getInstance().getColumnInfos(targetConstructor);
+    let columnInfos: ColumnInfo[];
+    if (ArrayUtils.isEmpty(props)) {
+      columnInfos = allColumnInfos;
+    } else {
+      const propStrs: string[] = props.map(x => x.toString());
+      columnInfos = _.filter(allColumnInfos, colInfo => {
+        return _.includes(propStrs, colInfo.property);
+      });
+    }
+    return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
+  }
+
+  public static getColumnsExpressionWithoutProperties<T extends Entity>(entityClass: { new (): T }, props: (keyof T)[]): string {
+    const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
+    if (ObjectUtils.isNullOrUndefined(targetConstructor)) {
+      throw new Error("cannot find entity, please set @column to entity!");
+    }
+
+    const allColumnInfos = EntityCache.getInstance().getColumnInfos(targetConstructor);
+    let columnInfos: ColumnInfo[];
+    if (ArrayUtils.isEmpty(props)) {
+      columnInfos = allColumnInfos;
+    } else {
+      const propStrs: string[] = props.map(x => x.toString());
+      columnInfos = _.filter(allColumnInfos, colInfo => {
+        return !_.includes(propStrs, colInfo.property);
+      });
+    }
+    return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
   }
 
   public static getColumnsExpression<T extends Entity>(entityClass: { new (): T }): string {
