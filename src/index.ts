@@ -24,6 +24,8 @@ import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import { SqlTemplateProvider } from "./provider";
 import { QueryCache } from "./cache/queryCache";
 
+export * from "ts-dynamic-query";
+
 export {
   AssociationRelation,
   CollectionRelation,
