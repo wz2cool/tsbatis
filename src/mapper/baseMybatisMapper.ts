@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { IConnection } from "../connection";
 import { Entity, KeyValue, Page, PageRowBounds, RelationBase, RowBounds, SqlTemplate } from "../model";
 import { BaseMapper } from "./baseMapper";
@@ -63,7 +62,7 @@ export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> 
 
     const sqlTemplate = new SqlTemplate();
     sqlTemplate.sqlExpression = expression;
-    sqlTemplate.params = _.sortBy(indexParams, x => x.getKey()).map(x => x.getValue());
+    sqlTemplate.params = indexParams.sort(x => x.getKey()).map(x => x.getValue());
     return sqlTemplate;
   }
 }

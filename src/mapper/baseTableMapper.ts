@@ -7,7 +7,6 @@ import { DatabaseType, RelationBase, TableEntity } from "../model";
 import { DynamicQuery } from "ts-dynamic-query";
 import { SqlTemplateProvider } from "../provider";
 import { BaseMybatisMapper } from "./baseMybatisMapper";
-import * as _ from "lodash";
 
 export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatisMapper<T> {
   constructor(sqlConnection: IConnection) {
@@ -28,14 +27,14 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
 
   public updateByPrimaryKeySelective(o: Partial<T>): Promise<number> {
     const obj = EntityHelper.createObject(this.getEntityClass());
-    const newExample = _.assign(obj, o);
+    const newExample = Object.assign(obj, o);
     return this.updateByPrimaryKeyInternal(newExample, true);
   }
 
   public selectByExample(example: Partial<T>, relations: RelationBase[] = []): Promise<T[]> {
     try {
       const obj = EntityHelper.createObject(this.getEntityClass());
-      const newExample = _.assign(obj, example);
+      const newExample = Object.assign(obj, example);
       const sqlParam = SqlTemplateProvider.getSelect<T>(newExample);
       return super.selectEntities(sqlParam.sqlExpression, sqlParam.params, relations);
     } catch (e) {
@@ -46,7 +45,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
   public selectRowBoundsByExample(example: Partial<T>, rowBounds: RowBounds, relations: RelationBase[] = []): Promise<T[]> {
     try {
       const obj = EntityHelper.createObject(this.getEntityClass());
-      const newExample = _.assign(obj, example);
+      const newExample = Object.assign(obj, example);
       const sqlParam = SqlTemplateProvider.getSelect<T>(newExample);
       return super.selectEntitiesRowBounds(sqlParam.sqlExpression, sqlParam.params, rowBounds, relations);
     } catch (e) {
@@ -57,7 +56,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
   public selectPageRowBoundsByExample(example: Partial<T>, pageRowBounds: PageRowBounds, relations: RelationBase[] = []): Promise<Page<T>> {
     try {
       const obj = EntityHelper.createObject(this.getEntityClass());
-      const newExample = _.assign(obj, example);
+      const newExample = Object.assign(obj, example);
       const sqlParam = SqlTemplateProvider.getSelect<T>(newExample);
       return super.selectEntitiesPageRowBounds(sqlParam.sqlExpression, sqlParam.params, pageRowBounds, relations);
     } catch (e) {
@@ -110,7 +109,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
   public selectCountByExample(example: Partial<T>): Promise<number> {
     try {
       const obj = EntityHelper.createObject(this.getEntityClass());
-      const newExample = _.assign(obj, example);
+      const newExample = Object.assign(obj, example);
       const sqlParam = SqlTemplateProvider.getSelectCount<T>(newExample);
       return super.selectCount(sqlParam.sqlExpression, sqlParam.params);
     } catch (e) {
@@ -131,7 +130,7 @@ export abstract class BaseTableMapper<T extends TableEntity> extends BaseMybatis
   public deleteByExample(example: Partial<T>): Promise<number> {
     try {
       const obj = EntityHelper.createObject(this.getEntityClass());
-      const newExample = _.assign(obj, example);
+      const newExample = Object.assign(obj, example);
       const sqlParam = SqlTemplateProvider.getDelete<T>(newExample);
       return this.deleteInternal(sqlParam.sqlExpression, sqlParam.params);
     } catch (e) {

@@ -1,6 +1,6 @@
 {
   "name": "tsbatis",
-  "version": "0.2.34",
+  "version": "0.2.35",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,15 +29,13 @@
   "homepage": "https://github.com/wz2cool/tsbatis#readme",
   "dependencies": {
     "class-transformer": "^0.1.9",
-    "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
-    "ts-commons": "1.0.3",
-    "ts-dynamic-query": "~1.0.30"
+    "ts-commons": "1.0.9",
+    "ts-dynamic-query": "~1.0.34"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@types/chai": "^4.0.5",
-    "@types/lodash": "^4.14.77",
     "@types/mocha": "^2.2.43",
     "@types/mysql": "^0.0.34",
     "@types/node": "^8.0.44",

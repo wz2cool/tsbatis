@@ -1,9 +1,8 @@
-import * as _ from "lodash";
 import "reflect-metadata";
 import { EntityCache } from "../cache/entityCache";
 import { ColumnInfo } from "../model/columnInfo";
 import { ColumnOption } from "../model/columnOption";
-import { ObjectUtils } from "ts-commons";
+import { ObjectUtils, StringUtils } from "ts-commons";
 
 export function column(option?: ColumnOption) {
   const cache = EntityCache.getInstance();
@@ -39,7 +38,7 @@ export function column(option?: ColumnOption) {
     columnInfo.table = table;
     columnInfo.property = propertyKey;
     columnInfo.propertyType = propertyType.name;
-    columnInfo.underscoreProperty = _.snakeCase(propertyKey);
+    columnInfo.underscoreProperty = StringUtils.snakeCase(propertyKey);
     columnInfo.targetConstructor = target.constructor;
     cache.cacheColumnInfo(columnInfo);
   };

@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { DatabaseType, Entity, RowBounds } from "../model";
 import { IConnection } from "./iConnection";
 import { ObjectUtils } from "ts-commons";
@@ -56,7 +55,7 @@ export class SqliteConnection implements IConnection {
       this.db.all(sql, params, (err, result) => {
         try {
           if (ObjectUtils.isNullOrUndefined(err)) {
-            const count = _.values(result[0])[0] as number;
+            const count = ObjectUtils.values(result[0])[0] as number;
             resolve(count);
           } else {
             reject(err);

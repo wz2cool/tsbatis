@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { ColumnInfo, SqlTemplate } from "../model";
 import { FilterOperator } from "ts-dynamic-query";
 import { ObjectUtils } from "ts-commons";
@@ -135,7 +134,7 @@ export class FilterHelper {
   private static getInExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
     const sqlParam = new SqlTemplate();
     if (filterValues.length > 0) {
-      const placeholderStr = _.map(filterValues, f => "?").join(", ");
+      const placeholderStr = filterValues.map(f => "?").join(", ");
       sqlParam.sqlExpression = columnInfo.getQueryColumn() + ` IN (${placeholderStr})`;
       sqlParam.params = sqlParam.params.concat(filterValues);
     }
@@ -145,7 +144,7 @@ export class FilterHelper {
   private static getNotInExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
     const sqlParam = new SqlTemplate();
     if (filterValues.length > 0) {
-      const placeholderStr = _.map(filterValues, f => "?").join(", ");
+      const placeholderStr = filterValues.map(f => "?").join(", ");
       sqlParam.sqlExpression = columnInfo.getQueryColumn() + ` NOT IN (${placeholderStr})`;
       sqlParam.params = sqlParam.params.concat(filterValues);
     }

@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { EntityCache } from "../cache";
 import { ObjectUtils, StringUtils, ArrayUtils } from "ts-commons";
 import { EntityHelper, FilterHelper } from "../helper";
@@ -20,7 +19,7 @@ export class SqlTemplateProvider {
 
   public static getPkColumn<T extends TableEntity>(o: T): ColumnInfo {
     const columnInfos = SqlTemplateProvider.getColumnInfos(o);
-    return _.find(columnInfos, s => s.isPK);
+    return columnInfos.find(s => s.isPK);
   }
 
   public static getInsert<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
@@ -56,7 +55,7 @@ export class SqlTemplateProvider {
 
   public static getDeleteByPk<T extends TableEntity>(entityClass: { new (): T }, key: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-    const keyColumn = _.find(columnInfos, s => s.isPK);
+    const keyColumn = columnInfos.find(s => s.isPK);
     if (ObjectUtils.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
@@ -84,7 +83,7 @@ export class SqlTemplateProvider {
 
   public static getUpdateByPk<T extends TableEntity>(o: T, selective: boolean): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(o);
-    const keyColumn = _.find(columnInfos, s => s.isPK);
+    const keyColumn = columnInfos.find(s => s.isPK);
     if (ObjectUtils.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
@@ -120,7 +119,7 @@ export class SqlTemplateProvider {
 
   public static getSelectByPk<T extends TableEntity>(entityClass: { new (): T }, key: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-    const keyColumn = _.find(columnInfos, s => s.isPK);
+    const keyColumn = columnInfos.find(s => s.isPK);
     if (ObjectUtils.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
@@ -146,7 +145,7 @@ export class SqlTemplateProvider {
 
   public static getSelectCountByPk<T extends TableEntity>(entityClass: { new (): T }, pk: any): SqlTemplate {
     const columnInfos = SqlTemplateProvider.getColumnInfos(entityClass);
-    const keyColumn = _.find(columnInfos, s => s.isPK);
+    const keyColumn = columnInfos.find(s => s.isPK);
     if (ObjectUtils.isNullOrUndefined(keyColumn)) {
       throw new Error("cannot find key, please set iskey property in @column.");
     }
@@ -287,8 +286,8 @@ export class SqlTemplateProvider {
       columnInfos = allColumnInfos;
     } else {
       const propStrs: string[] = props.map(x => x.toString());
-      columnInfos = _.filter(allColumnInfos, colInfo => {
-        return _.includes(propStrs, colInfo.property);
+      columnInfos = allColumnInfos.filter(colInfo => {
+        return propStrs.indexOf(colInfo.property) >= 0;
       });
     }
     return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
@@ -306,8 +305,8 @@ export class SqlTemplateProvider {
       columnInfos = allColumnInfos;
     } else {
       const propStrs: string[] = props.map(x => x.toString());
-      columnInfos = _.filter(allColumnInfos, colInfo => {
-        return !_.includes(propStrs, colInfo.property);
+      columnInfos = allColumnInfos.filter(colInfo => {
+        return propStrs.indexOf(colInfo.property) < 0;
       });
     }
     return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
@@ -407,7 +406,7 @@ export class SqlTemplateProvider {
   //#endregion
 
   public static getColumnsAsUnderscoreProps(columnInfos: ColumnInfo[]): string {
-    return _.map(columnInfos, s => s.getQueryColumn() + " AS " + s.property).join(", ");
+    return columnInfos.map(s => s.getQueryColumn() + " AS " + s.property).join(", ");
   }
 
   public static generateDynamicQueryByExample<T>(example: T): DynamicQuery<T> {

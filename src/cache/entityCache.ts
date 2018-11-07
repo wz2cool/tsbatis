@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { ColumnInfo } from "../model/columnInfo";
 import { ObjectUtils } from "ts-commons";
 
@@ -43,7 +42,7 @@ export class EntityCache {
     if (ObjectUtils.isNullOrUndefined(propColMap)) {
       return [];
     }
-    return _.values(propColMap);
+    return ObjectUtils.values(propColMap);
   }
 
   public getProperties(targetConstructor: Function): string[] {
@@ -51,6 +50,6 @@ export class EntityCache {
     if (ObjectUtils.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {
       return [];
     }
-    return _.map(columnInfos, c => c.property);
+    return columnInfos.map(c => c.property);
   }
 }

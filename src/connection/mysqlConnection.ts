@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
 import { IConnection } from "./iConnection";
 import { ObjectUtils } from "ts-commons";
@@ -54,7 +53,7 @@ export class MysqlConnection implements IConnection {
       this.connection.query(sql, params, (err, result) => {
         try {
           if (ObjectUtils.isNullOrUndefined(err)) {
-            const count = _.values(result[0])[0] as number;
+            const count = ObjectUtils.values(result[0])[0] as number;
             resolve(count);
           } else {
             reject(err);

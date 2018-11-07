@@ -18,10 +18,6 @@ const config = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
   },
-  externals: {
-    lodash: "_",
-    "ts-dynamic-query": "ts-dynamic-query",
-  },
   devtool: "source-map",
   optimization: {
     minimizer: [
