@@ -169,7 +169,7 @@ export class SqlTemplateProvider {
   }
 
   public static getSelectByDynamicQuery<T extends TableEntity>(entityClass: { new (): T }, query: DynamicQuery<T>): SqlTemplate {
-    const selectSql = this.getSelectSql(entityClass);
+    const selectSql = this.getSelectSql(entityClass, query);
     return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
   }
 
@@ -178,10 +178,18 @@ export class SqlTemplateProvider {
     return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
   }
 
-  public static getSelectSql<T extends TableEntity>(entityClass: { new (): T }) {
+  public static getSelectSql<T extends TableEntity>(entityClass: { new (): T }, dynamicQuery: DynamicQuery<T>) {
     const columnInfos = SqlTemplateProvider.getColumnInfos(new entityClass());
+    const selectedProperties = dynamicQuery.selectedProperties;
+    let useColumnInfos;
+    if (ArrayUtils.isEmpty(selectedProperties)) {
+      useColumnInfos = columnInfos;
+    } else {
+      useColumnInfos = columnInfos.filter(colInfo => ArrayUtils.contains(selectedProperties, colInfo.property));
+    }
+
     const table = new entityClass().getTableName();
-    const columnStr = SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
+    const columnStr = SqlTemplateProvider.getColumnsAsUnderscoreProps(useColumnInfos);
     const selectSql = `SELECT ${columnStr} FROM ${table}`;
     return selectSql;
   }

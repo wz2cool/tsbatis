@@ -207,10 +207,18 @@ describe(".SqlTemplateProvider", () => {
   });
 
   describe("#getSelectSql", () => {
-    it("should getSelectSql sql template", () => {
-      const result = SqlTemplateProvider.getSelectSql<Customer>(Customer);
+    it("should getSelectSql all sql template", () => {
+      const result = SqlTemplateProvider.getSelectSql<Customer>(Customer, DynamicQuery.createQuery<Customer>(Customer));
       // tslint:disable-next-line:max-line-length
       const expectValue = `SELECT Id AS id, CompanyName AS companyName, ContactName AS contactName, ContactTitle AS contactTitle, Address AS address, City AS city, Region AS region, PostalCode AS postalCode, Country AS country, Phone AS phone, Fax AS fax FROM Customer`;
+      expect(expectValue).to.be.eq(result);
+    });
+
+    it("should getSelectSql special column sql template", () => {
+      const query = DynamicQuery.createQuery<Customer>(Customer);
+      query.selectProperties("id", "companyName");
+      const result = SqlTemplateProvider.getSelectSql<Customer>(Customer, query);
+      const expectValue = `SELECT Id AS id, CompanyName AS companyName FROM Customer`;
       expect(expectValue).to.be.eq(result);
     });
   });
