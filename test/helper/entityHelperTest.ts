@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { ObjectUtils, StringUtils } from "ts-commons";
 import { EntityHelper } from "../../src/helper";
-import { StringUtils, ObjectUtils } from "ts-commons";
 
 class Student {
   public name: string;

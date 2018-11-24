@@ -1,8 +1,8 @@
 import "reflect-metadata";
+import { ObjectUtils, StringUtils } from "ts-commons";
 import { EntityCache } from "../cache/entityCache";
 import { ColumnInfo } from "../model/columnInfo";
 import { ColumnOption } from "../model/columnOption";
-import { ObjectUtils, StringUtils } from "ts-commons";
 
 export function column(option?: ColumnOption) {
   const cache = EntityCache.getInstance();

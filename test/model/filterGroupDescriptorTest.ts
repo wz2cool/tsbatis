@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import { FilterCondition, FilterGroupDescriptor } from "ts-dynamic-query";
-import { Student } from "./student";
 
 describe(".FilterGroupDescriptor", () => {
   describe("#constructor", () => {

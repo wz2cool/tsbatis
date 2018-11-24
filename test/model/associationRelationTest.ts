@@ -1,7 +1,6 @@
 import { expect } from "chai";
-import { DynamicQuery, FilterOperator } from "ts-dynamic-query";
+import { DynamicQuery, FilterDescriptor, FilterOperator } from "ts-dynamic-query";
 import { AssociationRelation } from "../../src/model/associationRelation";
-import { FilterDescriptor } from "ts-dynamic-query";
 import { CustomerView } from "../db/views/customerView";
 import { OrderView } from "../db/views/orderView";
 

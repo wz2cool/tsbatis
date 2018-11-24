@@ -1,7 +1,7 @@
-import { DatabaseType, Entity, RowBounds, SqlTemplate } from "../model";
-import { IConnection } from "./iConnection";
-import { ObjectUtils } from "ts-commons";
 import { plainToClass } from "class-transformer";
+import { ObjectUtils } from "ts-commons";
+import { DatabaseType, Entity, RowBounds } from "../model";
+import { IConnection } from "./iConnection";
 
 export class MysqlConnection implements IConnection {
   private readonly connection: any;

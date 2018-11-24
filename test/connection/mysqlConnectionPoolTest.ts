@@ -1,9 +1,5 @@
-import { expect } from "chai";
-
 describe(".mysqlConnectionPool", () => {
-    describe("#constructor", () => {
-        it("init", () => {
-
-        });
-    });
+  describe("#constructor", () => {
+    it("init", () => {});
+  });
 });

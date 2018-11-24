@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { EntityCache } from "../../src/cache/entityCache";
-import { ColumnInfo } from "../../src/model/columnInfo";
 import { EntityHelper } from "../../src/helper";
+import { ColumnInfo } from "../../src/model/columnInfo";
 
 describe(".EntityCache", () => {
   describe("#addColumnInfo", () => {

@@ -1,4 +1,4 @@
 export class SqlTemplate {
-    public sqlExpression: string = "";
-    public params: any[] = [];
+  public sqlExpression: string = "";
+  public params: any[] = [];
 }

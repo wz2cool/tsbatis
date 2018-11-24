@@ -1,20 +1,9 @@
+import { ObjectUtils } from "ts-commons";
+import { DynamicQuery, FilterDescriptor, FilterDescriptorBase, SortDescriptorBase } from "ts-dynamic-query";
 import { EntityCache } from "../cache";
 import { IConnection } from "../connection";
-import {
-  AssociationRelation,
-  CollectionRelation,
-  DatabaseType,
-  Entity,
-  KeyValue,
-  Page,
-  PageRowBounds,
-  RelationBase,
-  RowBounds,
-  SqlTemplate,
-} from "../model";
+import { AssociationRelation, Entity, Page, PageRowBounds, RelationBase, RowBounds, SqlTemplate } from "../model";
 import { SqlTemplateProvider } from "../provider";
-import { DynamicQuery, FilterDescriptor, FilterDescriptorBase, FilterOperator, SortDescriptorBase } from "ts-dynamic-query";
-import { ObjectUtils } from "ts-commons";
 
 export abstract class BaseMapper<T extends Entity> {
   protected readonly connection: IConnection;

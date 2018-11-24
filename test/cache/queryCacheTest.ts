@@ -1,9 +1,8 @@
 import { expect } from "chai";
+import { DynamicQuery } from "ts-dynamic-query";
 import { QueryCache } from "../../src/cache/queryCache";
 import { QueryCacheInternal } from "../../src/cache/queryCacheInternal";
 import { ColumnInfo } from "../../src/model/columnInfo";
-import { EntityHelper } from "../../src/helper";
-import { DynamicQuery } from "ts-dynamic-query";
 
 describe(".QueryCache", () => {
   describe("#addColumnInfo", () => {
@@ -13,7 +12,7 @@ describe(".QueryCache", () => {
       const query = new DynamicQuery<ColumnInfo>();
 
       QueryCache.addQuery(query);
-      const getAll  = queryCacheInternal.getAllQuerys();
+      const getAll = queryCacheInternal.getAllQuerys();
       expect(getAll[0]).to.be.eq(query);
       QueryCache.clearQuerys();
     });

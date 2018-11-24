@@ -1,7 +1,7 @@
 import { expect } from "chai";
+import { FilterOperator } from "ts-dynamic-query";
 import { FilterHelper } from "../../src/helper";
 import { ColumnInfo } from "../../src/model";
-import { FilterOperator } from "ts-dynamic-query";
 
 describe(".FilterHelper", () => {
   describe("#processSingleFilterValue", () => {

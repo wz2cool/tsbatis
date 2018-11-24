@@ -1,10 +1,9 @@
 import { expect } from "chai";
+import { StringUtils } from "ts-commons";
 import { EntityCache } from "../../src/cache";
 import { column } from "../../src/decorator";
 import { EntityHelper } from "../../src/helper";
-import { ColumnInfo } from "../../src/model";
 import { Product } from "../db/entity/product";
-import { StringUtils } from "ts-commons";
 
 describe(".column", () => {
   describe("#tableColumn", () => {

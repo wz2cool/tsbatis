@@ -1,7 +1,7 @@
 import { expect } from "chai";
+import { DynamicQuery, FilterCondition, FilterDescriptor, FilterOperator, SortDirection } from "ts-dynamic-query";
 import { CustomSortDescriptor } from "../../src/model";
 import { Student } from "./student";
-import { DynamicQuery, FilterCondition, FilterDescriptor, FilterOperator, SortDescriptor, SortDirection } from "ts-dynamic-query";
 
 describe(".dynanmicQuery", () => {
   describe("#addFilters", () => {

@@ -1,3 +1,8 @@
+import { QueryCache } from "./cache/queryCache";
+import { ConnectionFactory, IConnection } from "./connection";
+import { column } from "./decorator";
+import { EntityHelper } from "./helper";
+import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import {
   AssociationRelation,
   CollectionRelation,
@@ -16,16 +21,9 @@ import {
   SqlTemplate,
   TableEntity,
 } from "./model";
-
-import { ConnectionFactory, IConnection } from "./connection";
-import { column } from "./decorator";
-import { EntityHelper } from "./helper";
-import { BaseMapper, BaseMybatisMapper, BaseTableMapper } from "./mapper";
 import { SqlTemplateProvider } from "./provider";
-import { QueryCache } from "./cache/queryCache";
 
 export * from "ts-dynamic-query";
-
 export {
   AssociationRelation,
   CollectionRelation,

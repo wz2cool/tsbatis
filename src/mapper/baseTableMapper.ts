@@ -1,10 +1,10 @@
-import { Page } from "../model/page";
-import { PageRowBounds } from "../model/pageRowBounds";
-import { RowBounds } from "../model/rowBounds";
+import { DynamicQuery } from "ts-dynamic-query";
 import { IConnection } from "../connection";
 import { EntityHelper } from "../helper";
 import { DatabaseType, RelationBase, TableEntity } from "../model";
-import { DynamicQuery } from "ts-dynamic-query";
+import { Page } from "../model/page";
+import { PageRowBounds } from "../model/pageRowBounds";
+import { RowBounds } from "../model/rowBounds";
 import { SqlTemplateProvider } from "../provider";
 import { BaseMybatisMapper } from "./baseMybatisMapper";
 

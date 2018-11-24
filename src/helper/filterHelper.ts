@@ -1,6 +1,6 @@
-import { ColumnInfo, SqlTemplate } from "../model";
-import { FilterOperator } from "ts-dynamic-query";
 import { ObjectUtils } from "ts-commons";
+import { FilterOperator } from "ts-dynamic-query";
+import { ColumnInfo, SqlTemplate } from "../model";
 
 export class FilterHelper {
   public static getFilterExpression(operator: FilterOperator, columnInfo: ColumnInfo, filterValue: any): SqlTemplate {

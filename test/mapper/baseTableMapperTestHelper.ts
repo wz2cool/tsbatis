@@ -1,9 +1,9 @@
 import * as path from "path";
+import { DynamicQuery, FilterDescriptor, FilterOperator } from "ts-dynamic-query";
 import { BaseTableMapper, ConnectionFactory, MysqlConnectionConfig, SqliteConnectionConfig } from "../../src/index";
+import { RowBounds } from "../../src/model/rowBounds";
 import { Book } from "../db/entity/book";
 import { Student } from "../db/entity/student";
-import { RowBounds } from "../../src/model/rowBounds";
-import { FilterCondition, FilterDescriptor, DynamicQuery, FilterOperator } from "ts-dynamic-query";
 
 export class BaseTableMapperTestHelper {
   private readonly sqliteConnectionFactory: ConnectionFactory;

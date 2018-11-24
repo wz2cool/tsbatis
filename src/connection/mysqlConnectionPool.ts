@@ -1,8 +1,8 @@
+import { ObjectUtils } from "ts-commons";
 import { MysqlConnectionConfig } from "../model";
 import { IConnection } from "./iConnection";
 import { IConnectionPool } from "./iConnectionPool";
 import { MysqlConnection } from "./mysqlConnection";
-import { ObjectUtils } from "ts-commons";
 
 export class MysqlConnectionPool implements IConnectionPool {
   private readonly pool: any;

@@ -1,5 +1,5 @@
+import { deserialize, serialize } from "class-transformer";
 import { FilterDescriptorBase } from "ts-dynamic-query";
-import { serialize, deserialize } from "class-transformer";
 
 export class CustomFilterDescriptor extends FilterDescriptorBase {
   public expression: string;

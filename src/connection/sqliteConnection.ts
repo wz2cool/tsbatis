@@ -1,7 +1,7 @@
+import { plainToClass } from "class-transformer";
+import { ObjectUtils } from "ts-commons";
 import { DatabaseType, Entity, RowBounds } from "../model";
 import { IConnection } from "./iConnection";
-import { ObjectUtils } from "ts-commons";
-import { plainToClass } from "class-transformer";
 
 // https://github.com/mapbox/node-sqlite3/issues/304
 // create new db if start a transaction.

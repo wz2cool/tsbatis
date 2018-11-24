@@ -1,7 +1,4 @@
-import { EntityCache } from "../cache";
-import { ObjectUtils, StringUtils, ArrayUtils } from "ts-commons";
-import { EntityHelper, FilterHelper } from "../helper";
-import { ColumnInfo, CustomFilterDescriptor, CustomSortDescriptor, Entity, SqlTemplate, TableEntity } from "../model";
+import { ArrayUtils, ObjectUtils, StringUtils } from "ts-commons";
 import {
   DynamicQuery,
   FilterCondition,
@@ -12,7 +9,10 @@ import {
   SortDescriptorBase,
   SortDirection,
 } from "ts-dynamic-query";
+import { EntityCache } from "../cache";
 import { QueryCacheInternal } from "../cache/queryCacheInternal";
+import { EntityHelper, FilterHelper } from "../helper";
+import { ColumnInfo, CustomFilterDescriptor, CustomSortDescriptor, Entity, SqlTemplate, TableEntity } from "../model";
 
 export class SqlTemplateProvider {
   private static readonly queryCache: QueryCacheInternal = QueryCacheInternal.getInstance();

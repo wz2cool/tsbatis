@@ -1,5 +1,5 @@
+import { deserialize, serialize } from "class-transformer";
 import { SortDescriptorBase } from "ts-dynamic-query";
-import { serialize, deserialize } from "class-transformer";
 
 export class CustomSortDescriptor extends SortDescriptorBase {
   public expression: string;

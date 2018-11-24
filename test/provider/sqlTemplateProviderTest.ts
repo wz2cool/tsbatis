@@ -1,17 +1,9 @@
-import { CustomSortDescriptor } from "../../src/model/customSortDescriptor";
 import { expect } from "chai";
-import * as path from "path";
-import { SqlTemplateProvider, CustomFilterDescriptor } from "../../src";
-import { DynamicQuery, FilterDescriptor } from "ts-dynamic-query";
-import { MysqlConnection, SqliteConnection } from "../../src/connection";
-import { DatabaseType, SqliteConnectionConfig } from "../../src/model";
-import { RowBounds } from "../../src/model/rowBounds";
+import { DynamicQuery, FilterCondition, FilterDescriptor, FilterGroupDescriptor, FilterOperator, SortDescriptor, SortDirection } from "ts-dynamic-query";
+import { CustomFilterDescriptor, SqlTemplateProvider } from "../../src";
+import { CustomSortDescriptor } from "../../src/model/customSortDescriptor";
 import { Customer } from "../db/entity/customer";
-import { SqlTemplate } from "../../src/model/sqlTemplate";
-import { SortDirection } from "ts-dynamic-query";
-import { Student } from "../model/student";
 import { ErrorModel } from "../model/ErrorModel";
-import { SortDescriptor, FilterCondition, FilterOperator, FilterGroupDescriptor } from "ts-dynamic-query";
 
 describe(".SqlTemplateProvider", () => {
   describe("#getPkColumn", () => {
@@ -31,8 +23,8 @@ describe(".SqlTemplateProvider", () => {
       const result = SqlTemplateProvider.getInsert(newCustomer, false);
       expect(
         "INSERT INTO Customer (CompanyName, ContactName, ContactTitle, " +
-          "Address, City, Region, PostalCode, Country, Phone, Fax) " +
-          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "Address, City, Region, PostalCode, Country, Phone, Fax) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       ).to.be.eq(result.sqlExpression);
     });
 
