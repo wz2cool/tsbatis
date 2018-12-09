@@ -1,5 +1,5 @@
-import { ColumnInfo } from "../model/columnInfo";
 import { ObjectUtils } from "ts-commons";
+import { ColumnInfo } from "../model/columnInfo";
 
 export class EntityCache {
   public static getInstance() {
@@ -7,7 +7,10 @@ export class EntityCache {
   }
 
   private static instance = new EntityCache();
-  private readonly columnCache: Map<any, { [property: string]: ColumnInfo }> = new Map<any, { [property: string]: ColumnInfo }>();
+  private readonly columnCache: Map<any, { [property: string]: ColumnInfo }> = new Map<
+    any,
+    { [property: string]: ColumnInfo }
+  >();
   private constructor() {
     // hide constructor
   }

@@ -15,7 +15,8 @@
     "copynothwinddb": "copyfiles -f ./test/northwind.db ./dist/test/",
     "removenyc": "del-cli .nyc_output",
     "deletedist": "del-cli dist",
-    "build": "npm run deletedist && cross-env NODE_ENV=production webpack"
+    "build": "npm run deletedist && cross-env NODE_ENV=production webpack",
+    "lint": "tslint src/**/*.ts -t verbose"
   },
   "repository": {
     "type": "git",
