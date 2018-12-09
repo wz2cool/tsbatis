@@ -9,6 +9,7 @@ export class ColumnInfo {
   // column name
   public columnName: string;
   public table: string;
+  // tslint:disable-next-line:ban-types
   public targetConstructor: Function;
 
   public getQueryColumn() {

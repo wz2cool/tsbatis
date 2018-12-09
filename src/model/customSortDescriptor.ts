@@ -11,11 +11,11 @@ export class CustomSortDescriptor extends SortDescriptorBase {
     this.params = [];
   }
 
-  toJSON(): string {
+  public toJSON(): string {
     return serialize(this);
   }
 
-  fromJSON(json: string): CustomSortDescriptor {
+  public fromJSON(json: string): CustomSortDescriptor {
     const obj = deserialize(CustomSortDescriptor, json);
     this.expression = obj.expression;
     this.params = obj.params;

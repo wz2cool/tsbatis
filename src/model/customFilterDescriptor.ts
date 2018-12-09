@@ -11,10 +11,11 @@ export class CustomFilterDescriptor extends FilterDescriptorBase {
     this.params = [];
   }
 
-  toJSON(): string {
+  public toJSON(): string {
     return serialize(this);
   }
-  fromJSON(json: string): CustomFilterDescriptor {
+
+  public fromJSON(json: string): CustomFilterDescriptor {
     const obj = deserialize(CustomFilterDescriptor, json);
     this.expression = obj.expression;
     this.params = obj.params;

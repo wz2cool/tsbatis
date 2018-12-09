@@ -1,19 +1,17 @@
 {
-	"extends": "tslint:latest",
+  "extends": "tslint:latest",
 
-	"rules": {
-		"curly": true,
-		"no-console": [
-			false
-		],
-		"no-bitwise": false,
-		"variable-name": [true, "allow-leading-underscore"],
-		"trailing-comma": false,
-		"arrow-parens": false
-	},
-	"jsRules": {
-		"curly": true
-	},
-	"rulesDirectory": [
-	]
+  "rules": {
+    "curly": true,
+    "no-console": [false],
+    "no-bitwise": false,
+    "variable-name": [true, "allow-leading-underscore"],
+    "trailing-comma": false,
+    "arrow-parens": false,
+    "interface-name": false
+  },
+  "jsRules": {
+    "curly": true
+  },
+  "rulesDirectory": []
 }

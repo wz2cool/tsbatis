@@ -15,8 +15,6 @@ import { EntityHelper, FilterHelper } from "../helper";
 import { ColumnInfo, CustomFilterDescriptor, CustomSortDescriptor, Entity, SqlTemplate, TableEntity } from "../model";
 
 export class SqlTemplateProvider {
-  private static readonly queryCache: QueryCacheInternal = QueryCacheInternal.getInstance();
-
   public static getPkColumn<T extends TableEntity>(o: T): ColumnInfo {
     const columnInfos = SqlTemplateProvider.getColumnInfos(o);
     return columnInfos.find(s => s.isPK);
@@ -75,7 +73,10 @@ export class SqlTemplateProvider {
     return this.getDeleteByDynamicQuery<T>(entityClass, query);
   }
 
-  public static getDeleteByDynamicQuery<T extends TableEntity>(entityClass: { new (): T }, query: DynamicQuery<T>): SqlTemplate {
+  public static getDeleteByDynamicQuery<T extends TableEntity>(
+    entityClass: { new (): T },
+    query: DynamicQuery<T>,
+  ): SqlTemplate {
     const table = new entityClass().getTableName();
     const deleteSql = `DELETE FROM ${table}`;
     return this.getSqlByDynamicQuery<T>(entityClass, deleteSql, query);
@@ -168,12 +169,18 @@ export class SqlTemplateProvider {
     return this.getSelectCountByDynamicQuery<T>(entityClass, query);
   }
 
-  public static getSelectByDynamicQuery<T extends TableEntity>(entityClass: { new (): T }, query: DynamicQuery<T>): SqlTemplate {
+  public static getSelectByDynamicQuery<T extends TableEntity>(
+    entityClass: { new (): T },
+    query: DynamicQuery<T>,
+  ): SqlTemplate {
     const selectSql = this.getSelectSql(entityClass, query);
     return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
   }
 
-  public static getSelectCountByDynamicQuery<T extends TableEntity>(entityClass: { new (): T }, query: DynamicQuery<T>): SqlTemplate {
+  public static getSelectCountByDynamicQuery<T extends TableEntity>(
+    entityClass: { new (): T },
+    query: DynamicQuery<T>,
+  ): SqlTemplate {
     const selectSql = this.getSelectCountSql(entityClass);
     return SqlTemplateProvider.getSqlByDynamicQuery<T>(entityClass, selectSql, query);
   }
@@ -181,12 +188,9 @@ export class SqlTemplateProvider {
   public static getSelectSql<T extends TableEntity>(entityClass: { new (): T }, dynamicQuery: DynamicQuery<T>) {
     const columnInfos = SqlTemplateProvider.getColumnInfos(new entityClass());
     const selectedProperties = dynamicQuery.selectedProperties;
-    let useColumnInfos;
-    if (ArrayUtils.isEmpty(selectedProperties)) {
-      useColumnInfos = columnInfos;
-    } else {
-      useColumnInfos = columnInfos.filter(colInfo => ArrayUtils.contains(selectedProperties, colInfo.property));
-    }
+    const useColumnInfos = ArrayUtils.isEmpty(selectedProperties)
+      ? columnInfos
+      : columnInfos.filter(colInfo => ArrayUtils.contains(selectedProperties, colInfo.property));
 
     const table = new entityClass().getTableName();
     const columnStr = SqlTemplateProvider.getColumnsAsUnderscoreProps(useColumnInfos);
@@ -200,7 +204,11 @@ export class SqlTemplateProvider {
     return selectSql;
   }
 
-  public static getSqlByDynamicQuery<T extends Entity>(entityClass: { new (): T }, sql: string, dynamicQuery: DynamicQuery<T>): SqlTemplate {
+  public static getSqlByDynamicQuery<T extends Entity>(
+    entityClass: { new (): T },
+    sql: string,
+    dynamicQuery: DynamicQuery<T>,
+  ): SqlTemplate {
     const filterSortExpression = this.getFilterSortExpression(entityClass, dynamicQuery);
     const expression = `${sql}${filterSortExpression.sqlExpression}`;
     const result = new SqlTemplate();
@@ -210,7 +218,10 @@ export class SqlTemplateProvider {
   }
 
   // store with cache
-  public static getFilterSortExpression<T extends Entity>(entityClass: { new (): T }, dynamicQuery: DynamicQuery<T>): SqlTemplate {
+  public static getFilterSortExpression<T extends Entity>(
+    entityClass: { new (): T },
+    dynamicQuery: DynamicQuery<T>,
+  ): SqlTemplate {
     const cacheSqlTemplate = this.queryCache.getCache(dynamicQuery);
     if (!ObjectUtils.isNullOrUndefined(cacheSqlTemplate)) {
       return cacheSqlTemplate;
@@ -220,8 +231,12 @@ export class SqlTemplateProvider {
     const useQuery = ObjectUtils.isNullOrUndefined(dynamicQuery) ? new DynamicQuery() : dynamicQuery;
     const filterSqlParam = this.getFilterExpression<T>(entityClass, useQuery.filters);
     const sortSqlParam = this.getSortExpression<T>(entityClass, useQuery.sorts);
-    expression = StringUtils.isBlank(filterSqlParam.sqlExpression) ? expression : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
-    expression = StringUtils.isBlank(sortSqlParam.sqlExpression) ? expression : `${expression} ORDER BY ${sortSqlParam.sqlExpression}`;
+    expression = StringUtils.isBlank(filterSqlParam.sqlExpression)
+      ? expression
+      : `${expression} WHERE ${filterSqlParam.sqlExpression}`;
+    expression = StringUtils.isBlank(sortSqlParam.sqlExpression)
+      ? expression
+      : `${expression} ORDER BY ${sortSqlParam.sqlExpression}`;
     let params: any = [];
     params = params.concat(filterSqlParam.params);
     params = params.concat(sortSqlParam.params);
@@ -236,7 +251,10 @@ export class SqlTemplateProvider {
     return result;
   }
 
-  public static getFilterExpression<T extends Entity>(entityClass: { new (): T }, filters: FilterDescriptorBase[]): SqlTemplate {
+  public static getFilterExpression<T extends Entity>(
+    entityClass: { new (): T },
+    filters: FilterDescriptorBase[],
+  ): SqlTemplate {
     if (ObjectUtils.isNullOrUndefined(filters) || filters.length === 0) {
       return new SqlTemplate();
     }
@@ -260,7 +278,10 @@ export class SqlTemplateProvider {
     return result;
   }
 
-  public static getSortExpression<T extends Entity>(entityClass: { new (): T }, sorts: SortDescriptorBase[]): SqlTemplate {
+  public static getSortExpression<T extends Entity>(
+    entityClass: { new (): T },
+    sorts: SortDescriptorBase[],
+  ): SqlTemplate {
     if (ObjectUtils.isNullOrUndefined(sorts) || sorts.length === 0) {
       return new SqlTemplate();
     }
@@ -272,7 +293,9 @@ export class SqlTemplateProvider {
       if (sqlParam != null && StringUtils.isNotBlank(sqlParam.sqlExpression)) {
         params = params.concat(sqlParam.params);
 
-        expression = StringUtils.isBlank(expression) ? sqlParam.sqlExpression : `${expression}, ${sqlParam.sqlExpression}`;
+        expression = StringUtils.isBlank(expression)
+          ? sqlParam.sqlExpression
+          : `${expression}, ${sqlParam.sqlExpression}`;
       }
     });
 
@@ -282,7 +305,10 @@ export class SqlTemplateProvider {
     return result;
   }
 
-  public static getColumnsExpressionWithProperties<T extends Entity>(entityClass: { new (): T }, props: (keyof T)[]): string {
+  public static getColumnsExpressionWithProperties<T extends Entity>(
+    entityClass: { new (): T },
+    props: Array<keyof T>,
+  ): string {
     const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
     if (ObjectUtils.isNullOrUndefined(targetConstructor)) {
       throw new Error("cannot find entity, please set @column to entity!");
@@ -301,7 +327,10 @@ export class SqlTemplateProvider {
     return SqlTemplateProvider.getColumnsAsUnderscoreProps(columnInfos);
   }
 
-  public static getColumnsExpressionWithoutProperties<T extends Entity>(entityClass: { new (): T }, props: (keyof T)[]): string {
+  public static getColumnsExpressionWithoutProperties<T extends Entity>(
+    entityClass: { new (): T },
+    props: Array<keyof T>,
+  ): string {
     const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
     if (ObjectUtils.isNullOrUndefined(targetConstructor)) {
       throw new Error("cannot find entity, please set @column to entity!");
@@ -341,7 +370,10 @@ export class SqlTemplateProvider {
   }
 
   //#region filter
-  public static getFilterExpressionByFilterBase<T extends Entity>(entityClass: { new (): T }, filter: FilterDescriptorBase): SqlTemplate {
+  public static getFilterExpressionByFilterBase<T extends Entity>(
+    entityClass: { new (): T },
+    filter: FilterDescriptorBase,
+  ): SqlTemplate {
     if (filter instanceof FilterDescriptor) {
       return SqlTemplateProvider.getFilterExpressionByFilterDescriptor(entityClass, filter);
     } else if (filter instanceof FilterGroupDescriptor) {
@@ -353,7 +385,10 @@ export class SqlTemplateProvider {
     }
   }
 
-  public static getFilterExpressionByFilterDescriptor<T extends Entity>(entityClass: { new (): T }, filter: FilterDescriptor<T>): SqlTemplate {
+  public static getFilterExpressionByFilterDescriptor<T extends Entity>(
+    entityClass: { new (): T },
+    filter: FilterDescriptor<T>,
+  ): SqlTemplate {
     const value = filter.value;
     const operator = filter.operator;
     const propertyPath = filter.propertyPath;
@@ -379,7 +414,10 @@ export class SqlTemplateProvider {
   //#endregion
 
   //#region sort
-  public static getSortExpressionBySortBase<T extends Entity>(entityClass: { new (): T }, sort: SortDescriptorBase): SqlTemplate {
+  public static getSortExpressionBySortBase<T extends Entity>(
+    entityClass: { new (): T },
+    sort: SortDescriptorBase,
+  ): SqlTemplate {
     if (sort instanceof SortDescriptor) {
       return SqlTemplateProvider.getSortExpressionBySortDescriptor(entityClass, sort);
     } else if (sort instanceof CustomSortDescriptor) {
@@ -389,7 +427,10 @@ export class SqlTemplateProvider {
     }
   }
 
-  public static getSortExpressionBySortDescriptor<T extends Entity>(entityClass: { new (): T }, sort: SortDescriptor<T>): SqlTemplate {
+  public static getSortExpressionBySortDescriptor<T extends Entity>(
+    entityClass: { new (): T },
+    sort: SortDescriptor<T>,
+  ): SqlTemplate {
     const targetConstructor = EntityHelper.getTargetConstrutor(entityClass);
     const columnInfo = EntityCache.getInstance().getColumnInfo(targetConstructor, sort.propertyPath);
     const directionStr = SortDirection[sort.direction];
@@ -400,7 +441,10 @@ export class SqlTemplateProvider {
     return sqlParam;
   }
 
-  public static getSortExpressionByCustomSortDescriptor<T extends Entity>(entityClass: { new (): T }, sort: CustomSortDescriptor): SqlTemplate {
+  public static getSortExpressionByCustomSortDescriptor<T extends Entity>(
+    entityClass: { new (): T },
+    sort: CustomSortDescriptor,
+  ): SqlTemplate {
     const sqlParam = new SqlTemplate();
     let expression = StringUtils.isBlank(sort.expression) ? "" : sort.expression;
     for (let i = 0; i < sort.params.length; i++) {
@@ -429,6 +473,8 @@ export class SqlTemplateProvider {
     }
     return dynamicQuery;
   }
+
+  private static readonly queryCache: QueryCacheInternal = QueryCacheInternal.getInstance();
 
   private static toDbParam(param: any): any {
     if (param instanceof Date) {
