@@ -26,6 +26,7 @@ export class EntityCache {
     }
   }
 
+  // tslint:disable-next-line:ban-types
   public getColumnInfo(targetConstructor: Function, property: string): ColumnInfo {
     const propColMap = this.columnCache.get(targetConstructor);
     if (ObjectUtils.isNullOrUndefined(propColMap)) {
@@ -40,6 +41,7 @@ export class EntityCache {
     return columnInfo;
   }
 
+  // tslint:disable-next-line:ban-types
   public getColumnInfos(targetConstructor: Function): ColumnInfo[] {
     const propColMap = this.columnCache.get(targetConstructor);
     if (ObjectUtils.isNullOrUndefined(propColMap)) {
@@ -48,6 +50,7 @@ export class EntityCache {
     return ObjectUtils.values(propColMap);
   }
 
+  // tslint:disable-next-line:ban-types
   public getProperties(targetConstructor: Function): string[] {
     const columnInfos = this.getColumnInfos(targetConstructor);
     if (ObjectUtils.isNullOrUndefined(columnInfos) || columnInfos.length === 0) {

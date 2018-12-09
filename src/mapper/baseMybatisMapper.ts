@@ -12,7 +12,11 @@ export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> 
     return super.select(sqlTemplate.sqlExpression, sqlTemplate.params);
   }
 
-  public mybatisSelectEntities(sql: string, paramMap: { [key: string]: any }, relations: RelationBase[] = []): Promise<T[]> {
+  public mybatisSelectEntities(
+    sql: string,
+    paramMap: { [key: string]: any },
+    relations: RelationBase[] = [],
+  ): Promise<T[]> {
     const sqlTemplate = this.getSqlTemplate(sql, paramMap);
     return super.selectEntities(sqlTemplate.sqlExpression, sqlTemplate.params, relations);
   }
@@ -47,8 +51,8 @@ export abstract class BaseMybatisMapper<T extends Entity> extends BaseMapper<T> 
     const indexParams: Array<KeyValue<number, any>> = [];
     for (const key in paramMap) {
       if (paramMap.hasOwnProperty(key)) {
-        const placehoulderKey = "${" + key + "}";
-        const paramKey = "#{" + key + "}";
+        const placehoulderKey = "$" + `{${key}}`;
+        const paramKey = `#{${key}}`;
         const indexOfParam = sql.indexOf(paramKey);
         if (sql.indexOf(placehoulderKey) >= 0) {
           expression = expression.replace(placehoulderKey, paramMap[key]);

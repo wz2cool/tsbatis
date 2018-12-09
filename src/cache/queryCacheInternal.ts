@@ -2,11 +2,11 @@ import { DynamicQuery } from "ts-dynamic-query";
 import { SqlTemplate } from "../model";
 
 export class QueryCacheInternal {
-  private static instance = new QueryCacheInternal();
-  private queryCache: Map<DynamicQuery<any>, SqlTemplate> = new Map<DynamicQuery<any>, SqlTemplate>();
   public static getInstance() {
     return this.instance;
   }
+  private static instance = new QueryCacheInternal();
+  private queryCache: Map<DynamicQuery<any>, SqlTemplate> = new Map<DynamicQuery<any>, SqlTemplate>();
 
   private constructor() {
     // hide constructor.
@@ -32,7 +32,7 @@ export class QueryCacheInternal {
     return this.queryCache.delete(query);
   }
 
-  public getAllQuerys(): DynamicQuery<any>[] {
+  public getAllQuerys(): Array<DynamicQuery<any>> {
     return Array.from(this.queryCache.keys());
   }
 }

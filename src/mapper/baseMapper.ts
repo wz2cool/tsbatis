@@ -34,7 +34,12 @@ export abstract class BaseMapper<T extends Entity> {
     return this.selectEntitiesWithRelationInteral(plainSql, params, relations);
   }
 
-  public selectEntitiesRowBounds(plainSql: string, params: any[], rowBounds: RowBounds, relations: RelationBase[] = []): Promise<T[]> {
+  public selectEntitiesRowBounds(
+    plainSql: string,
+    params: any[],
+    rowBounds: RowBounds,
+    relations: RelationBase[] = [],
+  ): Promise<T[]> {
     return this.selectEntitiesRowBoundWithRelationInteral(plainSql, params, rowBounds, relations);
   }
 
@@ -64,11 +69,20 @@ export abstract class BaseMapper<T extends Entity> {
     return this.connection.selectCount(plainSql, params);
   }
 
-  private async selectEntitiesWithRelationInteral(plainSql: string, params: any[], relations: RelationBase[]): Promise<T[]> {
+  private async selectEntitiesWithRelationInteral(
+    plainSql: string,
+    params: any[],
+    relations: RelationBase[],
+  ): Promise<T[]> {
     try {
       const entityClass = this.getEntityClass();
       const entities = await this.selectEntitiesInternal<T>(entityClass, plainSql, params);
-      if (!ObjectUtils.isNullOrUndefined(entities) && entities.length > 0 && !ObjectUtils.isNullOrUndefined(relations) && relations.length > 0) {
+      if (
+        !ObjectUtils.isNullOrUndefined(entities) &&
+        entities.length > 0 &&
+        !ObjectUtils.isNullOrUndefined(relations) &&
+        relations.length > 0
+      ) {
         for (const entity of entities) {
           for (const relation of relations) {
             await this.assignRelationInternal(entity, relation);
@@ -81,7 +95,12 @@ export abstract class BaseMapper<T extends Entity> {
     }
   }
 
-  private async selectEntitiesRowBoundWithRelationInteral(plainSql: string, params: any[], rowBounds: RowBounds, relations: RelationBase[]) {
+  private async selectEntitiesRowBoundWithRelationInteral(
+    plainSql: string,
+    params: any[],
+    rowBounds: RowBounds,
+    relations: RelationBase[],
+  ) {
     const paging = this.connection.getRowBoundsExpression(rowBounds);
     const selectPagingSql = `${plainSql} ${paging}`;
     return this.selectEntitiesWithRelationInteral(selectPagingSql, params, relations);
@@ -102,13 +121,22 @@ export abstract class BaseMapper<T extends Entity> {
       } else {
         dynamicQuery.addFilters([refColumnFilter]);
       }
-      const sqlTemplate = SqlTemplateProvider.getSqlByDynamicQuery(refEntityClass, relation.getSelectSql(), dynamicQuery);
+      const sqlTemplate = SqlTemplateProvider.getSqlByDynamicQuery(
+        refEntityClass,
+        relation.getSelectSql(),
+        dynamicQuery,
+      );
 
       let nestEntities;
       if (relation instanceof AssociationRelation) {
         // only take one row.
         const rowBounds = new RowBounds(0, 1);
-        nestEntities = await this.selectEntitiesRowBoundInternal(refEntityClass, sqlTemplate.sqlExpression, sqlTemplate.params, rowBounds);
+        nestEntities = await this.selectEntitiesRowBoundInternal(
+          refEntityClass,
+          sqlTemplate.sqlExpression,
+          sqlTemplate.params,
+          rowBounds,
+        );
         if (!ObjectUtils.isNullOrUndefined(nestEntities) && nestEntities.length > 0) {
           sourceEntity[mappingProp] = nestEntities[0];
         }

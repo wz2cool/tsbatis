@@ -12,11 +12,11 @@ export class MysqlConnectionPool implements IConnectionPool {
     const mysql = this.getDriver();
 
     this.pool = mysql.createPool({
-      host: config.host,
-      port: config.port,
       database: config.database,
-      user: config.user,
+      host: config.host,
       password: config.password,
+      port: config.port,
+      user: config.user,
     });
   }
 
@@ -35,6 +35,7 @@ export class MysqlConnectionPool implements IConnectionPool {
 
   private getDriver(): any {
     // tslint:disable-next-line:no-implicit-dependencies
+    // tslint:disable-next-line:no-eval
     return eval(`require("mysql")`);
   }
 }

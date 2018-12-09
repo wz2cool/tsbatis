@@ -2,6 +2,7 @@ import { ObjectUtils } from "ts-commons";
 import { Entity } from "../model";
 
 export class EntityHelper {
+  // tslint:disable-next-line:ban-types
   public static getTargetConstrutor<T extends Entity>(o: T | { new (): T }): Function {
     if (ObjectUtils.isNullOrUndefined(o)) {
       return null;

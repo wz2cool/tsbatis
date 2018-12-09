@@ -141,6 +141,7 @@ export class SqliteConnection implements IConnection {
 
   private getDriver(): any {
     // tslint:disable-next-line:no-implicit-dependencies
+    // tslint:disable-next-line:no-eval
     return eval(`require("sqlite3")`);
   }
 
