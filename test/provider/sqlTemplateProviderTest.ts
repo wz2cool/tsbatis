@@ -1,5 +1,13 @@
 import { expect } from "chai";
-import { DynamicQuery, FilterCondition, FilterDescriptor, FilterGroupDescriptor, FilterOperator, SortDescriptor, SortDirection } from "ts-dynamic-query";
+import {
+  DynamicQuery,
+  FilterCondition,
+  FilterDescriptor,
+  FilterGroupDescriptor,
+  FilterOperator,
+  SortDescriptor,
+  SortDirection,
+} from "ts-dynamic-query";
 import { CustomFilterDescriptor, SqlTemplateProvider } from "../../src";
 import { CustomSortDescriptor } from "../../src/model/customSortDescriptor";
 import { Customer } from "../db/entity/customer";
@@ -23,8 +31,8 @@ describe(".SqlTemplateProvider", () => {
       const result = SqlTemplateProvider.getInsert(newCustomer, false);
       expect(
         "INSERT INTO Customer (CompanyName, ContactName, ContactTitle, " +
-        "Address, City, Region, PostalCode, Country, Phone, Fax) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "Address, City, Region, PostalCode, Country, Phone, Fax) " +
+          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       ).to.be.eq(result.sqlExpression);
     });
 
@@ -35,7 +43,9 @@ describe(".SqlTemplateProvider", () => {
       newCustomer.contactName = "test";
       newCustomer.contactTitle = "test";
       const result = SqlTemplateProvider.getInsert(newCustomer, true);
-      expect("INSERT INTO Customer (CompanyName, ContactName, ContactTitle) " + "VALUES (?, ?, ?)").to.be.eq(result.sqlExpression);
+      expect("INSERT INTO Customer (CompanyName, ContactName, ContactTitle) " + "VALUES (?, ?, ?)").to.be.eq(
+        result.sqlExpression,
+      );
     });
   });
 
@@ -267,7 +277,10 @@ describe(".SqlTemplateProvider", () => {
 
   describe("#getColumnsExpressionWithoutProperties", () => {
     it("shoud getColumnsExpressionWithoutProperties sql template", () => {
-      const result = SqlTemplateProvider.getColumnsExpressionWithoutProperties<Customer>(Customer, ["companyName", "city"]);
+      const result = SqlTemplateProvider.getColumnsExpressionWithoutProperties<Customer>(Customer, [
+        "companyName",
+        "city",
+      ]);
       // tslint:disable-next-line:max-line-length
       const expectValue = `Id AS id, ContactName AS contactName, ContactTitle AS contactTitle, Address AS address, Region AS region, PostalCode AS postalCode, Country AS country, Phone AS phone, Fax AS fax`;
       expect(expectValue).to.be.eq(result);
@@ -283,7 +296,10 @@ describe(".SqlTemplateProvider", () => {
 
   describe("#getColumnsExpressionWithProperties", () => {
     it("shoud getColumnsExpressionWithProperties sql template", () => {
-      const result = SqlTemplateProvider.getColumnsExpressionWithProperties<Customer>(Customer, ["companyName", "city"]);
+      const result = SqlTemplateProvider.getColumnsExpressionWithProperties<Customer>(Customer, [
+        "companyName",
+        "city",
+      ]);
       // tslint:disable-next-line:max-line-length
       const expectValue = `CompanyName AS companyName, City AS city`;
       expect(expectValue).to.be.eq(result);
@@ -344,7 +360,11 @@ describe(".SqlTemplateProvider", () => {
 
   describe("#getFilterExpressionByFilterBase", () => {
     it("should getFilterExpressionByFilterDescriptor sql template", () => {
-      const idFilter = new FilterDescriptor<Customer>({ propertyPath: "id", operator: FilterOperator.EQUAL, value: "1" });
+      const idFilter = new FilterDescriptor<Customer>({
+        propertyPath: "id",
+        operator: FilterOperator.EQUAL,
+        value: "1",
+      });
       // tslint:disable-next-line:max-line-length
       const result = SqlTemplateProvider.getFilterExpressionByFilterBase(Customer, idFilter);
       const expectValue = "Id = ?";
@@ -365,7 +385,11 @@ describe(".SqlTemplateProvider", () => {
     });
 
     it("should getFilterGroupDescriptor sql template", () => {
-      const idFilter = new FilterDescriptor<Customer>({ propertyPath: "id", operator: FilterOperator.EQUAL, value: "1" });
+      const idFilter = new FilterDescriptor<Customer>({
+        propertyPath: "id",
+        operator: FilterOperator.EQUAL,
+        value: "1",
+      });
       // tslint:disable-next-line:max-line-length
       const addressFilter = new FilterDescriptor<Customer>({
         condition: FilterCondition.OR,

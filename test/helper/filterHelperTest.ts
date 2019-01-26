@@ -267,4 +267,44 @@ describe(".FilterHelper", () => {
       expect(20).to.be.eq(result.params[1]);
     });
   });
+
+  describe("#getBitwiseAnyExpression", () => {
+    const operator = FilterOperator.BITWISE_ANY;
+    const columnInfo = new ColumnInfo();
+    columnInfo.columnName = "flag";
+    columnInfo.property = "flag";
+    columnInfo.table = "student";
+    it("expression should return 'student.flag & ? > 0'.", () => {
+      const result = FilterHelper.getFilterExpression(operator, columnInfo, 1);
+      expect("student.flag & ? > 0").to.be.eq(result.sqlExpression);
+      expect(1).to.be.eq(result.params[0]);
+    });
+  });
+
+  describe("#getBitwiseZeroExpression", () => {
+    const operator = FilterOperator.BITWISE_ZERO;
+    const columnInfo = new ColumnInfo();
+    columnInfo.columnName = "flag";
+    columnInfo.property = "flag";
+    columnInfo.table = "student";
+    it("expression should return 'student.flag & ? = 0'.", () => {
+      const result = FilterHelper.getFilterExpression(operator, columnInfo, 1);
+      expect("student.flag & ? = 0").to.be.eq(result.sqlExpression);
+      expect(1).to.be.eq(result.params[0]);
+    });
+  });
+
+  describe("#getBitwiseAllExpression", () => {
+    const operator = FilterOperator.BITWISE_ALL;
+    const columnInfo = new ColumnInfo();
+    columnInfo.columnName = "flag";
+    columnInfo.property = "flag";
+    columnInfo.table = "student";
+    it("expression should return 'student.flag & ? = ?'.", () => {
+      const result = FilterHelper.getFilterExpression(operator, columnInfo, 2);
+      expect("student.flag & ? = ?").to.be.eq(result.sqlExpression);
+      expect(2).to.be.eq(result.params[0]);
+      expect(2).to.be.eq(result.params[1]);
+    });
+  });
 });

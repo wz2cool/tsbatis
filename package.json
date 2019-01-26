@@ -32,7 +32,7 @@
     "class-transformer": "^0.1.9",
     "reflect-metadata": "^0.1.10",
     "ts-commons": "1.0.9",
-    "ts-dynamic-query": "~1.0.35"
+    "ts-dynamic-query": "~1.0.36"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

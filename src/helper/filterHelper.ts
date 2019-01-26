@@ -26,6 +26,12 @@ export class FilterHelper {
         return FilterHelper.getNotInExpression(columnInfo, filterValues);
       case FilterOperator.BETWEEN:
         return FilterHelper.getBetweenExpression(columnInfo, filterValues);
+      case FilterOperator.BITWISE_ANY:
+        return FilterHelper.getBitwiseAnyExpression(columnInfo, filterValues);
+      case FilterOperator.BITWISE_ZERO:
+        return FilterHelper.getBitwiseZeroExpression(columnInfo, filterValues);
+      case FilterOperator.BITWISE_ALL:
+        return FilterHelper.getBitwiseAllExpression(columnInfo, filterValues);
       default:
         return FilterHelper.getEqualExpression(columnInfo, filterValues);
     }
@@ -155,6 +161,28 @@ export class FilterHelper {
     const sqlParam = new SqlTemplate();
     sqlParam.sqlExpression = columnInfo.getQueryColumn() + ` BETWEEN ? AND ?`;
     sqlParam.params = sqlParam.params.concat(filterValues);
+    return sqlParam;
+  }
+
+  private static getBitwiseAnyExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+    const sqlParam = new SqlTemplate();
+    sqlParam.sqlExpression = `${columnInfo.getQueryColumn()} & ? > 0`;
+    sqlParam.params = sqlParam.params.concat(filterValues);
+    return sqlParam;
+  }
+
+  private static getBitwiseZeroExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+    const sqlParam = new SqlTemplate();
+    sqlParam.sqlExpression = `${columnInfo.getQueryColumn()} & ? = 0`;
+    sqlParam.params = sqlParam.params.concat(filterValues);
+    return sqlParam;
+  }
+
+  private static getBitwiseAllExpression(columnInfo: ColumnInfo, filterValues: any[]): SqlTemplate {
+    const sqlParam = new SqlTemplate();
+    sqlParam.sqlExpression = `${columnInfo.getQueryColumn()} & ? = ?`;
+    const filterValue = filterValues[0];
+    sqlParam.params = sqlParam.params.concat(filterValue, filterValue);
     return sqlParam;
   }
 
