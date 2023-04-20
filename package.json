@@ -1,6 +1,6 @@
 {
   "name": "tsbatis",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,6 @@
   "dependencies": {
     "class-transformer": "^0.1.9",
     "reflect-metadata": "^0.1.10",
-    "ts-commons": "1.0.9",
     "ts-dynamic-query": "~1.0.37"
   },
   "devDependencies": {
