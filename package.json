@@ -1,6 +1,6 @@
 {
   "name": "tsbatis",
-  "version": "1.0.3",
+  "version": "1.0.8",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,7 +15,7 @@
     "copynothwinddb": "copyfiles -f ./test/northwind.db ./dist/test/",
     "removenyc": "del-cli .nyc_output",
     "deletedist": "del-cli dist",
-    "build": "npm run deletedist && cross-env NODE_ENV=production webpack",
+    "build": "npm run deletedist && cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider webpack",
     "lint": "tslint src/**/*.ts -t verbose"
   },
   "repository": {
@@ -31,8 +31,8 @@
   "dependencies": {
     "class-transformer": "^0.1.9",
     "reflect-metadata": "^0.1.10",
-    "ts-commons": "1.0.9",
-    "ts-dynamic-query": "~1.0.36"
+    "ts-commons": "^1.0.29",
+    "ts-dynamic-query": "~1.0.42"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -52,7 +52,7 @@
     "mocha-lcov-reporter": "^1.3.0",
     "mysql": "^2.15.0",
     "nyc": "^11.2.1",
-    "sqlite3": "^3.1.13",
+    "sqlite3": "^5.1.6",
     "ts-loader": "^4.5.0",
     "tslint": "^5.7.0",
     "typescript": "^3.0.3",
